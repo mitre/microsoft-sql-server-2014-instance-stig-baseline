@@ -1,13 +1,13 @@
 control "V-67915" do
   title "Software updates to SQL Server must be tested before being applied to
-production systems."
+  production systems."
   desc  "While it is important to apply SQL Server updates in a timely manner,
-it is also incumbent upon the database administrator and/or system
-administrator to ensure that their deployment will not interfere with the
-operation of the database and its applications.  Other than in emergency
-situations, SQL Server updates must be applied to appropriately configured
-non-production systems, and the resulting version of SQL Server assessed for
-correct operation."
+  it is also incumbent upon the database administrator and/or system
+  administrator to ensure that their deployment will not interfere with the
+  operation of the database and its applications.  Other than in emergency
+  situations, SQL Server updates must be applied to appropriately configured
+  non-production systems, and the resulting version of SQL Server assessed for
+  correct operation."
   impact 0.7
   tag "gtitle": "SRG-APP-000456-DB-000390"
   tag "gid": "V-67915"
@@ -27,12 +27,12 @@ correct operation."
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "Obtain evidence that SQL Server software updates are tested
-before being applied to production servers, and that any exceptions are
-approved by the ISSM.
+  before being applied to production servers, and that any exceptions are
+  approved by the ISSM.
 
-If such evidence cannot be obtained, or the evidence that is obtained indicates
-a pattern of noncompliance, this is a finding."
+  If such evidence cannot be obtained, or the evidence that is obtained indicates
+  a pattern of noncompliance, this is a finding."
   tag "fix": "Institute and adhere to policies and procedures to ensure that
-SQL Server updates are tested prior to installation on production servers."
+  SQL Server updates are tested prior to installation on production servers."
 end
 

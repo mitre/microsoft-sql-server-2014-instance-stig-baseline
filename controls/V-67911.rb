@@ -1,20 +1,20 @@
 control "V-67911" do
   title "The confidentiality and integrity of information managed by SQL Server
-must be maintained during reception."
+  must be maintained during reception."
   desc  "Information can be either unintentionally or maliciously disclosed or
-modified during reception, including, for example, during aggregation, at
-protocol transformation points, and during packing/unpacking. These
-unauthorized disclosures or modifications compromise the confidentiality or
-integrity of the information.
+  modified during reception, including, for example, during aggregation, at
+  protocol transformation points, and during packing/unpacking. These
+  unauthorized disclosures or modifications compromise the confidentiality or
+  integrity of the information.
 
-    This requirement applies only to those applications that are either
-distributed or can allow access to data nonlocally. Use of this requirement
-will be limited to situations where the data owner has a strict requirement for
-ensuring data integrity and confidentiality is maintained at every step of the
-data transfer and handling process.
+      This requirement applies only to those applications that are either
+  distributed or can allow access to data nonlocally. Use of this requirement
+  will be limited to situations where the data owner has a strict requirement for
+  ensuring data integrity and confidentiality is maintained at every step of the
+  data transfer and handling process.
 
-    When receiving data, SQL Server, associated applications, and
-infrastructure must leverage protection mechanisms.
+      When receiving data, SQL Server, associated applications, and
+  infrastructure must leverage protection mechanisms.
   "
   impact 0.7
   tag "gtitle": "SRG-APP-000442-DB-000379"
@@ -35,13 +35,13 @@ infrastructure must leverage protection mechanisms.
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "If the data owner does not have a strict requirement for
-ensuring data integrity and confidentiality is maintained at every step of the
-data transfer and handling process, this is not a finding.
+  ensuring data integrity and confidentiality is maintained at every step of the
+  data transfer and handling process, this is not a finding.
 
-If SQL Server, associated applications, and infrastructure do not employ
-protective measures against unauthorized disclosure and modification during
-reception, this is a finding."
+  If SQL Server, associated applications, and infrastructure do not employ
+  protective measures against unauthorized disclosure and modification during
+  reception, this is a finding."
   tag "fix": "Implement protective measures against unauthorized disclosure and
-modification during reception."
+  modification during reception."
 end
 

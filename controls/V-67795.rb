@@ -1,21 +1,21 @@
 control "V-67795" do
   title "SQL Server must protect its audit features from unauthorized access,
-modification, or removal."
+  modification, or removal."
   desc  "Protecting audit data also includes identifying and protecting the
-tools used to view and manipulate log data.
+  tools used to view and manipulate log data.
 
-    Depending upon the log format and application, system and application log
-tools may provide the only means to manipulate and manage application and
-system log data. It is, therefore, imperative that access to audit tools be
-controlled and protected from unauthorized access.
+      Depending upon the log format and application, system and application log
+  tools may provide the only means to manipulate and manage application and
+  system log data. It is, therefore, imperative that access to audit tools be
+  controlled and protected from unauthorized access.
 
-    If an attacker were to gain access to audit tools, he could analyze audit
-logs for system weaknesses or weaknesses in the auditing itself. An attacker
-could also manipulate logs to hide evidence of malicious activity.
+      If an attacker were to gain access to audit tools, he could analyze audit
+  logs for system weaknesses or weaknesses in the auditing itself. An attacker
+  could also manipulate logs to hide evidence of malicious activity.
 
-    This focuses on audit/trace log tools within SQL Server.  Other STIG
-requirements govern operating system settings to control access to external
-tools.
+      This focuses on audit/trace log tools within SQL Server.  Other STIG
+  requirements govern operating system settings to control access to external
+  tools.
   "
   impact 0.7
   tag "gtitle": "SRG-APP-000121-DB-000202"
@@ -36,13 +36,13 @@ tools.
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "Review the SQL Server permissions granted to principals.  The
-views and functions provided in the supplemental file Permissions.sql can help
-with this.  Look for permissions such as ALTER ANY SERVER AUDIT, ALTER ANY
-DATABASE AUDIT, ALTER TRACE; or EXECUTE on the stored procedures with names
-beginning \"SP_TRACE\", or on scopes including those procedures.
+  views and functions provided in the supplemental file Permissions.sql can help
+  with this.  Look for permissions such as ALTER ANY SERVER AUDIT, ALTER ANY
+  DATABASE AUDIT, ALTER TRACE; or EXECUTE on the stored procedures with names
+  beginning \"SP_TRACE\", or on scopes including those procedures.
 
-If unauthorized accounts have these privileges, this is a finding."
+  If unauthorized accounts have these privileges, this is a finding."
   tag "fix": "Use REVOKE and/or DENY statements to remove audit-related
-permissions from individuals and roles not authorized to have them."
+  permissions from individuals and roles not authorized to have them."
 end
 

@@ -1,8 +1,8 @@
 control "V-67905" do
   title "SQL Server must disable communication protocols not required for
-operation."
+  operation."
   desc  "Having unnecessary protocols enabled exposes the system to avoidable
-threats.  In a typical installation, only TCP/IP will be required."
+  threats.  In a typical installation, only TCP/IP will be required."
   impact 0.7
   tag "gtitle": "SRG-APP-000383-DB-000364"
   tag "gid": "V-67905"
@@ -22,17 +22,17 @@ threats.  In a typical installation, only TCP/IP will be required."
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "Review the system security plan to determine the communication
-protocols used by the SQL Server instance.
+  protocols used by the SQL Server instance.
 
-Open SQL Server Configuration Manager from the Windows Start menu or by
-entering \"SQLServerManager12.msc\" in a Command Prompt window or in the Run
-dialog box.  Select SQL Server Network Configuration >> Protocols for <instance
-name>.  Review the list of protocols.
+  Open SQL Server Configuration Manager from the Windows Start menu or by
+  entering \"SQLServerManager12.msc\" in a Command Prompt window or in the Run
+  dialog box.  Select SQL Server Network Configuration >> Protocols for <instance
+  name>.  Review the list of protocols.
 
-If any that are not required are shown as enabled, this is a finding."
+  If any that are not required are shown as enabled, this is a finding."
   tag "fix": "In SQL Server Configuration Manager, right-click on each enabled
-protocol that is not required.  Select Disabled.
+  protocol that is not required.  Select Disabled.
 
-Close SQL Server Configuration Manager.  Restart SQL Server."
+  Close SQL Server Configuration Manager.  Restart SQL Server."
 end
 

@@ -38,59 +38,59 @@ not have this capability.
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "If SQL Server Trace is in use for audit purposes, and SQL
-Server Audit is not in use, this is not a finding.
+  Server Audit is not in use, this is not a finding.
 
-The basic SQL Server Audit configuration provided in the supplemental file
-Audit.sql uses the broad, server-level audit action group
-SCHEMA_OBJECT_ACCESS_GROUP for this purpose.  SQL Server Audit's flexibility
-makes other techniques possible.  If an alternative technique is in use and
-demonstrated effective, this is not a finding.
+  The basic SQL Server Audit configuration provided in the supplemental file
+  Audit.sql uses the broad, server-level audit action group
+  SCHEMA_OBJECT_ACCESS_GROUP for this purpose.  SQL Server Audit's flexibility
+  makes other techniques possible.  If an alternative technique is in use and
+  demonstrated effective, this is not a finding.
 
-Determine the name(s) of the server audit specification(s) in use.
+  Determine the name(s) of the server audit specification(s) in use.
 
-To look at audits and audit specifications, in Management Studio's object
-explorer, expand
-<server name> >> Security >> Audits
-and
-<server name> >> Security >> Server Audit Specifications.
-Also,
-<server name> >> Databases >> <database name> >> Security >> Database Audit
-Specifications.
+  To look at audits and audit specifications, in Management Studio's object
+  explorer, expand
+  <server name> >> Security >> Audits
+  and
+  <server name> >> Security >> Server Audit Specifications.
+  Also,
+  <server name> >> Databases >> <database name> >> Security >> Database Audit
+  Specifications.
 
-Alternatively, review the contents of the system views with \"audit\" in their
-names.
+  Alternatively, review the contents of the system views with \"audit\" in their
+  names.
 
-Run the following to verify that all SELECT actions on the permissions-related
-system views, and any locally-defined permissions tables, are being audited:
+  Run the following to verify that all SELECT actions on the permissions-related
+  system views, and any locally-defined permissions tables, are being audited:
 
-USE [master];
-GO
-SELECT * FROM sys.server_audit_specification_details WHERE
-server_specification_id =
-(SELECT server_specification_id FROM sys.server_audit_specifications WHERE
-[name] = '<server_audit_specification_name>')
-AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
+  USE [master];
+  GO
+  SELECT * FROM sys.server_audit_specification_details WHERE
+  server_specification_id =
+  (SELECT server_specification_id FROM sys.server_audit_specifications WHERE
+  [name] = '<server_audit_specification_name>')
+  AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
 
-If no row is returned, this is a finding.
+  If no row is returned, this is a finding.
 
-If the audited_result column is not \"SUCCESS\" or \"SUCCESS AND FAILURE\",
-this is a finding."
+  If the audited_result column is not \"SUCCESS\" or \"SUCCESS AND FAILURE\",
+  this is a finding."
   tag "fix": "Design and deploy a SQL Server Audit that captures all auditable
-events.  The script provided in the supplemental file Audit.sql can be used for
-this.
+  events.  The script provided in the supplemental file Audit.sql can be used for
+  this.
 
-Alternatively, to add the necessary data capture to an existing server audit
-specification, run the script:
-USE [master];
-GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
-= OFF);
-GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> ADD
-(SCHEMA_OBJECT_ACCESS_GROUP);
-GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
-= ON);
-GO"
+  Alternatively, to add the necessary data capture to an existing server audit
+  specification, run the script:
+  USE [master];
+  GO
+  ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
+  = OFF);
+  GO
+  ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> ADD
+  (SCHEMA_OBJECT_ACCESS_GROUP);
+  GO
+  ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
+  = ON);
+  GO"
 end
 

@@ -1,11 +1,11 @@
 control "V-67881" do
   title "Access to database files must be limited to relevant processes and to
-authorized, administrative users."
+  authorized, administrative users."
   desc  "Applications, including DBMSs, must prevent unauthorized and
-unintended information transfer via shared system resources. Permitting only
-DBMS processes and authorized, administrative users to have access to the files
-where the database resides helps ensure that those files are not shared
-inappropriately and are not open to backdoor access and manipulation."
+  unintended information transfer via shared system resources. Permitting only
+  DBMS processes and authorized, administrative users to have access to the files
+  where the database resides helps ensure that those files are not shared
+  inappropriately and are not open to backdoor access and manipulation."
   impact 0.7
   tag "gtitle": "SRG-APP-000243-DB-000374"
   tag "gid": "V-67881"
@@ -25,17 +25,17 @@ inappropriately and are not open to backdoor access and manipulation."
   tag "responsibility": nil
   tag "ia_controls": nil
   tag "check": "Review the permissions granted to users by the operating
-system/file system on the database files, database transaction log files,
-database audit log files, and database backup files.
+  system/file system on the database files, database transaction log files,
+  database audit log files, and database backup files.
 
-If any user/role who is not an authorized system administrator with a need to
-know or database administrator with a need to know, or a system account for
-running DBMS processes, is permitted to read/view any of these files, this is a
-finding."
+  If any user/role who is not an authorized system administrator with a need to
+  know or database administrator with a need to know, or a system account for
+  running DBMS processes, is permitted to read/view any of these files, this is a
+  finding."
   tag "fix": "Configure the permissions granted by the operating system/file
-system on the database files, database transaction log files, database audit
-log files, and database backup files so that only relevant system accounts and
-authorized system administrators and database administrators with a need to
-know are permitted to read/view these files."
+  system on the database files, database transaction log files, database audit
+  log files, and database backup files so that only relevant system accounts and
+  authorized system administrators and database administrators with a need to
+  know are permitted to read/view these files."
 end
 
