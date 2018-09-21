@@ -1,4 +1,4 @@
-control "V-67923" do
+control "V-67923" do 
   title "SQL Server must generate Trace or Audit records when unsuccessful
   attempts to add privileges/permissions occur."
   desc  "Failed attempts to change the permissions, privileges, and roles
