@@ -88,5 +88,6 @@ control "V-67773" do
 
   The script provided in the supplemental file Audit.sql can be used to create an
   audit.."
+  
 end
 

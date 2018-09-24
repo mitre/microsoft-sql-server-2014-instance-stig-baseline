@@ -61,8 +61,12 @@ control "V-70623" do
   If Service Status is \"Running\", click on \"Stop\".
 
   Click on \"OK\"."
-  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers' -ServerInstance 'WIN-FC4ANINFUFP'") do
-   its('stdout') { should eq '' }
-  end
+  describe wmi({
+  class: 'win32_service',
+  filter: "name like '%SQLBrowser%'"
+  }) do
+    its('StartMode') { should cmp 'Disabled' }
+  end 
+  
 end
 

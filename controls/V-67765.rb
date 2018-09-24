@@ -1,4 +1,4 @@
-control "V-67765" do
+scontrol "V-67765" do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
   must allow only the ISSM (or individuals or roles appointed by the ISSM) to
   select which auditable events are to be traced."
@@ -99,5 +99,10 @@ control "V-67765" do
   Then, for each authorized login, run the statement:
       ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
       GO"
+
+      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION');" -ServerInstance 'WIN-FC4ANINFUFP'
+      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_role_members" -ServerInstance 'WIN-FC4ANINFUFP'
+      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_permissions" -ServerInstance 'WIN-FC4ANINFUFP'
+
 end
 

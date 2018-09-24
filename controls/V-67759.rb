@@ -143,5 +143,12 @@ control "V-67759" do
   To drop a User via a query:
   USE <database name>;
   DROP USER <user name>;"
+
+  #add sql manaaged accounts to test
+  describe.one do
+    describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should eq '' }
+    end
+  end
 end
 

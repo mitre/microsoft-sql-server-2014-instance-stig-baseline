@@ -73,6 +73,7 @@ control "V-67939" do
 
   Where SQL Server Audit is in use, enable the SUCCESSFUL_LOGIN_GROUP and
   LOGOUT_GROUP, as described in other STIG requirements."
+  #look into
   describe command("Invoke-Sqlcmd -Query 'SELECT * FROM sys.traces;' -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
