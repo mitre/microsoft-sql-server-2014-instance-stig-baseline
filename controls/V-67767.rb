@@ -1,27 +1,33 @@
+ ALLOWED_AUDIT_PERMISSIONS = attribute(
+  'allowed_audit_permissions',
+  description: 'List of approved audit permissions',
+  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER"]
+)
+
 control "V-67767" do
   title "Where SQL Server Audit is in use, SQL Server must allow only the ISSM
-(or individuals or roles appointed by the ISSM) to select which auditable
-events are to be audited at the server level."
+  (or individuals or roles appointed by the ISSM) to select which auditable
+  events are to be audited at the server level."
   desc  "Without the capability to restrict which roles and individuals can
-select which events are audited, unauthorized personnel may be able to prevent
-or interfere with the auditing of critical events.
+  select which events are audited, unauthorized personnel may be able to prevent
+  or interfere with the auditing of critical events.
 
-    Suppression of auditing could permit an adversary to evade detection.
+      Suppression of auditing could permit an adversary to evade detection.
 
-    Misconfigured audits can degrade the system's performance by overwhelming
-the audit log. Misconfigured audits may also make it more difficult to
-establish, correlate, and investigate the events relating to an incident or
-identify those responsible for one.
+      Misconfigured audits can degrade the system's performance by overwhelming
+  the audit log. Misconfigured audits may also make it more difficult to
+  establish, correlate, and investigate the events relating to an incident or
+  identify those responsible for one.
 
-    Use of SQL Server Audit is recommended.  All features of SQL Server Audit
-  are available in the Enterprise and Developer editions of SQL Server 2014.  It
-  is not available at the database level in other editions.  For this or legacy
-  reasons, the instance may be using SQL Server Trace for auditing, which remains
-  an acceptable solution for the time being.  Note, however, that Microsoft
-  intends to remove most aspects of Trace at some point after SQL Server 2016.
+      Use of SQL Server Audit is recommended.  All features of SQL Server Audit
+    are available in the Enterprise and Developer editions of SQL Server 2014.  It
+    is not available at the database level in other editions.  For this or legacy
+    reasons, the instance may be using SQL Server Trace for auditing, which remains
+    an acceptable solution for the time being.  Note, however, that Microsoft
+    intends to remove most aspects of Trace at some point after SQL Server 2016.
 
-    This version of the requirement deals with SQL Server Audit-based audit
-  trails.
+      This version of the requirement deals with SQL Server Audit-based audit
+    trails.
   "
   impact 0.7
   tag "gtitle": "SRG-APP-000090-DB-000065"
@@ -104,5 +110,12 @@ identify those responsible for one.
   Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
   to remove CONTROL SERVER, ALTER ANY DATABASE and CREATE ANY DATABASE
   permissions from logins that do not need them."
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in ALLOWED_AUDIT_PERMISSIONS }
+    end  
+  end 
 end
 

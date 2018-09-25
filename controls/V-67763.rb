@@ -80,5 +80,9 @@ control "V-67763" do
   Design, develop, and implement a method to log use of any account to which more
   than one person has access. Restrict interactive access to shared accounts to
   the fewest persons possible."
+  describe "The Service Master Key must be backed up, stored offline and off-site." do
+    skip "SQL Server must protect against an individual using a shared account
+  from falsely denying having performed a particular action"
+  end
 end
 

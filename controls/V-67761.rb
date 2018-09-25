@@ -63,5 +63,8 @@ control "V-67761" do
    ALTER SERVER ROLE  …. DROP MEMBER statements to add and remove permissions on
   server-level securables, bringing them into line with the documented
   requirements."
+  describe "The Service Master Key must be backed up, stored offline and off-site." do
+    skip "This control is manual"
+  end
 end
 

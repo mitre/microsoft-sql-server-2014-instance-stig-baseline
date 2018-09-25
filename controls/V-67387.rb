@@ -41,5 +41,8 @@ control "V-67387" do
 
   As this requires a password, take care to ensure it is not exposed to
   unauthorized persons or stored as plain text."
+  describe "The Service Master Key must be backed up, stored offline and off-site." do
+    skip "This controls is manual"
+  end
 end
 

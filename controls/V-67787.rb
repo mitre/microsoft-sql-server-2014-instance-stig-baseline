@@ -70,7 +70,7 @@ control "V-67787" do
 
   SELECT [name], [max_rollover_files] FROM sys.server_file_audits
   WHERE is_state_enabled = 1;
-
+ 
   By observing the [name] and [max_rollover_files] columns, identify the row or
   rows in use.
 
