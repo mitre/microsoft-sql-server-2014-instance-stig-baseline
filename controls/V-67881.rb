@@ -37,5 +37,9 @@ control "V-67881" do
   log files, and database backup files so that only relevant system accounts and
   authorized system administrators and database administrators with a need to
   know are permitted to read/view these files."
+  describe "Access to database files must be limited to relevant processes and to
+  authorized, administrative users" do
+    skip "This control is manual"
+  end
 end
 

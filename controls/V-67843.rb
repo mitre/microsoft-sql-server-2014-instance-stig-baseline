@@ -80,5 +80,11 @@ control "V-67843" do
   GO
 
   Restart the server."
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    its('stdout') { should eq '' }
+  end
+  describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Binn\\DQSInstaller.exe') do
+    it { should_not exist }
+  end
 end
 

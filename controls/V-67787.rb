@@ -88,5 +88,8 @@ control "V-67787" do
   GO
   ALTER SERVER AUDIT [AuditName] WITH (STATE = ON);
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT [name], [max_rollover_files] FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    its('stdout') { should eq '' }
+  end
 end
 

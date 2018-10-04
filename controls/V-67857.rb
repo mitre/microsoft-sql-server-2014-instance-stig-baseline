@@ -54,13 +54,16 @@ control "V-67857" do
   Review the system documentation to determine whether the use of xp_cmdshell is
   required and approved.  If it is not approved, this is a finding."
   tag "fix": "To disable the use of xp_cmdshell, from the query prompt:
-     EXEC sp_configure 'show advanced options', 1;
-     GO
-     RECONFIGURE;
-     GO
-     EXEC sp_configure 'xp_cmdshell', 0;
-     GO
-     RECONFIGURE;
-     GO"
+  EXEC sp_configure 'show advanced options', 1;
+  GO
+  RECONFIGURE;
+  GO
+  EXEC sp_configure 'xp_cmdshell', 0;
+  GO
+  RECONFIGURE;
+  GO"
+  describe command("Invoke-Sqlcmd -Query \"EXEC SP_CONFIGURE 'show advanced options', '1'; RECONFIGURE WITH OVERRIDE; EXEC SP_CONFIGURE 'xp_cmdshell';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'config_value'") do
+    its('stdout') { should eq "config_value : 0\r\n" }
+  end
 end
 

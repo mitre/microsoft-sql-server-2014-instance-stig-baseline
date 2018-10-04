@@ -48,7 +48,7 @@ control "V-67783" do
   tag "check": "If neither SQL Server Audit nor SQL Server Trace is in use for
   audit purposes, this is a finding.
 
-  Review system documentation to determine whether SQL Server is required to
+  Review system documentation to determine whether SQL Server is required to 
   audit any events, and any fields, in addition to those in the standard audit or
   audit-oriented trace.
 
@@ -83,5 +83,10 @@ control "V-67783" do
   Audit.sql can be used as the basis for this.  Supplement the standard audit
   data as necessary, using database audit specifications, Extended Events and/or
   triggers."
+  describe "SQL Server must include organization-defined additional, more detailed
+  information in Trace or Audit records for events identified by type, location,
+  or subject" do
+    skip "This controls is manual"
+  end
 end
 

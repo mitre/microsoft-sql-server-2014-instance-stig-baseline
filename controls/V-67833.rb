@@ -55,5 +55,8 @@ control "V-67833" do
 
   Follow the remaining prompts, to remove Distributed Replay Controller from SQL
   Server."
+  describe command("Get-Service | Findstr /c:'Distributed Replay Contr...'") do
+    its('stdout') { should eq '' }
+  end
 end
 

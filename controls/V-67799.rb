@@ -52,5 +52,9 @@ control "V-67799" do
   tag "fix": "Apply or modify Windows permissions on tools used to view or
   modify audit log data (to include traces used for audit purposes), to make them
   accessible by authorized personnel only."
+  describe "Audit tools used in conjunction with SQL Server  must be protected
+  from unauthorized access." do
+    skip "This control is manual"
+  end
 end
 

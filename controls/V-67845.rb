@@ -56,5 +56,9 @@ control "V-67845" do
 
   Follow the remaining prompts, to remove the Client Tools Software Development
   Kit from SQL Server."
-end
+  describe registry_key('HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\120\Tools\Setup\Client_Components_Full') do
+    its("FeatureList") { should include 'SDK' }
+  end
+  
+end   
 

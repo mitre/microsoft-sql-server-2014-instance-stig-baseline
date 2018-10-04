@@ -62,5 +62,11 @@ control "V-67841" do
   Select Data Quality Client; click Next.
 
   Follow the remaining prompts, to remove Data Quality Client from SQL Server."
+  describe directory('C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\DQ') do
+    it { should_not exist }
+  end
+  describe file('C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\DQ\\DataQualityServices.exe') do
+    it { should_not exist }
+  end
 end
 

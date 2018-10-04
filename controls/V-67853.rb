@@ -60,5 +60,9 @@ control "V-67853" do
   GO
   ALTER LOGIN [sa] DISABLE;
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT name, is_disabled FROM sys.sql_logins WHERE principal_id = 1 AND is_disabled != 1;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    its('stdout') { should eq '' }
+  end
+  
 end
 

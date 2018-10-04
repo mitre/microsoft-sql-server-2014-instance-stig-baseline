@@ -1,3 +1,11 @@
+SQL_ACCOUNTS= attribute(
+  'sql_accounts',
+  description: 'List of SQL server software installation accounts on the system',
+  default: [
+           "NT SERVICE\\SQLBrowser", 
+           "Admn"
+           ]
+)
 control "V-67811" do
   title "SQL Server software installation account(s) must be restricted to
   authorized users."
@@ -74,5 +82,17 @@ control "V-67811" do
 
   Develop, document, and implement procedures to restrict use of the DBMS
   software installation account."
+  get_sql_group = command("net localgroup | Findstr 'SQL'").stdout.strip.split('\n')
+  
+  get_sql_group.each do | group|  
+    group_name = group[1..group.length]
+    group_users = command("net localgroup '#{group_name}' | Findstr /v 'Alias Comment Members -- command'").stdout.strip.split("\r\n")
+      group_users.each do |users|
+      user = users.strip
+      describe user do
+        it { should be_in SQL_ACCOUNTS}
+      end
+    end
+  end
 end
 

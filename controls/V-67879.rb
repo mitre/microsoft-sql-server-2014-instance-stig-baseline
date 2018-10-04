@@ -62,5 +62,8 @@ objects and code implementing application logic.
 In all cases, use GRANT, REVOKE, DENY, ALTER ROLE … ADD MEMBER …  and/or  ALTER
 ROLE  …. DROP MEMBER statements to add and remove permissions on server-level
 and database-level security-related objects to provide effective isolation."
+  describe "SQL Server must isolate security functions from nonsecurity functions" do
+    skip "This control is manual"
+  end
 end
 

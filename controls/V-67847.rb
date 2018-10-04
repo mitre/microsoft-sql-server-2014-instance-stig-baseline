@@ -60,5 +60,9 @@ control "V-67847" do
   Select Management Tools - Basic and Management Tools - Complete; click Next.
 
   Follow the remaining prompts, to remove Management Tools from SQL Server."
+  describe file('C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\ManagementStudio\\Ssms.exe') do
+    it { should_not exist }
+  end
+  
 end
 

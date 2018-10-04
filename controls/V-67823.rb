@@ -56,5 +56,8 @@ control "V-67823" do
 
   Microsoft SQL Server Data Tools - Database Projects - Web installer entry point
   Prerequisites for SSDT"
+  describe command("Get-WmiObject -Class Win32_Product | Findstr /c:'Microsoft SQL Server Data Tools' | Findstr /v 'Caption'") do
+    its('stdout') { should eq '' }
+  end
 end
 

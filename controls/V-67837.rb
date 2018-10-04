@@ -57,5 +57,8 @@ control "V-67837" do
   Select Master Data Services; click Next.
 
   Follow the remaining prompts, to remove Master Data Services from SQL Server."
+  describe directory('C:\\Program Files\\Microsoft SQL Server\\120\\Master Data Services') do
+    it { should_not exist }
+  end
 end
 

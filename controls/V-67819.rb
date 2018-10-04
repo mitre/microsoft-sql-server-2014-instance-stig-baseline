@@ -54,5 +54,8 @@ control "V-67819" do
   GO
   DROP DATABASE pubs;
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'pubs%;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    its('stdout') { should eq '' }
+  end
 end
 

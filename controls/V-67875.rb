@@ -52,5 +52,9 @@ control "V-67875" do
   Grant administrative permissions to these roles.  Assign the appropriate
   administrative users to these roles.  Do not grant the roles and permissions to
   general users."
+  describe "SQL Server must be configured to separate user functionality
+  (including user interface services) from database management functionality." do
+    skip "This control is manual"
+  end
 end
 

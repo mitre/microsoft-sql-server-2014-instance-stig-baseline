@@ -36,7 +36,7 @@ control "V-67873" do
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
-  tag "mitigations": nil
+  tag "mitigations": nil 
   tag "severity_override_guidance": false
   tag "potential_impacts": nil
   tag "third_party_tools": nil
@@ -57,5 +57,8 @@ control "V-67873" do
   non-organizational users who log onto the system. This likely would be done via
   a combination of the operating system with unique accounts and the SQL Server
   by ensuring mapping to individual accounts."
+  describe "The Service Master Key must be backed up, stored offline and off-site." do
+    skip "This controls is manual"
+  end
 end
 

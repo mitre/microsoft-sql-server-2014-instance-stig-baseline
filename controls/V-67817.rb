@@ -54,5 +54,8 @@ control "V-67817" do
   GO
   DROP DATABASE Northwind;
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'Northwind%';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    its('stdout') { should eq '' }
+  end
 end
 

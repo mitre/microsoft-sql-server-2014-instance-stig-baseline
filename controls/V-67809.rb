@@ -56,5 +56,9 @@ control "V-67809" do
   Deploy and implement a third-party tool or some other SQL Server method of
   monitoring security-relevant configuration settings to discover unauthorized
   changes."
+  describe "SQL Server security-relevant configuration settings must be monitored
+  to discover unauthorized changes." do
+    skip "This control is manual"
+  end
 end
 

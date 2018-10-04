@@ -45,5 +45,9 @@ control "V-67805" do
   tag "fix": "Apply or modify Windows permissions on tools used to view or
   modify audit log data (to include traces used for audit purposes), to make them
   accessible by authorized personnel only."
+  describe "SQL Server and the operating system must protect SQL Server audit
+  features from unauthorized removal." do
+    skip "This control is manual"
+  end
 end
 

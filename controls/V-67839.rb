@@ -54,5 +54,6 @@ control "V-67839" do
   Select SQL Server Replication; click Next.
 
   Follow the remaining prompts, to remove SQL Server Replication from SQL Server."
+  
 end
 

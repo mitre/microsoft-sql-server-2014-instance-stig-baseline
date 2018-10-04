@@ -54,5 +54,8 @@ control "V-67827" do
 
   Follow the remaining prompts, to remove SQL Server Integration Services from
   SQL Server."
+  describe command("Get-Service | Findstr 'MsDtsServer'") do
+    its('stdout') { should eq '' }
+  end
 end
 

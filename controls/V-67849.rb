@@ -77,5 +77,13 @@ control "V-67849" do
   0 - Disabled
   1 - Transact-SQL access enabled
   2 - Full access enabled"
+  describe.one do
+    describe command("Invoke-Sqlcmd -Query \"EXEC sys.sp_configure N'filestream access level';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'config_value'") do
+      its('stdout') { should_not eq "config_value : 1\r\n" }
+    end
+    describe command("Invoke-Sqlcmd -Query \"EXEC sys.sp_configure N'filestream access level';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'config_value'") do
+      its('stdout') { should_not eq "config_value : 2\r\n" }
+    end
+  end
 end
 

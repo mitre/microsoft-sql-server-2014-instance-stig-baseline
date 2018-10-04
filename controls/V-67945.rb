@@ -64,10 +64,8 @@ control "V-67945" do
 
   Alternatively, for each identified Login, run the statement:
   ALTER LOGIN <login name>  CHECK_EXPIRATION = ON;"
-
-  #not complete
   describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0 AND is_expiration_checked = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-   its('stdout') { should_not eq '' }
+   its('stdout') { should eq '' }
   end
 end
 

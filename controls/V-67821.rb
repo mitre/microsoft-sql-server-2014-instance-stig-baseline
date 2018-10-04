@@ -54,5 +54,8 @@ control "V-67821" do
   GO
   DROP DATABASE AdventureWorks;
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'AdventureWorks%';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    its('stdout') { should eq '' }
+  end
 end
 

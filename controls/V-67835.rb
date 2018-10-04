@@ -53,5 +53,8 @@ control "V-67835" do
 
   Follow the remaining prompts, to remove Full-Text and Semantic Extractions for
   Search from SQL Server."
+  describe command("Get-Service | Findstr 'MSSQLFDLauncher") do
+    its('stdout') { should eq '' }
+  end
 end
 

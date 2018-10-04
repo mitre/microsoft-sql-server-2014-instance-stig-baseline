@@ -1,3 +1,16 @@
+APPROVED_USERS_SERVER= attribute(
+  'approved_users_server',
+  description: 'List of approved users',
+  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP']
+)
+
+APPROVED_USERS_DATABASE= attribute(
+  'approved_users_database',
+  description: 'List of approved users',
+  default: [ ]
+)
+
 control "V-67815" do
   title "The role(s)/group(s) used to modify database structure (including but
   not necessarily limited to tables, indexes, storage, etc.) and logic modules
@@ -42,7 +55,7 @@ control "V-67815" do
   \"Control,\" etc.
 
   Obtain the list of users in those group(s)/roles.  The provided functions
-  STIG.members_of_db_role() and STIG.members_of_server_role(), can be used for
+  STIG.members_of_db_role() and ;, can be used for
   this.
 
   If unauthorized access to the group(s)/role(s) has been granted, this is a
@@ -56,5 +69,21 @@ control "V-67815" do
   database user.
   ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a
   server role or login."
+  permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_server.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in APPROVED_USERS_SERVER }
+    end  
+  end 
+
+  permissions_database = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_database.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in APPROVED_USERS_DATABASE }
+    end  
+  end 
+
 end
 

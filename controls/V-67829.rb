@@ -54,5 +54,8 @@ control "V-67829" do
 
   Follow the remaining prompts, to remove SQL Server Analysis Services from SQL
   Server."
+  describe command("Get-Service | Findstr 'MSSQLServerOLAPService'") do
+    its('stdout') { should eq '' }
+  end
 end
 

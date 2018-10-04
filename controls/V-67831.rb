@@ -55,5 +55,8 @@ control "V-67831" do
 
   Follow the remaining prompts, to remove Distributed Replay Client from SQL
   Server."
+  describe command("Get-Service | Findstr 'MSSQLServerOLAPService'") do
+    its('stdout') { should eq '' }
+  end
 end
 

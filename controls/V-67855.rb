@@ -48,5 +48,13 @@ control "V-67855" do
   GO
   ALTER LOGIN [sa] WITH NAME = <new name>;
   GO"
+  describe.one do
+    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'sa'\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should eq '' }
+    end
+    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'SA'\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should eq '' }
+    end
+  end
 end
 

@@ -55,5 +55,8 @@ control "V-67825" do
 
   Follow the remaining prompts, to remove SQL Server Reporting Services from SQL
   Server."
+  describe command("Get-Service | Findstr 'ReportServer'") do
+    its('stdout') { should eq '' }
+  end
 end
 

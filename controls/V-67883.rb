@@ -51,5 +51,9 @@ control "V-67883" do
   tag "fix": "Configure SQL Server, Windows and/or third-party tools to
   automatically terminate a user session after organization-defined conditions or
   trigger events requiring session termination."
+  describe "SQL Server must automatically terminate a user session after
+  organization-defined conditions or trigger events requiring session disconnect." do
+    skip "This control is manual"
+  end
 end
 

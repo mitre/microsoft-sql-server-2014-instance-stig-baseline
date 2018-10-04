@@ -1,3 +1,9 @@
+APPROVED_USERS_SQL_AUDITS = attribute(
+  'approved_users_sql_audits',
+  description: 'List of approved audit permissions',
+  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER"]
+)
+
 control "V-67797" do
   title "SQL Server Profiler must be protected  from unauthorized access,
   modification, or removal."
@@ -52,5 +58,12 @@ control "V-67797" do
   USE master;
   DENY [ALTER ANY SERVER AUDIT] TO [User];
   GO"
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT login.name, perm.permission_name, perm.state_desc FROM sys.server_permissions perm JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT','ALTER TRACE') and login.name not like '##MS_%';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in APPROVED_USERS_SQL_AUDITS }
+    end  
+  end 
 end
 

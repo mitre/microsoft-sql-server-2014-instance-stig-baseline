@@ -114,5 +114,19 @@ control "V-67779" do
   If SQL Server Audit is intended to be in use, design and deploy an Audit that
   captures all auditable events. The code provided in the supplemental file
   Audit.sql can be used as the basis for creating an Audit."
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+   its('stdout') { should_not eq '' }
+  end
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  
+  get_columnid.each do | perms|  
+    a = perms.strip
+    
+    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC23.columnid IS NULL THEN 'Success (successful use of permissions) (23) missing' ELSE '23 OK' END AS field23, CASE WHEN EC30.columnid IS NULL THEN 'State (30) missing' ELSE '30 OK' END AS field30, CASE WHEN EC31.columnid IS NULL THEN 'Error (31) missing' ELSE '31 OK' END AS field31 FROM E E LEFT OUTER JOIN EC EC23 ON  EC23.eventid = E.eventid AND EC23.columnid = 23 LEFT OUTER JOIN EC EC30 ON  EC30.eventid = E.eventid AND EC30.columnid = 30 LEFT OUTER JOIN EC EC31 ON  EC31.eventid = E.eventid AND EC31.columnid = 31 WHERE EC23.columnid IS NULL OR EC30.columnid IS NULL OR EC31.columnid IS NULL;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+      its('stdout') { should eq '' }
+    end
+  end
 end
+
+#not tested
 

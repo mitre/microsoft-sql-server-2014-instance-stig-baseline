@@ -77,6 +77,7 @@ control "V-67789" do
   approved in the system security plan, this is not a finding.
 
 
+
   -----
 
   Note 1: It is highly advisable to use a separate account for each service. When
@@ -166,5 +167,11 @@ control "V-67789" do
   7.b.ii) Select the \"SQLAgent$<instance name>\" user and click OK
   8) Click OK
   9) Permission like a normal user from here"
+  SELECT DISTINCT
+  LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS "Audit Path"
+  FROM sys.traces
+  UNION
+  SELECT log_file_path AS "Audit Path"
+  FROM sys.server_file_audits
 end
 

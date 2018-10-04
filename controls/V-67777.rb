@@ -141,5 +141,16 @@ control "V-67777" do
   If SQL Server Audit is intended to be in use, design and deploy an Audit that
   captures all auditable events. The code provided in the supplemental file
   Audit.sql can be used as the basis for creating an Audit."
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+   its('stdout') { should_not eq '' }
+  end
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  
+  get_columnid.each do | perms|  
+    a = perms.strip
+    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC6.columnid IS NULL THEN 'NT User Name (6) missing' ELSE '6 OK' END AS field26, CASE WHEN EC7.columnid IS NULL THEN 'NT Domain Name (7) missing' ELSE '7 OK' END AS field7, CASE WHEN EC8.columnid IS NULL THEN 'Host Name (8) missing' ELSE '8 OK' END AS field8, CASE WHEN EC9.columnid IS NULL THEN 'Client Process ID (9) missing' ELSE '9 OK' END AS field9, CASE WHEN EC10.columnid IS NULL THEN 'Application Name (10) missing' ELSE '10 OK' END AS field10, CASE WHEN EC11.columnid IS NULL THEN 'Login Name (11) missing' ELSE '11 OK' END AS field11, CASE WHEN EC12.columnid IS NULL THEN 'SPID (12) missing' ELSE '12 OK' END AS field12, CASE WHEN EC40.columnid IS NULL THEN 'DB User Name (40) missing' ELSE '40 OK' END AS field40, CASE WHEN EC41.columnid IS NULL THEN 'Login SID (41) missing' ELSE '41 OK' END AS field41 FROM E E LEFT OUTER JOIN EC EC6 ON  EC6.eventid = E.eventid AND EC6.columnid = 6 LEFT OUTER JOIN EC EC7 ON  EC7.eventid = E.eventid AND EC7.columnid = 7 LEFT OUTER JOIN EC EC8 ON  EC8.eventid = E.eventid AND EC8.columnid = 8 LEFT OUTER JOIN EC EC9 ON  EC9.eventid = E.eventid AND EC9.columnid = 9 LEFT OUTER JOIN EC EC10 ON  EC10.eventid = E.eventid AND EC10.columnid = 10 LEFT OUTER JOIN EC EC11 ON  EC11.eventid = E.eventid AND EC11.columnid = 11 LEFT OUTER JOIN EC EC12 ON  EC12.eventid = E.eventid AND EC12.columnid = 12 LEFT OUTER JOIN EC EC40 ON  EC40.eventid = E.eventid AND EC40.columnid = 40 LEFT OUTER JOIN EC EC41 ON  EC41.eventid = E.eventid AND EC41.columnid = 41 WHERE EC6.columnid IS NULL OR EC7.columnid IS NULL OR EC8.columnid IS NULL OR EC9.columnid IS NULL OR EC10.columnid IS NULL OR EC11.columnid IS NULL OR EC12.columnid IS NULL OR EC40.columnid IS NULL OR EC41.columnid IS NULL;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+      its('stdout') { should eq '' }
+    end
+  end
 end
 

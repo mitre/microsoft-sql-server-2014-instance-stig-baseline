@@ -73,9 +73,25 @@ control "V-67939" do
 
   Where SQL Server Audit is in use, enable the SUCCESSFUL_LOGIN_GROUP and
   LOGOUT_GROUP, as described in other STIG requirements."
-  #look into
-  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM sys.traces;' -ServerInstance 'WIN-FC4ANINFUFP'") do
+   describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
+  end
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  
+  get_columnid.each do | perms|  
+    a = perms.strip
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 14;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should_not eq '' }
+    end
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 15;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should_not eq '' }
+    end
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 16;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should_not eq '' }
+    end
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 17;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+      its('stdout') { should_not eq '' }
+    end
   end
 
 end
