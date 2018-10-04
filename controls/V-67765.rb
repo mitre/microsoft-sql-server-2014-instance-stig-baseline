@@ -1,4 +1,10 @@
-scontrol "V-67765" do
+APPROVED_AUDIT_MAINTAINERS= attribute(
+  'approved_audit_maintainers',
+  description: 'List of approved audit maintainers',
+  default: [ ]
+)
+
+control "V-67765" do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
   must allow only the ISSM (or individuals or roles appointed by the ISSM) to
   select which auditable events are to be traced."
@@ -82,14 +88,14 @@ scontrol "V-67765" do
   finding."
   tag "fix": "Create a server role specifically for audit maintainers, and give
   it permission to maintain traces, without granting it unnecessary permissions:
-      USE master;
-      GO
-      CREATE SERVER ROLE SERVER_AUDIT_MAINTAINERS;
-      GO
-      GRANT ALTER TRACE TO SERVER_AUDIT_MAINTAINERS;
-      -- Next line only if required:
-      GRANT CREATE TRACE EVENT NOTIFICATION TO SERVER_AUDIT_MAINTAINERS;
-      GO
+    USE master;
+    GO
+    CREATE SERVER ROLE SERVER_AUDIT_MAINTAINERS;
+    GO
+    GRANT ALTER TRACE TO SERVER_AUDIT_MAINTAINERS;
+    -- Next line only if required:
+    GRANT CREATE TRACE EVENT NOTIFICATION TO SERVER_AUDIT_MAINTAINERS;
+    GO
   (The role name used here is an example; other names may be used.)
 
   Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
@@ -97,12 +103,20 @@ scontrol "V-67765" do
   all logins.
 
   Then, for each authorized login, run the statement:
-      ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
-      GO"
-
-      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION');" -ServerInstance 'WIN-FC4ANINFUFP'
-      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_role_members" -ServerInstance 'WIN-FC4ANINFUFP'
-      Invoke-Sqlcmd -Query "SELECT * FROM STIG.server_permissions" -ServerInstance 'WIN-FC4ANINFUFP'
-
+  ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
+  GO"
+  permissions_audit = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION')\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_audit.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in APPROVED_AUDIT_MAINTAINERS }
+    end  
+  end
+  only_if permissions_audit != []
+  if permissions_audit == []
+    describe "No user's have audit maintainer permissions" do
+      skip "Control not applicable"
+    end
+  end
 end
 
