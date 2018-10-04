@@ -109,5 +109,11 @@ control "V-67771" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+   its('stdout') { should_not eq '' }
+  end
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'FAILURE' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+   its('stdout') { should eq '' }
+  end
 end
 
