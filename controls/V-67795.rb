@@ -1,3 +1,11 @@
+SQL_PERMISSIONS= attribute(
+  'sql_permissions',
+  description: 'List of approved users',
+  default: ["##MS_AgentSigningCertificate##                              No",
+
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP']
+)
+
 control "V-67795" do
   title "SQL Server must protect its audit features from unauthorized access,
   modification, or removal."
@@ -22,13 +30,13 @@ control "V-67795" do
   tag "gid": "V-67795"
   tag "rid": "SV-82285r1_rule"
   tag "stig_id": "SQL4-00-013900"
-  tag "fix_id": "F-73911r1_fix"
+  tag "fix_id": "F-73911r1_fix" 
   tag "cci": ["CCI-001493"]
   tag "nist": ["AU-9", "Rev_4"]
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
-  tag "mitigations": nil
+  tag "mitigations": nil 
   tag "severity_override_guidance": false
   tag "potential_impacts": nil
   tag "third_party_tools": nil
@@ -44,5 +52,12 @@ control "V-67795" do
   If unauthorized accounts have these privileges, this is a finding."
   tag "fix": "Use REVOKE and/or DENY statements to remove audit-related
   permissions from individuals and roles not authorized to have them."
+  get_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  get_permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in SQL_PERMISSIONS }
+    end  
+  end 
 end
 

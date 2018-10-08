@@ -1,3 +1,10 @@
+AUTHORIZED_PROTOCOLS= attribute(
+  'authorized_protocols',
+  description: 'List of authorized network protocols for the SQL server',
+  default: ["Named Pipes                                                 No",
+            "Shared Memory                                               Yes",
+            "TCP/IP                                                      Yes"]
+)
 control "V-67905" do
   title "SQL Server must disable communication protocols not required for
   operation."
@@ -34,5 +41,13 @@ control "V-67905" do
   protocol that is not required.  Select Disabled.
 
   Close SQL Server Configuration Manager.  Restart SQL Server."
+  get_protocols = command("Invoke-Sqlcmd -Query \"SELECT 'Named Pipes' AS [Protocol], iif(value_data = 1, 'Yes', 'No') AS isEnabled FROM sys.dm_server_registry WHERE registry_key LIKE '%np' AND value_name = 'Enabled' UNION SELECT 'Shared Memory', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%sm' AND value_name = 'Enabled' UNION SELECT 'TCP/IP', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%tcp' AND value_name = 'Enabled'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Protocol ---'").stdout.strip.split("\r\n")
+  get_protocols.each do | protocol|  
+    a = protocol.strip
+    describe "#{a}" do
+      it { should be_in AUTHORIZED_PROTOCOLS }
+    end  
+  end 
 end
 
+ 

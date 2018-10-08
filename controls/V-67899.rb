@@ -1,3 +1,8 @@
+ALLOWED_USERS = attribute(
+  'allowed_users',
+  description: 'List of user allowed to execute privileged functions',
+  default: ["guest                                                       ALTER"]
+) 
 control "V-67899" do
   title "SQL Server must prohibit user installation of logic modules (stored
   procedures, functions, triggers, views, etc.) without explicit privileged
@@ -59,5 +64,12 @@ control "V-67899" do
 
   Implement the approved permissions. Revoke (or Deny) any unapproved
   permissions, and remove any unauthorized role memberships."
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission LIKE '%DELETE%'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in ALLOWED_USERS }
+    end  
+  end 
 end
 

@@ -1,3 +1,28 @@
+AUTHORIZED_SQL_USERS= attribute(
+  'authorized_sql_users',
+  description: 'List of authorized users for the SQL server',
+  default: ["public",
+            "sysadmin",
+            "securityadmin",
+            "serveradmin",
+            "setupadmin",
+            "processadmin",
+            "diskadmin",
+            "dbcreator",
+            "bulkadmin",
+            "##MS_SQLResourceSigningCertificate##",
+            "##MS_SQLReplicationSigningCertificate##",
+            "##MS_SQLAuthenticatorCertificate##",
+            "##MS_PolicySigningCertificate##",
+            "##MS_SmoExtendedSigningCertificate##",
+            "WIN-FC4ANINFUFP\\Administrator",
+            "NT SERVICE\\SQLWriter",
+            "NT SERVICE\\Winmgmt",
+            "NT Service\\MSSQLSERVER",
+            "NT AUTHORITY\\SYSTEM",
+            "NT SERVICE\\SQLSERVERAGENT",
+            "##MS_AgentSigningCertificate##"]                            
+)
 control "V-67863" do
   title "SQL Server must uniquely identify and authenticate organizational
   users (or processes acting on behalf of organizational users)."
@@ -52,5 +77,12 @@ control "V-67863" do
 
   Ensure each user's identity is received and used in audit data in all relevant
   circumstances."
+  get_users = command("Invoke-Sqlcmd -Query \"select name from master.sys.server_principals where is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'name ---'").stdout.strip.split("\r\n")
+  get_users.each do | user|  
+    a = user.strip
+    describe "#{a}" do
+      it { should be_in AUTHORIZED_SQL_USERS }
+    end  
+  end 
 end
 

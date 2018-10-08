@@ -86,7 +86,7 @@ control "V-67783" do
   describe "SQL Server must include organization-defined additional, more detailed
   information in Trace or Audit records for events identified by type, location,
   or subject" do
-    skip "This controls is manual"
+    skip "This control is manual"
   end
 end
 

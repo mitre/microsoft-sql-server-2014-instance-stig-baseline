@@ -73,9 +73,8 @@ control "V-67869" do
   obtain AO approval.
   2) Train all users of the tool in the importance of not using the plain-text
   password option and in how to keep the password hidden."
-  describe command("Invoke-Sqlcmd -Query \"EXEC master.sys.xp_loginconfig 'login mode';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-    its('stdout') { should eq '' }
+  describe command("Invoke-Sqlcmd -Query \"EXEC master.sys.xp_loginconfig 'login mode';\" -ServerInstance 'WIN-FC4ANINFUFP' | findstr /v 'name ---'") do
+    its('stdout') { should_not cmp "\r\nlogin mode                                                  Mixed                                                      \r\n\r\n\r\n" }
   end
-  look into
 end
 

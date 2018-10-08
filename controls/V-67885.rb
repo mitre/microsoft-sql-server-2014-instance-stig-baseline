@@ -1,3 +1,9 @@
+ALLOWED_USERS = attribute(
+  'allowed_users',
+  description: 'List of user allowed to execute privileged functions',
+  default: ["guest                                                       ALTER"]
+) 
+
 control "V-67885" do
   title "SQL Server must prevent non-privileged users from executing privileged
   functionality, to include disabling, circumventing, or altering implemented
@@ -82,5 +88,12 @@ control "V-67885" do
   tag "fix": "Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER
   ... statements to align EXECUTE permissions (and any other relevant
   permissions) with documented requirements."
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in ALLOWED_USERS }
+    end  
+  end 
 end
 

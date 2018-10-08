@@ -1,3 +1,9 @@
+SQL_MANAGED_ACCOUNTS= attribute(
+  'sql_managed_accounts',
+  description: 'List of sql managed accounts',
+  default: [ ]
+)
+
 control "V-67759" do
   title "SQL Server authentication and identity management must be integrated
   with an organization-level authentication/access mechanism providing account
@@ -145,9 +151,17 @@ control "V-67759" do
   DROP USER <user name>;"
 
   #add sql manaaged accounts to test
-  describe.one do
-    describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should eq '' }
+  get_accounts = command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'").stdout.strip.split("\n")
+  get_accounts.each do | account|  
+    a = account.strip
+    describe "#{a}" do
+      it { should be_in SQL_MANAGED_ACCOUNTS }
+    end  
+  end
+  only_if get_accounts != []
+  if get_accounts == []
+    describe "There are no sql managed accounts" do
+      skip "Control not applicable"
     end
   end
 end

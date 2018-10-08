@@ -25,7 +25,7 @@ control "V-67765" do
   reasons, the instance may be using SQL Server Trace for auditing, which remains
   an acceptable solution for the time being.  Note, however, that Microsoft
   intends to remove most aspects of Trace at some point after SQL Server 2016.
-
+ 
       This version of the requirement deals with Trace-based audit trails.
   "
   impact 0.7

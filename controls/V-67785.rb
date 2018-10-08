@@ -88,9 +88,9 @@ control "V-67785" do
   get_columnid.each do | perms|  
     a = perms.strip
     
-    describe command("Invoke-Sqlcmd -Query \"SELECT on_failure_desc FROM sys.server_audits WHERE on_failure_desc = 'SHUTDOWN SERVER INSTANCE';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'on_failure_desc ---'") do
-    its('stdout') { should eq '' }
-end
+    describe command("Invoke-Sqlcmd -Query \"SELECT on_failure_desc FROM sys.server_audits WHERE on_failure_desc != 'SHUTDOWN SERVER INSTANCE';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'on_failure_desc ---'") do
+      its('stdout') { should eq '' }
+    end
   end
 end
-#not tested
+

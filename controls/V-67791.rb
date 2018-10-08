@@ -170,11 +170,18 @@ control "V-67791" do
   7.b.ii) Select the \"SQLAgent$<instance name>\" user and click OK
   8) Click OK
   9) Permission like a normal user from here"
-  SELECT DISTINCT
-  LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS "Audit Path"
-  FROM sys.traces
-  UNION
-  SELECT log_file_path AS "Audit Path"
-  FROM sys.server_file_audits
+  get_path = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'Audit Path' FROM sys.traces UNION SELECT log_file_path AS 'Audit Path' FROM sys.server_file_audits\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Audit ----'").stdout.strip.split("\n")
+  get_path.each do | path|  
+    a = path.strip
+    
+    describe.one do
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
+      end 
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+      end 
+    end
+  end
 end
 

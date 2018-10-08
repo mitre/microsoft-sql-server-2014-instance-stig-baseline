@@ -2,7 +2,7 @@
   'allowed_audit_permissions',
   description: 'List of approved audit permissions',
   default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER"]
-)
+) 
 
 control "V-67767" do
   title "Where SQL Server Audit is in use, SQL Server must allow only the ISSM
