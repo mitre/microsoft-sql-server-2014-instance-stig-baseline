@@ -43,5 +43,9 @@ control "V-67911" do
   reception, this is a finding."
   tag "fix": "Implement protective measures against unauthorized disclosure and
   modification during reception."
+  describe "The confidentiality and integrity of information managed by SQL Server
+  must be maintained during reception." do
+    skip "This control is manual"
+  end
 end
 

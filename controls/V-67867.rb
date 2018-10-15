@@ -51,5 +51,10 @@ control "V-67867" do
   if they do not, this is a finding."
   tag "fix": "Configure or modify applications to prohibit display of passwords
   in clear text."
+  describe "Applications must obscure feedback of authentication information
+  during the authentication process to protect the information from possible
+  exploitation/use by unauthorized individuals." do
+    skip "This control is manual"
+  end
 end
 

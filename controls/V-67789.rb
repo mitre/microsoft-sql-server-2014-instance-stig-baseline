@@ -173,11 +173,17 @@ control "V-67789" do
     
     describe.one do
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  Modify, Synchronize\r\n"}
+      end 
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
         its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
       end 
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
       end 
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+      end
     end
 end
   

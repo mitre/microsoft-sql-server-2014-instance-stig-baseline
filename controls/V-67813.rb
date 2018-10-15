@@ -75,5 +75,10 @@ control "V-67813" do
   in the folder, this is a finding."
   tag "fix": "Separate database files (software, data) into dedicated
   directories."
+  describe "Database software directories, including SQL Server configuration
+  files, must be stored in dedicated directories, separate from the host OS and
+  other applications." do
+    skip "Control is manual"
+    end
 end
 

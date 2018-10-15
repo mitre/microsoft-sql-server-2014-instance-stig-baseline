@@ -13,7 +13,7 @@ control "V-67881" do
   tag "stig_id": "SQL4-00-031400"
   tag "fix_id": "F-73997r1_fix"
   tag "cci": ["CCI-001090"]
-  tag "nist": ["SC-4", "Rev_4"]
+  tag "nist": ["SC-4", "Rev_4"] 
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -37,9 +37,26 @@ control "V-67881" do
   log files, and database backup files so that only relevant system accounts and
   authorized system administrators and database administrators with a need to
   know are permitted to read/view these files."
-  describe "Access to database files must be limited to relevant processes and to
-  authorized, administrative users" do
-    skip "This control is manual"
-  end
+
+    
+    describe.one do
+      describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
+      end 
+      describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+      end 
+    end
+
+    describe.one do
+      describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\DATA' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
+      end 
+      describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\DATA' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+      end 
+    end
+    
+    
 end
 

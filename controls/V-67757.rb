@@ -102,7 +102,7 @@ control "V-67757" do
 
   Implement one or more logon triggers to enforce the limit(s), without exposing
   the dynamic management views to general users."
-  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers' -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers WHERE is_disabled = 0' -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
 end

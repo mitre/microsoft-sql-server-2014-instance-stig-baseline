@@ -131,7 +131,7 @@ control "V-67937" do
       its('stdout') { should_not eq '' }
     end
   end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = '<server_audit_specification_name>') AND audit_action_name = 'LOGOUT_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
   describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do

@@ -46,5 +46,10 @@ control "V-67893" do
   utilization reaching 75%, this is a finding."
   tag "fix": "Configure the system to notify appropriate support staff
   immediately upon storage volume utilization reaching 75%."
+  describe "SQL Server, the operating system, or the storage system must provide a
+  warning to appropriate support staff when allocated audit record storage volume
+  reaches 75% of maximum audit record storage capacity." do
+    skip "This control is manual"
+  end
 end
 

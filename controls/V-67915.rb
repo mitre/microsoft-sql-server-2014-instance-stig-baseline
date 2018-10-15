@@ -34,5 +34,9 @@ control "V-67915" do
   a pattern of noncompliance, this is a finding."
   tag "fix": "Institute and adhere to policies and procedures to ensure that
   SQL Server updates are tested prior to installation on production servers."
+  describe "Software updates to SQL Server must be tested before being applied to
+  production systems." do
+    skip "This control is manual"
+  end
 end
 

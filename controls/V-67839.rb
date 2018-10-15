@@ -54,6 +54,10 @@ control "V-67839" do
   Select SQL Server Replication; click Next.
 
   Follow the remaining prompts, to remove SQL Server Replication from SQL Server."
+  describe "SQL Server must have the SQL Server Replication software component
+  removed if it is unused" do
+    skip "This control is manual"
+  end
   
 end
 

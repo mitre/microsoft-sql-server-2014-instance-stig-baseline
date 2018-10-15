@@ -43,5 +43,10 @@ control "V-67895" do
   is a finding."
   tag "fix": "Configure the system to provide an immediate real-time alert to
   appropriate support staff when a specified audit failure occurs."
+  describe "SQL Server or software monitoring SQL Server must provide an immediate
+  real-time alert to appropriate support staff of all audit failure events
+  requiring real-time alerts." do
+    skip "This control is manual"
+  end
 end
 

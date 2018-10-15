@@ -1,7 +1,8 @@
  ALLOWED_AUDIT_PERMISSIONS = attribute(
   'allowed_audit_permissions',
   description: 'List of approved audit permissions',
-  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER"]
+  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT" ]
 ) 
 
 control "V-67767" do

@@ -41,5 +41,9 @@ control "V-67909" do
   preparation for transmission, this is a finding."
   tag "fix": "Implement protective measures against unauthorized disclosure and
   modification during preparation for transmission."
+  describe "The confidentiality and integrity of information managed by SQL Server
+  must be maintained during preparation for transmission." do
+    skip "This control is manual"
+  end
 end
 

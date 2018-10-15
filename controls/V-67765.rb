@@ -1,7 +1,9 @@
 APPROVED_AUDIT_MAINTAINERS= attribute(
   'approved_audit_maintainers',
   description: 'List of approved audit maintainers',
-  default: [ ]
+  default: ["SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
+            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION" ]
+  
 )
 
 control "V-67765" do

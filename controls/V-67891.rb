@@ -43,5 +43,9 @@ control "V-67891" do
 
   If there have been, this is a finding."
   tag "fix": "Allocate sufficient audit storage space to support peak demand."
+  describe "SQL Server must allocate audit record storage capacity in accordance
+  with organization-defined audit record storage requirements." do
+    skip "This control is manual"
+  end
 end
 

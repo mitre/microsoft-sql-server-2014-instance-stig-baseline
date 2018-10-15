@@ -52,5 +52,10 @@ control "V-67913" do
   a pattern of noncompliance, this is a finding."
   tag "fix": "Institute and adhere to policies and procedures to ensure that
   patches are consistently applied to SQL Server within the time allowed."
+  describe "Security-relevant software updates to SQL Server must be installed
+  within the time period directed by an authoritative source (e.g., IAVM, CTOs,
+  DTMs, and STIGs)." do
+    skip "This control is manual"
+  end
 end
 

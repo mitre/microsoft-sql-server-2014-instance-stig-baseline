@@ -1,7 +1,6 @@
 SQL_MANAGED_ACCOUNTS= attribute(
   'sql_managed_accounts',
   description: 'List of sql managed accounts',
-  default: [ ]
 )
 
 control "V-67759" do
@@ -150,7 +149,6 @@ control "V-67759" do
   USE <database name>;
   DROP USER <user name>;"
 
-  #add sql manaaged accounts to test
   get_accounts = command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'").stdout.strip.split("\n")
   get_accounts.each do | account|  
     a = account.strip

@@ -59,5 +59,12 @@ control "V-67897" do
   Where there is reason not to implement automatic synchronization with an
   official time server, using NTP, document the reason, and the procedure for
   maintaining the correct time, and obtain AO approval.  Enforce the procedure."
+  describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\W32time\Parameters') do
+    its('Type') { should_not cmp == 'NTP' }
+    its('Type') { should_not cmp == 'AllSync' }
+  end
+    describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\W32time\Parameters') do
+      its('NTPServer') { should_not cmp == 'time.windows.com' }
+    end
 end
 

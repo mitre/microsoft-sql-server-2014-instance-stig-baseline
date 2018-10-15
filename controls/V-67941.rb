@@ -52,6 +52,11 @@ control "V-67941" do
   a centralized log management system, continuously and in near-real time where a
   continuous network connection to the log management system exists, or at least
   weekly in the absence of such a connection."
-  #manual
+  describe "SQL Server must off-load audit data to a separate log management
+  facility; this must be continuous and in near real time for systems with a
+  network connection to the storage facility and weekly or more often for
+  stand-alone systems." do
+    skip "This control is manual"
+  end
 end
 

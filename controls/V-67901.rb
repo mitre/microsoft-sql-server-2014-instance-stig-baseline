@@ -14,7 +14,10 @@ ALLOWED_SERVER_PERMISSIONS = attribute(
             "##MS_SQLResourceSigningCertificate##                        VIEW ANY DEFINITION",
             "##MS_PolicyTsqlExecutionLogin##                             VIEW SERVER STATE",
             "##MS_SQLReplicationSigningCertificate##                     VIEW SERVER STATE",
-            "NT AUTHORITY\\SYSTEM                                         VIEW SERVER STATE"]
+            "NT AUTHORITY\\SYSTEM                                         VIEW SERVER STATE",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
+            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION"]
 ) 
 ALLOWED_DATABASE_PERMISSIONS = attribute(
   'allowed_database_permissions',

@@ -2,13 +2,16 @@ APPROVED_USERS_SERVER= attribute(
   'approved_users_server',
   description: 'List of approved users',
   default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP']
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
+            'SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT',
+            'SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE',
+            'SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION']
 )
 
 APPROVED_USERS_DATABASE= attribute(
   'approved_users_database',
   description: 'List of approved users',
-  default: [ ]
+  default: ['guest                                                       ALTER' ]
 )
 
 control "V-67815" do

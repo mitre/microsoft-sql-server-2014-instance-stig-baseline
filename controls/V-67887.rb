@@ -64,5 +64,10 @@ control "V-67887" do
   functions, and triggers, external modules invoked by the DBMS, and the
   application(s) using the database, so that privilege elevation is used only as
   required."
+  describe "Execution of software modules (to include stored procedures,
+  functions, and triggers) with elevated privileges must be restricted to
+  necessary cases only." do
+    skip "This control is manual"
+  end
 end
 

@@ -173,44 +173,46 @@ control "V-67919" do
     describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 43;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
       its('stdout') { should_not eq '' }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 82;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 83;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 84;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 85;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 86;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 87;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 88;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 89;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 90;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 91;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
-    end
     describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 162;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
       its('stdout') { should_not eq '' }
     end
+    describe.one do
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 82;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 83;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 84;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 85;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 86;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 87;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 88;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 89;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 90;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 91;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+        its('stdout') { should_not eq '' }
+      end
+    end
   end
-  describe command("Invoke-Sqlcmd -Query \" SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = '<server_audit_specification_name>') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \" SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
-  describe command("Invoke-Sqlcmd -Query \" SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = '<server_audit_specification_name>') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \" SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should eq '' }
   end
 end
