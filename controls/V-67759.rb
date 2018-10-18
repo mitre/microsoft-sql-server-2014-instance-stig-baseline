@@ -3,6 +3,15 @@ SQL_MANAGED_ACCOUNTS= attribute(
   description: 'List of sql managed accounts',
 )
 
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instanc we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
+get_accounts = command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance '#{SERVER_INSTANCE}'").stdout.strip.split("\n")
+
+
 control "V-67759" do
   title "SQL Server authentication and identity management must be integrated
   with an organization-level authentication/access mechanism providing account
@@ -47,8 +56,13 @@ control "V-67759" do
 
       It is assumed throughout this STIG that this integration has been
   implemented.
+
   "
-  impact 0.7
+  if get_accounts != []
+    impact 0.7
+  else
+    impact 0.0
+  end
   tag "gtitle": "SRG-APP-000023-DB-000001"
   tag "gid": "V-67759"
   tag "rid": "SV-82249r1_rule"
@@ -149,18 +163,16 @@ control "V-67759" do
   USE <database name>;
   DROP USER <user name>;"
 
-  get_accounts = command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP'").stdout.strip.split("\n")
+  get_accounts = command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0;\" -ServerInstance '#{SERVER_INSTANCE}'").stdout.strip.split("\n")
   get_accounts.each do | account|  
     a = account.strip
     describe "#{a}" do
       it { should be_in SQL_MANAGED_ACCOUNTS }
     end  
-  end
-  only_if get_accounts != []
-  if get_accounts == []
-    describe "There are no sql managed accounts" do
-      skip "Control not applicable"
-    end
-  end
+  end if get_accounts != []
+
+  describe "There are no sql managed accounts, control not applicable" do
+    skip "There are no sql managed accounts, control not applicable"
+  end if get_accounts == []
 end
 

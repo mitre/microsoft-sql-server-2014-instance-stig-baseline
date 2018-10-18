@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67817" do
   title "SQL Server must have the publicly available Northwind sample database
   removed."
@@ -54,7 +60,7 @@ control "V-67817" do
   GO
   DROP DATABASE Northwind;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'Northwind%';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'Northwind%';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
     its('stdout') { should eq '' }
   end
 end

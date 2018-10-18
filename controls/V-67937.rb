@@ -1,3 +1,8 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
 control "V-67937" do
   title "SQL Server must generate Trace or Audit records when logoffs or
   disconnections occur."
@@ -111,30 +116,30 @@ control "V-67937" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should_not eq '' }
   end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
   
   get_columnid.each do | perms|  
     a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 14;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 14;\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should_not eq '' }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 15;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 15;\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should_not eq '' }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 16;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 16;\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should_not eq '' }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 17;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 17;\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should_not eq '' }
     end
   end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP';\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should_not eq '' }
   end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'LOGOUT_GROUP' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should eq '' }
   end
 end

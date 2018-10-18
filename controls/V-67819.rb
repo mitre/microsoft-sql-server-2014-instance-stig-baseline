@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67819" do
   title "SQL Server must have the publicly available pubs sample database
   removed."
@@ -54,7 +60,7 @@ control "V-67819" do
   GO
   DROP DATABASE pubs;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'pubs%;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'pubs%;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
     its('stdout') { should eq '' }
   end
 end

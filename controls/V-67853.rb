@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67853" do
   title "The SQL Server default account [sa] must be disabled."
   desc  "SQL Server's [sa] account has special privileges required to
@@ -60,7 +66,7 @@ control "V-67853" do
   GO
   ALTER LOGIN [sa] DISABLE;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT name, is_disabled FROM sys.sql_logins WHERE principal_id = 1 AND is_disabled != 1;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT name, is_disabled FROM sys.sql_logins WHERE principal_id = 1 AND is_disabled != 1;\" -ServerInstance '#{SERVER_INSTANCE}'") do
     its('stdout') { should eq '' }
   end
   

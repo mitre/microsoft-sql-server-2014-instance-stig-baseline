@@ -1,23 +1,29 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67769" do
   title "Where SQL Server Audit is in use, SQL Server must generate audit
-records when privileges/permissions are retrieved."
+  records when privileges/permissions are retrieved."
   desc  "The system must monitor who/what is reading privilege/permission/role
-information.
+  information.
 
     This requirement addresses explicit requests for privilege/permission/role
-membership information. It does not refer to the implicit retrieval of
-privileges/permissions/role memberships that SQL Server continually performs to
-determine if any and every action on the database is permitted.
+  membership information. It does not refer to the implicit retrieval of
+  privileges/permissions/role memberships that SQL Server continually performs to
+  determine if any and every action on the database is permitted.
 
     Use of SQL Server Audit is recommended.  All features of SQL Server Audit
-are available in the Enterprise and Developer editions of SQL Server 2014.  It
-is not available at the database level in other editions.  For this or legacy
-reasons, the instance may be using SQL Server Trace for auditing, which remains
-an acceptable solution for the time being.  Note, however, that Microsoft
-intends to remove most aspects of Trace at some point after SQL Server 2016.
+  are available in the Enterprise and Developer editions of SQL Server 2014.  It
+  is not available at the database level in other editions.  For this or legacy
+  reasons, the instance may be using SQL Server Trace for auditing, which remains
+  an acceptable solution for the time being.  Note, however, that Microsoft
+  intends to remove most aspects of Trace at some point after SQL Server 2016.
 
     This requirement applies to SQL Server Audit-based audit trails; Trace does
-not have this capability.
+  not have this capability.
   "
   impact 0.7
   tag "gtitle": "SRG-APP-000091-DB-000066"
@@ -92,10 +98,10 @@ not have this capability.
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should_not eq '' }
   end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should eq '' }
   end
   

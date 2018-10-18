@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67773" do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish when the events occurred."
@@ -91,11 +97,11 @@ control "V-67773" do
   describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
   
   get_columnid.each do | perms|  
     a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC14.columnid IS NULL THEN 'Start Time (14) missing' ELSE '14 OK' END AS field14, CASE WHEN EC15.columnid IS NULL THEN 'End Time (15) missing' ELSE '15 OK' END AS field15 FROM E E LEFT OUTER JOIN EC EC14 ON  EC14.eventid = E.eventid AND EC14.columnid = 14 LEFT OUTER JOIN EC EC15 ON  EC15.eventid = E.eventid AND EC15.columnid = 15 WHERE EC14.columnid IS NULL OR EC15.columnid IS NULL;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC14.columnid IS NULL THEN 'Start Time (14) missing' ELSE '14 OK' END AS field14, CASE WHEN EC15.columnid IS NULL THEN 'End Time (15) missing' ELSE '15 OK' END AS field15 FROM E E LEFT OUTER JOIN EC EC14 ON  EC14.eventid = E.eventid AND EC14.columnid = 14 LEFT OUTER JOIN EC EC15 ON  EC15.eventid = E.eventid AND EC15.columnid = 15 WHERE EC14.columnid IS NULL OR EC15.columnid IS NULL;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
       its('stdout') { should eq '' }
     end
   end

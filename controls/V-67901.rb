@@ -27,6 +27,11 @@ ALLOWED_DATABASE_PERMISSIONS = attribute(
             "##MS_PolicyEventProcessingLogin##                           EXECUTE",
             "public                                                      EXECUTE"]
 ) 
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
 control "V-67901" do
   title "SQL Server and Windows must enforce access restrictions associated
   with changes to the configuration of the SQL Server instance or database(s)."
@@ -95,7 +100,7 @@ control "V-67901" do
   designed for supplemental configuration and security purposes."
   tag "fix": "Configure SQL Server to enforce access restrictions associated
   with changes to the configuration of the SQL Server instance and database(s)."
-  get_server_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  get_server_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   get_server_permissions.each do | server_perms|  
     a = server_perms.strip
     describe "#{a}" do
@@ -103,7 +108,7 @@ control "V-67901" do
     end  
   end 
   
-  get_database_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  get_database_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   get_database_permissions.each do | database_perms|  
     a = database_perms.strip
     puts a 

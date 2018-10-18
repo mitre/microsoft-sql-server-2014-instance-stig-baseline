@@ -1,3 +1,8 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
 control "V-67939" do
   title "SQL Server must generate Trace or Audit records when concurrent
   logons/connections by the same user from different workstations occur."

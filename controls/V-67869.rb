@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67869" do
   title "When using command-line tools such as SQLCMD in a mixed-mode
   authentication environment, users must use a logon method that does not expose
@@ -73,7 +79,7 @@ control "V-67869" do
   obtain AO approval.
   2) Train all users of the tool in the importance of not using the plain-text
   password option and in how to keep the password hidden."
-  describe command("Invoke-Sqlcmd -Query \"EXEC master.sys.xp_loginconfig 'login mode';\" -ServerInstance 'WIN-FC4ANINFUFP' | findstr /v 'name ---'") do
+  describe command("Invoke-Sqlcmd -Query \"EXEC master.sys.xp_loginconfig 'login mode';\" -ServerInstance '#{SERVER_INSTANCE}' | findstr /v 'name ---'") do
     its('stdout') { should_not cmp "\r\nlogin mode                                                  Mixed                                                      \r\n\r\n\r\n" }
   end
 end

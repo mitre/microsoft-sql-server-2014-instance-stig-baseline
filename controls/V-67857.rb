@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67857" do
   title "Access to xp_cmdshell must be disabled, unless specifically required
   and approved."
@@ -62,7 +68,7 @@ control "V-67857" do
   GO
   RECONFIGURE;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"EXEC SP_CONFIGURE 'show advanced options', '1'; RECONFIGURE WITH OVERRIDE; EXEC SP_CONFIGURE 'xp_cmdshell';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'config_value'") do
+  describe command("Invoke-Sqlcmd -Query \"EXEC SP_CONFIGURE 'show advanced options', '1'; RECONFIGURE WITH OVERRIDE; EXEC SP_CONFIGURE 'xp_cmdshell';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'config_value'") do
     its('stdout') { should eq "config_value : 0\r\n" }
   end
 end

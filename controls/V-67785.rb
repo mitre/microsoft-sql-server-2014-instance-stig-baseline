@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67785" do
   title "Unless it has been determined that availability is paramount, SQL
   Server must shut down upon the failure of an Audit, or a Trace used for
@@ -80,15 +86,15 @@ control "V-67785" do
   ALTER SERVER AUDIT <server_audit_name> WITH (STATE = ON);
   GO
   The audit defined in the supplemental file Audit.sql includes this setting."
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should_not eq '' }
   end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT audit_id FROM sys.server_audits;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT audit_id FROM sys.server_audits;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
   
   get_columnid.each do | perms|  
     a = perms.strip
     
-    describe command("Invoke-Sqlcmd -Query \"SELECT on_failure_desc FROM sys.server_audits WHERE on_failure_desc != 'SHUTDOWN SERVER INSTANCE';\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'on_failure_desc ---'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT on_failure_desc FROM sys.server_audits WHERE on_failure_desc != 'SHUTDOWN SERVER INSTANCE';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'on_failure_desc ---'") do
       its('stdout') { should eq '' }
     end
   end

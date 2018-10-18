@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67787" do
   title "Where availability is paramount, the SQL Server must continue
   processing (preferably overwriting existing records, oldest first), in the
@@ -88,7 +94,7 @@ control "V-67787" do
   GO
   ALTER SERVER AUDIT [AuditName] WITH (STATE = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT [name], [max_rollover_files] FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT [name], [max_rollover_files] FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;\" -ServerInstance '#{SERVER_INSTANCE}'") do
     its('stdout') { should eq '' }
   end
 end

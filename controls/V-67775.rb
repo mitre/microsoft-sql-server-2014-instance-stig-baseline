@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67775" do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish where the events occurred."
@@ -118,11 +124,11 @@ control "V-67775" do
   describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
    its('stdout') { should_not eq '' }
   end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
   
   get_columnid.each do | perms|  
     a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC26.columnid IS NULL THEN 'Server Name (26) missing' ELSE '26 OK' END AS field26, CASE WHEN EC35.columnid IS NULL THEN 'Database Name (35) missing' ELSE '35 OK' END AS field35, CASE WHEN EC28.columnid IS NULL THEN 'Object Type (28) missing' ELSE '28 OK' END AS field28, CASE WHEN EC34.columnid IS NULL THEN 'Object Name (34) missing' ELSE '34 OK' END AS field34, CASE WHEN EC37.columnid IS NULL THEN 'Object Owner (37) missing' ELSE '34 OK' END AS field37 FROM E E LEFT OUTER JOIN EC EC26 ON  EC26.eventid = E.eventid AND EC26.columnid = 26 LEFT OUTER JOIN EC EC35 ON  EC35.eventid = E.eventid AND EC35.columnid = 35 LEFT OUTER JOIN EC EC28 ON  EC28.eventid = E.eventid AND EC28.columnid = 28 LEFT OUTER JOIN EC EC34 ON  EC34.eventid = E.eventid AND EC34.columnid = 34 LEFT OUTER JOIN EC EC37 ON  EC37.eventid = E.eventid AND EC37.columnid = 37 WHERE EC26.columnid IS NULL OR EC35.columnid IS NULL OR EC28.columnid IS NULL OR EC34.columnid IS NULL OR EC37.columnid IS NULL;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC26.columnid IS NULL THEN 'Server Name (26) missing' ELSE '26 OK' END AS field26, CASE WHEN EC35.columnid IS NULL THEN 'Database Name (35) missing' ELSE '35 OK' END AS field35, CASE WHEN EC28.columnid IS NULL THEN 'Object Type (28) missing' ELSE '28 OK' END AS field28, CASE WHEN EC34.columnid IS NULL THEN 'Object Name (34) missing' ELSE '34 OK' END AS field34, CASE WHEN EC37.columnid IS NULL THEN 'Object Owner (37) missing' ELSE '34 OK' END AS field37 FROM E E LEFT OUTER JOIN EC EC26 ON  EC26.eventid = E.eventid AND EC26.columnid = 26 LEFT OUTER JOIN EC EC35 ON  EC35.eventid = E.eventid AND EC35.columnid = 35 LEFT OUTER JOIN EC EC28 ON  EC28.eventid = E.eventid AND EC28.columnid = 28 LEFT OUTER JOIN EC EC34 ON  EC34.eventid = E.eventid AND EC34.columnid = 34 LEFT OUTER JOIN EC EC37 ON  EC37.eventid = E.eventid AND EC37.columnid = 37 WHERE EC26.columnid IS NULL OR EC35.columnid IS NULL OR EC28.columnid IS NULL OR EC34.columnid IS NULL OR EC37.columnid IS NULL;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
       its('stdout') { should eq '' }
     end
   end

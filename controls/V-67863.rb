@@ -21,8 +21,16 @@ AUTHORIZED_SQL_USERS= attribute(
             "NT Service\\MSSQLSERVER",
             "NT AUTHORITY\\SYSTEM",
             "NT SERVICE\\SQLSERVERAGENT",
-            "##MS_AgentSigningCertificate##"]                            
+            "##MS_AgentSigningCertificate##",
+            "SERVER_AUDIT_MAINTAINERS",
+            "WIN-FC4ANINFUFP\\Admn"]                            
 )
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67863" do
   title "SQL Server must uniquely identify and authenticate organizational
   users (or processes acting on behalf of organizational users)."
@@ -77,7 +85,7 @@ control "V-67863" do
 
   Ensure each user's identity is received and used in audit data in all relevant
   circumstances."
-  get_users = command("Invoke-Sqlcmd -Query \"select name from master.sys.server_principals where is_disabled = 0;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'name ---'").stdout.strip.split("\r\n")
+  get_users = command("Invoke-Sqlcmd -Query \"select name from master.sys.server_principals where is_disabled = 0;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'name ---'").stdout.strip.split("\r\n")
   get_users.each do | user|  
     a = user.strip
     describe "#{a}" do

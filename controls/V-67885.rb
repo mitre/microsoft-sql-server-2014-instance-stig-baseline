@@ -4,6 +4,15 @@ ALLOWED_USERS = attribute(
   default: ["guest                                                       ALTER"]
 ) 
 
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instanc we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
+permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+
+
 control "V-67885" do
   title "SQL Server must prevent non-privileged users from executing privileged
   functionality, to include disabling, circumventing, or altering implemented
@@ -55,7 +64,11 @@ control "V-67885" do
   of DBMS security features, database triggers, other mechanisms, or a
   combination of these.
   "
-  impact 0.7
+  if permissions != []
+    impact 0.7
+  else
+    impact 0.0
+  end
   tag "gtitle": "SRG-APP-000340-DB-000304"
   tag "gid": "V-67885"
   tag "rid": "SV-82375r1_rule"
@@ -88,12 +101,15 @@ control "V-67885" do
   tag "fix": "Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER
   ... statements to align EXECUTE permissions (and any other relevant
   permissions) with documented requirements."
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   permissions.each do | perms|  
     a = perms.strip
     describe "#{a}" do
       it { should be_in ALLOWED_USERS }
     end  
-  end 
+  end if permissions != []
+
+  describe "There are no privileged database users, control not applicable" do
+    skip "There are no privileged database users, control not applicable"
+  end if permissions == []
 end
 

@@ -6,6 +6,12 @@ APPROVED_AUDIT_MAINTAINERS= attribute(
   
 )
 
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instanc we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67765" do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
   must allow only the ISSM (or individuals or roles appointed by the ISSM) to
@@ -107,7 +113,7 @@ control "V-67765" do
   Then, for each authorized login, run the statement:
   ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
   GO"
-  permissions_audit = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION')\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_audit = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   permissions_audit.each do | perms|  
     a = perms.strip
     describe "#{a}" do

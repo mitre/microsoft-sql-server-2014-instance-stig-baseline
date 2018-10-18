@@ -14,6 +14,12 @@ APPROVED_USERS_DATABASE= attribute(
   default: ['guest                                                       ALTER' ]
 )
 
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67815" do
   title "The role(s)/group(s) used to modify database structure (including but
   not necessarily limited to tables, indexes, storage, etc.) and logic modules
@@ -72,7 +78,7 @@ control "V-67815" do
   database user.
   ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a
   server role or login."
-  permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   permissions_server.each do | perms|  
     a = perms.strip
     describe "#{a}" do
@@ -80,7 +86,7 @@ control "V-67815" do
     end  
   end 
 
-  permissions_database = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_database = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   permissions_database.each do | perms|  
     a = perms.strip
     describe "#{a}" do

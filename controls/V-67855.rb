@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67855" do
   title "SQL Server default account [sa] must have its name changed."
   desc  "SQL Server's [sa] account has special privileges required to
@@ -49,10 +55,10 @@ control "V-67855" do
   ALTER LOGIN [sa] WITH NAME = <new name>;
   GO"
   describe.one do
-    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'sa'\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'sa'\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should eq '' }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'SA'\" -ServerInstance 'WIN-FC4ANINFUFP'") do
+    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'SA'\" -ServerInstance '#{SERVER_INSTANCE}'") do
       its('stdout') { should eq '' }
     end
   end

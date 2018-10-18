@@ -3,7 +3,16 @@ SQL_PERMISSIONS= attribute(
   description: 'List of approved users',
   default: ["##MS_AgentSigningCertificate##                              No",
 
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP']
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
+            '##MS_AgentSigningCertificate##                              EXECUTE',
+            '##MS_PolicyEventProcessingLogin##                           EXECUTE',
+            'public                                                      EXECUTE']
+)
+
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
 )
 
 control "V-67795" do
@@ -52,7 +61,7 @@ control "V-67795" do
   If unauthorized accounts have these privileges, this is a finding."
   tag "fix": "Use REVOKE and/or DENY statements to remove audit-related
   permissions from individuals and roles not authorized to have them."
-  get_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  get_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   get_permissions.each do | perms|  
     a = perms.strip
     describe "#{a}" do

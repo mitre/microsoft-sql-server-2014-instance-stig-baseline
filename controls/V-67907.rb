@@ -1,3 +1,8 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
 control "V-67907" do
   title "SQL Server must implement and/or support cryptographic mechanisms
   preventing the unauthorized disclosure of organization-defined information at
@@ -76,7 +81,7 @@ control "V-67907" do
   and keys, and enable encryption on the columns in question.  For guidance from
   the Microsoft Developer Network on how to do this, perform a web search for
   \"SQL Server 2014 Encrypt a Column of Data\"."
-  describe command("Invoke-Sqlcmd -Query \"SELECT [db].name, [db].is_encrypted FROM sys.dm_database_encryption_keys [dek] RIGHT JOIN sys.databases [db] ON [dek].database_id = [db].database_id WHERE [db].is_encrypted = '0'\" -ServerInstance 'WIN-FC4ANINFUFP' | findstr /v 'name ---'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT [db].name, [db].is_encrypted FROM sys.dm_database_encryption_keys [dek] RIGHT JOIN sys.databases [db] ON [dek].database_id = [db].database_id WHERE [db].is_encrypted = '0'\" -ServerInstance '#{SERVER_INSTANCE}' | findstr /v 'name ---'") do
    its('stdout') { should eq '' }
   end
   

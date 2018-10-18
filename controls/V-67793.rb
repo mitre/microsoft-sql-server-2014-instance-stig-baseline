@@ -176,6 +176,12 @@ control "V-67793" do
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
         its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
       end
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
+      end 
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+      end 
     end
   end
 end

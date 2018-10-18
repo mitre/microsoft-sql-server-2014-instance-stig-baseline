@@ -1,3 +1,9 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
+
 control "V-67843" do
   title "SQL Server must have the Data Quality Services software component
   removed if it is unused."
@@ -80,7 +86,7 @@ control "V-67843" do
   GO
 
   Restart the server."
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr 'missing'") do
+  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
     its('stdout') { should eq '' }
   end
   describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Binn\\DQSInstaller.exe') do

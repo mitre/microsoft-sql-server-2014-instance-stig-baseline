@@ -1,9 +1,14 @@
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+)
 control "V-67757" do
   title "The number of concurrent SQL Server sessions for each system account
   must be limited."
   desc  "A variety of technologies exist to limit or, in some cases, eliminate
   the effects of DoS attacks. For example, boundary protection devices can filter
-  certain types of packets to protect devices on an organization’s internal
+  certain types of packets to protect devices on an organizations internal
   network from being directly affected by DoS attacks.
 
       One way SQL Server can limit exposure to DoS attacks is to restrict the
@@ -102,8 +107,8 @@ control "V-67757" do
 
   Implement one or more logon triggers to enforce the limit(s), without exposing
   the dynamic management views to general users."
-  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers WHERE is_disabled = 0' -ServerInstance 'WIN-FC4ANINFUFP'") do
+
+  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers WHERE is_disabled = 0' -ServerInstance '#{SERVER_INSTANCE}'") do
    its('stdout') { should_not eq '' }
   end
 end
-

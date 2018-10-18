@@ -1,3 +1,16 @@
+APPROVED_USERS_SQL_AUDIT_FEATURES = attribute(
+  'approved_users_sql_audit_features',
+  description: 'List of approved audit permissions',
+  default: ["SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT"]
+)
+
+SERVER_INSTANCE= attribute(
+  'server_instance',
+  description: 'SQL server instance we are connecting to',
+  default: "WIN-FC4ANINFUFP"
+) 
+
+
 control "V-67805" do
   title "SQL Server and the operating system must protect SQL Server audit
   features from unauthorized removal."
@@ -45,9 +58,12 @@ control "V-67805" do
   tag "fix": "Apply or modify Windows permissions on tools used to view or
   modify audit log data (to include traces used for audit purposes), to make them
   accessible by authorized personnel only."
-  describe "SQL Server and the operating system must protect SQL Server audit
-  features from unauthorized removal." do
-    skip "This control is manual"
-  end
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT login.name, perm.permission_name FROM sys.server_permissions perm  JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT') and login.name not like '##MS_%'; \" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'name ---'").stdout.strip.split("\n")
+  permissions.each do | perms|  
+    a = perms.strip
+    describe "#{a}" do
+      it { should be_in APPROVED_USERS_SQL_AUDIT_FEATURES}
+    end  
+  end 
 end
 
