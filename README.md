@@ -60,7 +60,7 @@ $ inspec exec microsoft_sql_2014_server_stig_baseline -t ssh://user@hostname -i 
 * This project is licensed under the terms of the Apache license 2.0 (apache-2.0)
 
 ### Progress report
-| Control | 1. Auto/Manual | 2. Describe |  3. in-progress | 4. Review-RDY  | 5. Reviewed  |  6. Tested   |  7. Automated Unit Tests |
+|Control|Auto/Manual|Describe|in-progress|Review-RDY|Reviewed|Tested|Automated Unit Tests|
 |--------|----------|----------|----------|----------|----------|----------|------------|
 |```V-67845```|   auto   |yes|yes| | | | |
 |V-67905|   auto   |yes|yes| | | | |
