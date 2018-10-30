@@ -63,100 +63,99 @@ $ inspec exec microsoft_sql_2014_server_stig_baseline -t ssh://user@hostname -i 
 
 |Control| 2. Describe  |  1. Auto/Manual (a/m)  |  4. Review-RDY  |  3. in-progress  |  5. Reviewed  |  6. Tested   |  7. Automated Unit Tests |
 |-------|-----------|-----------|-----------|-----------|-----------|-----------|------------|
-|V-76679|           |    yes    |    yes    |           |           |           |            |
-|V-67845.rb|  yes  | auto |yes| | | | |
-|V-67905.rb|  yes  | auto |yes| | | | |
-|V-67931.rb|  yes  | auto |yes| | | | |
-|V-67871.rb|  yes  | auto |yes| | | | |
-|V-67781.rb|  yes  | auto |yes| | | | |
-|V-67791.rb|  yes  | auto |yes| | | | |
-|V-67861.rb|  yes  | auto |yes| | | | |
-|V-67921.rb|  yes  | auto |yes| | | | |
-|V-67915.rb|  yes  |manual|yes| | | | |
-|V-67855.rb|  yes  | auto |yes| | | | |
-|V-67935.rb|  yes  | auto |yes| | | | |
-|V-67875.rb|  yes  |manual|yes| | | | |
-|V-67785.rb|  yes  | auto |yes| | | | |
-|V-67841.rb|  yes  | auto |yes| | | | |
-|V-67901.rb|  yes  | auto |yes| | | | |
-|V-67911.rb|  yes  |manual|yes| | | | |
-|V-67851.rb|  yes  | auto |yes| | | | |
-|V-67795.rb|  yes  | auto |yes| | | | |
-|V-67925.rb|  yes  | auto |yes| | | | |
-|V-67777.rb|  yes  | auto |yes| | | | |
-|V-67825.rb|  yes  | auto |yes| | | | |
-|V-67887.rb|  yes  |manual|yes| | | | |
-|V-67811.rb|  yes  |manual|yes| | | | |
-|V-67941.rb|  yes  |manual|yes| | | | |
-|V-67897.rb|  yes  | auto |yes| | | | |
-|V-67835.rb|  yes  | auto |yes| | | | |
-|V-67767.rb|  yes  | auto |yes| | | | |
-|V-67815.rb|  yes  | auto |yes| | | | |
-|V-67821.rb|  yes  | auto |yes| | | | |
-|V-67773.rb|  yes  | auto |yes| | | | |
-|V-67883.rb|  yes  |manual|yes| | | | |
-|V-67893.rb|  yes  |manual|yes| | | | |
-|V-67763.rb|  yes  |manual|yes| | | | |
-|V-67831.rb|  yes  | auto |yes| | | | |
-|V-67945.rb|  yes  | auto |yes| | | | |
-|V-67805.rb|  yes  | auto |yes| | | | |
-|V-67757.rb|  yes  | auto |yes| | | | |
-|V-67387.rb|  yes  |manual|yes| | | | |
-|V-67759.rb|  yes  |manual|yes| | | | |
-|V-67889.rb|  yes  |manual|yes| | | | |
-|V-67779.rb|  yes  | auto |yes| | | | |
-|V-67769.rb|  yes  | auto |yes| | | | |
-|V-67899.rb|  yes  |manual|yes| | | | |
-|V-67849.rb|  yes  | auto |yes| | | | |
-|V-67909.rb|  yes  |manual|yes| | | | |
-|V-67919.rb|  yes  | auto |yes| | | | |
-|V-67859.rb|  yes  | auto |yes| | | | |
-|V-67939.rb|  yes  | auto |yes| | | | |
-|V-67879.rb|  yes  |manual|yes| | | | |
-|V-67789.rb|  yes  | auto |yes| | | | |
-|V-67799.rb|  yes  |manual|yes| | | | |
-|V-67869.rb|  yes  | auto |yes| | | | |
-|V-67929.rb|  yes  | auto |yes| | | | |
-|V-67829.rb|  yes  | auto |yes| | | | |
-|V-67839.rb|  yes  |manual|yes| | | | |
-|V-67819.rb|  yes  | auto |yes| | | | |
-|V-67809.rb|  yes  |manual|yes| | | | |
-|V-67787.rb|  yes  | auto |yes| | | | |
-|V-67937.rb|  yes  | auto |yes| | | | |
-|V-67843.rb|  yes  | auto |yes| | | | |
-|V-67903.rb|  yes  | auto |yes| | | | |
-|V-67913.rb|  yes  |manual|yes| | | | |
-|V-67853.rb|  yes  | auto |yes| | | | |
-|V-67867.rb|  yes  |manual|yes| | | | |
-|V-67927.rb|  yes  | auto |yes| | | | |
-|V-67797.rb|  yes  | auto |yes| | | | |
-|V-70623.rb|  yes  | auto |yes| | | | |
-|V-67847.rb|  yes  | auto |yes| | | | |
-|V-67907.rb|  yes  | auto |yes| | | | |
-|V-67783.rb|  yes  |manual|yes| | | | |
-|V-67933.rb|  yes  | auto |yes| | | | |
-|V-67873.rb|  yes  |manual|yes| | | | |
-|V-67863.rb|  yes  | auto |yes| | | | |
-|V-67923.rb|  yes  | auto |yes| | | | |
-|V-67793.rb|  yes  | auto |yes| | | | |
-|V-67917.rb|  yes  | auto |yes| | | | |
-|V-67857.rb|  yes  | auto |yes| | | | |
-|V-67817.rb|  yes  | auto |yes| | | | |
-|V-67881.rb|  yes  | auto |yes| | | | |
-|V-67771.rb|  yes  | auto |yes| | | | |
-|V-67823.rb|  yes  | auto |yes| | | | |
-|V-67833.rb|  yes  | auto |yes| | | | |
-|V-67761.rb|  yes  |manual|yes| | | | |
-|V-67891.rb|  yes  | auto |yes| | | | |
-|V-67807.rb|  yes  | auto |yes| | | | |
-|V-67885.rb|  yes  |manual|yes| | | | |
-|V-67827.rb|  yes  | auto |yes| | | | |
-|V-67775.rb|  yes  | auto |yes| | | | |
-|V-67813.rb|  yes  |manual|yes| | | | |
-|V-67803.rb|  yes  | auto |yes| | | | |
-|V-67765.rb|  yes  |manual|yes| | | | |
-|V-67837.rb|  yes  | auto |yes| | | | |
-|V-67895.rb|  yes  |manual|yes| | | | |
+|V-67845|  yes  | auto |yes| | | | |
+|V-67905|  yes  | auto |yes| | | | |
+|V-67931|  yes  | auto |yes| | | | |
+|V-67871|  yes  | auto |yes| | | | |
+|V-67781|  yes  | auto |yes| | | | |
+|V-67791|  yes  | auto |yes| | | | |
+|V-67861|  yes  | auto |yes| | | | |
+|V-67921|  yes  | auto |yes| | | | |
+|V-67915|  yes  |manual|yes| | | | |
+|V-67855|  yes  | auto |yes| | | | |
+|V-67935|  yes  | auto |yes| | | | |
+|V-67875|  yes  |manual|yes| | | | |
+|V-67785|  yes  | auto |yes| | | | |
+|V-67841|  yes  | auto |yes| | | | |
+|V-67901|  yes  | auto |yes| | | | |
+|V-67911|  yes  |manual|yes| | | | |
+|V-67851|  yes  | auto |yes| | | | |
+|V-67795|  yes  | auto |yes| | | | |
+|V-67925|  yes  | auto |yes| | | | |
+|V-67777|  yes  | auto |yes| | | | |
+|V-67825|  yes  | auto |yes| | | | |
+|V-67887|  yes  |manual|yes| | | | |
+|V-67811|  yes  |manual|yes| | | | |
+|V-67941|  yes  |manual|yes| | | | |
+|V-67897|  yes  | auto |yes| | | | |
+|V-67835|  yes  | auto |yes| | | | |
+|V-67767|  yes  | auto |yes| | | | |
+|V-67815|  yes  | auto |yes| | | | |
+|V-67821|  yes  | auto |yes| | | | |
+|V-67773|  yes  | auto |yes| | | | |
+|V-67883|  yes  |manual|yes| | | | |
+|V-67893|  yes  |manual|yes| | | | |
+|V-67763|  yes  |manual|yes| | | | |
+|V-67831|  yes  | auto |yes| | | | |
+|V-67945|  yes  | auto |yes| | | | |
+|V-67805|  yes  | auto |yes| | | | |
+|V-67757|  yes  | auto |yes| | | | |
+|V-67387|  yes  |manual|yes| | | | |
+|V-67759|  yes  |manual|yes| | | | |
+|V-67889|  yes  |manual|yes| | | | |
+|V-67779|  yes  | auto |yes| | | | |
+|V-67769|  yes  | auto |yes| | | | |
+|V-67899|  yes  |manual|yes| | | | |
+|V-67849|  yes  | auto |yes| | | | |
+|V-67909|  yes  |manual|yes| | | | |
+|V-67919|  yes  | auto |yes| | | | |
+|V-67859|  yes  | auto |yes| | | | |
+|V-67939|  yes  | auto |yes| | | | |
+|V-67879|  yes  |manual|yes| | | | |
+|V-67789|  yes  | auto |yes| | | | |
+|V-67799|  yes  |manual|yes| | | | |
+|V-67869|  yes  | auto |yes| | | | |
+|V-67929|  yes  | auto |yes| | | | |
+|V-67829|  yes  | auto |yes| | | | |
+|V-67839|  yes  |manual|yes| | | | |
+|V-67819|  yes  | auto |yes| | | | |
+|V-67809|  yes  |manual|yes| | | | |
+|V-67787|  yes  | auto |yes| | | | |
+|V-67937|  yes  | auto |yes| | | | |
+|V-67843|  yes  | auto |yes| | | | |
+|V-67903|  yes  | auto |yes| | | | |
+|V-67913|  yes  |manual|yes| | | | |
+|V-67853|  yes  | auto |yes| | | | |
+|V-67867|  yes  |manual|yes| | | | |
+|V-67927|  yes  | auto |yes| | | | |
+|V-67797|  yes  | auto |yes| | | | |
+|V-70623|  yes  | auto |yes| | | | |
+|V-67847|  yes  | auto |yes| | | | |
+|V-67907|  yes  | auto |yes| | | | |
+|V-67783|  yes  |manual|yes| | | | |
+|V-67933|  yes  | auto |yes| | | | |
+|V-67873|  yes  |manual|yes| | | | |
+|V-67863|  yes  | auto |yes| | | | |
+|V-67923|  yes  | auto |yes| | | | |
+|V-67793|  yes  | auto |yes| | | | |
+|V-67917|  yes  | auto |yes| | | | |
+|V-67857|  yes  | auto |yes| | | | |
+|V-67817|  yes  | auto |yes| | | | |
+|V-67881|  yes  | auto |yes| | | | |
+|V-67771|  yes  | auto |yes| | | | |
+|V-67823|  yes  | auto |yes| | | | |
+|V-67833|  yes  | auto |yes| | | | |
+|V-67761|  yes  |manual|yes| | | | |
+|V-67891|  yes  | auto |yes| | | | |
+|V-67807|  yes  | auto |yes| | | | |
+|V-67885|  yes  |manual|yes| | | | |
+|V-67827|  yes  | auto |yes| | | | |
+|V-67775|  yes  | auto |yes| | | | |
+|V-67813|  yes  |manual|yes| | | | |
+|V-67803|  yes  | auto |yes| | | | |
+|V-67765|  yes  |manual|yes| | | | |
+|V-67837|  yes  | auto |yes| | | | |
+|V-67895|  yes  |manual|yes| | | | |
  
 Legend
 - Describe: Control has been evaluated and categorized as candidate for automated tests. Describe block has been written.
