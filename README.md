@@ -156,7 +156,6 @@ $ inspec exec microsoft_sql_2014_server_stig_baseline -t ssh://user@hostname -i 
 |V-67837|   auto   |yes|yes| | | | |
 |V-67895|  manual  |yes|yes| | | | |
 
-
  
 Legend
 - Describe: Control has been evaluated and categorized as candidate for automated tests. Describe block has been written.
