@@ -61,7 +61,7 @@ $ inspec exec microsoft_sql_2014_server_stig_baseline -t ssh://user@hostname -i 
 
 ### Progress report
 
-|Control| 2. Describe  |  1. Auto/Manual (a/m)  |  4. Review-RDY  |  3. in-progress  |  5. Reviewed  |  6. Tested   |  7. Automated Unit Tests |
+| Control | 2. Describe  |  1. Auto/Manual (a/m)  |  4. Review-RDY  |  3. in-progress  |  5. Reviewed  |  6. Tested   |  7. Automated Unit Tests |
 |--------|------------|------------|------------|------------|------------|------------|-------------|
 |V-67845|  yes  | auto |yes| | | | |
 |V-67905|  yes  | auto |yes| | | | |
