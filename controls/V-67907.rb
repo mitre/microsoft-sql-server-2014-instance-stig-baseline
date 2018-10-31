@@ -76,6 +76,11 @@ control "V-67907" do
   and keys, and enable encryption on the columns in question.  For guidance from
   the Microsoft Developer Network on how to do this, perform a web search for
   \"SQL Server 2014 Encrypt a Column of Data\"."
+
+  encrypted_databases = attribute('encrypted_databases')
+  data_at_rest_encryption_required = attribute('data_at_rest_encryption_required')
+  full_disk_encryption_inplace = attribute('full_disk_encryption_inplace')
+
   query = %(
     SELECT
           d.name AS [Database Name],
