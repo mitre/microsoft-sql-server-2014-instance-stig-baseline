@@ -1,8 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
 control "V-67921" do
   title "SQL Server must generate Trace or Audit records when
   privileges/permissions are added."
@@ -197,96 +192,108 @@ control "V-67921" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should_not eq '' }
-  end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+  query_trace_eventinfo = %(
+    SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
+  )
+
+  query_audits = %(
+    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name IN
+  (
+  'DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP',
+  'DATABASE_OBJECT_PERMISSION_CHANGE_GROUP',
+  'DATABASE_OWNERSHIP_CHANGE_GROUP',
+  'DATABASE_PERMISSION_CHANGE_GROUP',
+  'DATABASE_ROLE_MEMBER_CHANGE_GROUP',
+  'SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP',
+  'SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP',
+  'SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP',
+  'SERVER_OBJECT_PERMISSION_CHANGE_GROUP',
+  'SERVER_PERMISSION_CHANGE_GROUP',
+  'SERVER_ROLE_MEMBER_CHANGE_GROUP',
+  'SCHEMA_OBJECT_ACCESS_GROUP'
+  );
   
-  get_columnid.each do | perms|  
-    a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 42;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
+  )
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 43;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 102;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
+  end
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+
+
+  if server_trace_implemented
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces) }
+      it { should_not be_empty }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 103;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 104;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 105;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 108;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 109;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 110;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 111;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 162;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 170;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 171;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 172;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 173;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 177;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should_not eq '' }
-    end
+
+    trace_ids = sql_session.query(query_traces).column('id')
     describe.one do
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 82;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
+      trace_ids.each do |trace_id|
+        found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+        describe "EventsIDs in Trace ID:#{trace_id}" do
+          subject { found_events }
+          it { should include '42' }
+          it { should include '43' }
+          it { should include '90' }
+          it { should include '102' }
+          it { should include '103' }
+          it { should include '104' }
+          it { should include '105' }
+          it { should include '108' }
+          it { should include '109' }
+          it { should include '110' }
+          it { should include '111' }
+          it { should include '162' }
+          it { should include '170' }
+          it { should include '171' }
+          it { should include '172' }
+          it { should include '173' }
+          it { should include '177' }
+        end
       end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 83;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
+    end
+  end 
+
+  if server_audit_implemented
+    describe 'SQL Server Audit:' do
+      describe 'Defined Audits with Audit Action SCHEMA_OBJECT_ACCESS_GROUP' do
+        subject { sql_session.query(query_audits) }
+        it { should_not be_empty }
       end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 84;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 85;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 86;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 87;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 88;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 89;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 90;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
-      end
-      describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 91;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-        its('stdout') { should_not eq '' }
+      describe 'Audited Result for Defined Audit Actions' do
+        subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
+        it { should match /SUCCESS AND FAILURE|SUCCESS/ }
       end
     end
   end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name IN ( 'DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP', 'DATABASE_OBJECT_PERMISSION_CHANGE_GROUP', 'DATABASE_OWNERSHIP_CHANGE_GROUP', 'DATABASE_PERMISSION_CHANGE_GROUP', 'DATABASE_ROLE_MEMBER_CHANGE_GROUP', 'SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP', 'SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP', 'SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP', 'SERVER_OBJECT_PERMISSION_CHANGE_GROUP', 'SERVER_PERMISSION_CHANGE_GROUP', 'SERVER_ROLE_MEMBER_CHANGE_GROUP', 'SCHEMA_OBJECT_ACCESS_GROUP' ) AND audit_action_name != 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should eq '' }
-  end
+
+
+
 end
 

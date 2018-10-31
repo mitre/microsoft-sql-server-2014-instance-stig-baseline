@@ -1,13 +1,5 @@
-SQL_PERMISSIONS= attribute(
-  'sql_permissions',
-  description: 'List of approved users',
-  default: ["##MS_AgentSigningCertificate##                              No",
 
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
-            '##MS_AgentSigningCertificate##                              EXECUTE',
-            '##MS_PolicyEventProcessingLogin##                           EXECUTE',
-            'public                                                      EXECUTE']
-)
+ALLOWED_SQL_ALTER_PERMISSIONS = attribute('allowed_sql_alter_permissions')
 
 SERVER_INSTANCE= attribute(
   'server_instance',
@@ -61,12 +53,30 @@ control "V-67795" do
   If unauthorized accounts have these privileges, this is a finding."
   tag "fix": "Use REVOKE and/or DENY statements to remove audit-related
   permissions from individuals and roles not authorized to have them."
-  get_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  get_permissions.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in SQL_PERMISSIONS }
-    end  
-  end 
+ 
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+
+  if  permissions.empty?
+    impact 0.0
+    desc 'There are no sql audit permissions ALTER ANY SERVER AUDIT, ALTER ANY
+  DATABASE AUDIT, ALTER TRACE; or EXECUTE granted control not applicable'
+
+    describe "There are no sql audit permissions ALTER ANY SERVER AUDIT, ALTER ANY
+  DATABASE AUDIT, ALTER TRACE; or EXECUTE granted, control not applicable" do
+      skip "There are no sql audit permissions  ALTER ANY SERVER AUDIT, ALTER ANY
+  DATABASE AUDIT, ALTER TRACE; or EXECUTEgranted, control not applicable"
+    end
+  else
+     permissions.each do |grantee|
+      a = grantee.strip
+      describe "sql audit permissions ALTER ANY SERVER AUDIT, ALTER ANY
+  DATABASE AUDIT, ALTER TRACE; or EXECUTE: #{a}" do
+        subject {a}
+        it { should be_in ALLOWED_SQL_ALTER_PERMISSIONS }
+      end
+    end
+  end
+
+
 end
 

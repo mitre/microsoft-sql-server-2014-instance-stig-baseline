@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67855" do
   title "SQL Server default account [sa] must have its name changed."
   desc  "SQL Server's [sa] account has special privileges required to
@@ -54,13 +48,32 @@ control "V-67855" do
   GO
   ALTER LOGIN [sa] WITH NAME = <new name>;
   GO"
-  describe.one do
-    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'sa'\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should eq '' }
-    end
-    describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.sql_logins WHERE [name] = 'SA'\" -ServerInstance '#{SERVER_INSTANCE}'") do
-      its('stdout') { should eq '' }
-    end
+
+  query_sa = %(
+    SELECT * FROM sys.sql_logins WHERE [name] = 'sa';
+  )
+
+  query_SA = %(
+   SELECT * FROM sys.sql_logins WHERE [name] = 'SA';
+  )
+
+ sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+
+  describe 'The sa account in sys.sql_logs' do
+    subject { sql_session.query(query_sa).column('name')}
+    it { should be_empty}
   end
+
+  describe 'The sa account in sys.sql_logs' do
+    subject { sql_session.query(query_SA).column('name')}
+    it { should be_empty}
+  end
+
 end
 

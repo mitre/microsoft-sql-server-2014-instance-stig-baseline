@@ -1,9 +1,5 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
+SERVER_INSTANCE = attribute('server_instance')
+ 
 control "V-67779" do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish the outcome (success or failure) of the events."
@@ -120,18 +116,58 @@ control "V-67779" do
   If SQL Server Audit is intended to be in use, design and deploy an Audit that
   captures all auditable events. The code provided in the supplemental file
   Audit.sql can be used as the basis for creating an Audit."
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should_not eq '' }
-  end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
-  
-  get_columnid.each do | perms|  
-    a = perms.strip
-    
-    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC23.columnid IS NULL THEN 'Success (successful use of permissions) (23) missing' ELSE '23 OK' END AS field23, CASE WHEN EC30.columnid IS NULL THEN 'State (30) missing' ELSE '30 OK' END AS field30, CASE WHEN EC31.columnid IS NULL THEN 'Error (31) missing' ELSE '31 OK' END AS field31 FROM E E LEFT OUTER JOIN EC EC23 ON  EC23.eventid = E.eventid AND EC23.columnid = 23 LEFT OUTER JOIN EC EC30 ON  EC30.eventid = E.eventid AND EC30.columnid = 30 LEFT OUTER JOIN EC EC31 ON  EC31.eventid = E.eventid AND EC31.columnid = 31 WHERE EC23.columnid IS NULL OR EC30.columnid IS NULL OR EC31.columnid IS NULL;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
-      its('stdout') { should eq '' }
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
     end
   end
+
+  query_trace_eventinfo = %(
+   WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(%<trace_id>s)), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC23.columnid IS NULL THEN 'Success (successful use of permissions) (23) missing' ELSE '23 OK' END AS field23, CASE WHEN EC30.columnid IS NULL THEN 'State (30) missing' ELSE '30 OK' END AS field30, CASE WHEN EC31.columnid IS NULL THEN 'Error (31) missing' ELSE '31 OK' END AS field31 FROM E E LEFT OUTER JOIN EC EC23 ON  EC23.eventid = E.eventid AND EC23.columnid = 23 LEFT OUTER JOIN EC EC30 ON  EC30.eventid = E.eventid AND EC30.columnid = 30 LEFT OUTER JOIN EC EC31 ON  EC31.eventid = E.eventid AND EC31.columnid = 31 WHERE EC23.columnid IS NULL OR EC30.columnid IS NULL OR EC31.columnid IS NULL;
+  )
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+   if server_trace_implemented
+      describe 'List defined traces for the SQL server instance' do
+         subject { sql_session.query(query_traces).column('id')}
+        it { should_not eq '' }
+      end
+  
+
+    trace_ids = sql_session.query(query_traces).column('id')
+      describe.one do
+        trace_ids.each do |trace_id|
+          found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+          describe 'List defined traces for the SQL server instance that are missing' do
+           subject { found_events}
+          it { should be_empty }
+        end
+      end
+    end
+  end
+
+
+
 end
 
 

@@ -1,8 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
 control "V-67891" do
   title "SQL Server must allocate audit record storage capacity in accordance
   with organization-defined audit record storage requirements."
@@ -48,10 +43,9 @@ control "V-67891" do
 
   If there have been, this is a finding."
   tag "fix": "Allocate sufficient audit storage space to support peak demand."
-  describe command("Invoke-Sqlcmd -Query \"  end
-  SELECT max_file_size, max_rollover_files, log_file_path AS 'Audit Path' FROM sys.server_file_audits WHERE max_file_size = 0 OR max_rollover_files = 0;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'max_file_size'") do
-      its('stdout') { should eq '' }
-    end
-  
+  describe "SQL Server must allocate audit record storage capacity in accordance
+  with organization-defined audit record storage requirements." do
+    skip "This control is manual"
+  end
 end
 

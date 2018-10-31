@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67787" do
   title "Where availability is paramount, the SQL Server must continue
   processing (preferably overwriting existing records, oldest first), in the
@@ -94,8 +88,38 @@ control "V-67787" do
   GO
   ALTER SERVER AUDIT [AuditName] WITH (STATE = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT [name], [max_rollover_files] FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-    its('stdout') { should eq '' }
+
+  
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
+    end
+
+sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
+
+
+
+
+  query_audit = %(
+  SELECT * FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;
+
+  )
+  if server_audit_implemented
+    describe 'List audits enabled with max_rollover_files less than 0' do
+      subject { sql_session.query(query_audit).column('name')}
+      it { should be_empty }
+    end
+
   end
+
 end
 

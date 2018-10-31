@@ -57,8 +57,17 @@ control "V-67837" do
   Select Master Data Services; click Next.
 
   Follow the remaining prompts, to remove Master Data Services from SQL Server."
-  describe directory('C:\\Program Files\\Microsoft SQL Server\\120\\Master Data Services') do
-    it { should_not exist }
+
+  master_data_services_used = attribute('master_data_services_used')
+  describe.one do
+    describe 'Master Data Services is in use' do
+      subject { master_data_services_used }
+      it { should be true }
+    end
+  
+    describe directory('C:\\Program Files\\Microsoft SQL Server\\120\\Master Data Services') do
+      it { should_not exist }
+    end
   end
 end
 

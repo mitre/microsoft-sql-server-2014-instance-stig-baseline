@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67773" do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish when the events occurred."
@@ -94,16 +88,55 @@ control "V-67773" do
 
   The script provided in the supplemental file Audit.sql can be used to create an
   audit.." 
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-   its('stdout') { should_not eq '' }
-  end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
-  
-  get_columnid.each do | perms|  
-    a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(#{a})), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC14.columnid IS NULL THEN 'Start Time (14) missing' ELSE '14 OK' END AS field14, CASE WHEN EC15.columnid IS NULL THEN 'End Time (15) missing' ELSE '15 OK' END AS field15 FROM E E LEFT OUTER JOIN EC EC14 ON  EC14.eventid = E.eventid AND EC14.columnid = 14 LEFT OUTER JOIN EC EC15 ON  EC15.eventid = E.eventid AND EC15.columnid = 15 WHERE EC14.columnid IS NULL OR EC15.columnid IS NULL;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
-      its('stdout') { should eq '' }
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
     end
   end
+
+  query_trace_eventinfo = %(
+    WITH EC AS (SELECT eventid, columnid FROM sys.fn_trace_geteventinfo(%<trace_id>s)), E AS (SELECT DISTINCT eventid FROM EC) SELECT E.eventid, CASE WHEN EC14.columnid IS NULL THEN 'Start Time (14) missing' ELSE '14 OK' END AS field14, CASE WHEN EC15.columnid IS NULL THEN 'End Time (15) missing' ELSE '15 OK' END AS field15 FROM E E LEFT OUTER JOIN EC EC14 ON  EC14.eventid = E.eventid AND EC14.columnid = 14 LEFT OUTER JOIN EC EC15 ON  EC15.eventid = E.eventid AND EC15.columnid = 15 WHERE EC14.columnid IS NULL OR EC15.columnid IS NULL;
+  )
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+   if server_trace_implemented
+      describe 'List defined traces for the SQL server instance' do
+         subject { sql_session.query(query_traces).column('id')}
+        it { should_not eq '' }
+      end
+  
+
+    trace_ids = sql_session.query(query_traces).column('id')
+      describe.one do
+        trace_ids.each do |trace_id|
+          found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+          describe 'List defined traces for the SQL server instance that are missing' do
+           subject { found_events}
+          it { should be_empty }
+        end
+      end
+    end
+  end
+
 end
 

@@ -1,16 +1,7 @@
-APPROVED_AUDIT_MAINTAINERS= attribute(
-  'approved_audit_maintainers',
-  description: 'List of approved audit maintainers',
-  default: ["SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
-            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION" ]
-  
-)
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instanc we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+ SERVER_INSTANCE = attribute('server_instance')
+
+ APPROVED_AUDIT_MAINTAINERS = attribute('approved_audit_maintainers')
 
 control "V-67765" do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
@@ -114,17 +105,23 @@ control "V-67765" do
   ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
   GO"
   permissions_audit = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  permissions_audit.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in APPROVED_AUDIT_MAINTAINERS }
-    end  
-  end
-  only_if permissions_audit != []
-  if permissions_audit == []
-    describe "No user's have audit maintainer permissions" do
-      skip "Control not applicable"
+  
+  if  permissions_audit.empty?
+    impact 0.0
+    permissions_audit.each do |grantee|
+      a = grantee.strip
+      describe "sql audit maintainers: #{a}" do
+        subject {a}
+        it { should be_in APPROVED_AUDIT_MAINTAINERS }
+      end
+    end
+  else
+     permissions_audit.each do |grantee|
+      a = grantee.strip
+      describe "sql audit maintainers: #{a}" do
+        subject {a}
+        it { should be_in APPROVED_AUDIT_MAINTAINERS }
+      end
     end
   end
 end
-

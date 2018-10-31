@@ -1,13 +1,4 @@
-SQL_COMPONENTS= attribute(
-  'sql_components',
-  description: 'List of sql components installed',
-  default: ["MSSQLSERVER",
-            "SQL Server Distributed Replay Client",
-            "SQL Server Distributed Replay Controller",
-            "SQLBrowser",
-            "SQLSERVERAGENT",
-            "SQLWriter" ]
-)
+SQL_COMPONENTS = attribute('sql_components')
 
 control "V-67851" do
   title "Unused database components that are integrated in SQL Server and
@@ -66,9 +57,10 @@ control "V-67851" do
   get_installed_components = command("Get-Service -Name '*SQL*' | select -expand name").stdout.strip.split("\n")
   get_installed_components.each do | component|  
     a = component.strip
-    describe "#{a}" do
-      it { should be_in SQL_COMPONENTS }
-    end  
+     describe "The installed sql component: #{a}" do
+        subject { "#{a}"}
+        it { should be_in SQL_COMPONENTS }
+      end
   end
 end
 

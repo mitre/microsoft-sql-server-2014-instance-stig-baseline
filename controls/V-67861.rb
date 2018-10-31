@@ -1,15 +1,6 @@
-AUTHORIZED_PORTS= attribute(
-  'authorized_ports',
-  description: 'List of authorized network ports for the SQL server',
-  default: ["TCP Port                                TcpPort                                 1433",
-            "TCP Port                                TcpDynamicPorts"]                            
-)
+AUTHORIZED_PORTS = attribute('authorized_ports')
+AUTHORIZED_PORT_NAME = attribute('authorized_ports_name')
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
 control "V-67861" do
   title "SQL Server and Windows must be configured to prohibit or restrict the
   use of unauthorized network ports."
@@ -67,12 +58,36 @@ control "V-67861" do
   tag "fix": "Change the ports used by SQL Server to comply with PPSM guidance,
   or document the need for other ports, and obtain written approval.  Close ports
   no longer needed."
-  get_ports = command("Invoke-Sqlcmd -Query \"SELECT 'TCP Port' as tcpPort, value_name, value_data FROM sys.dm_server_registry WHERE registry_key LIKE '%IPALL' AND value_name in ('TcpPort','TcpDynamicPorts')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'value_name ---'").stdout.strip.split("\r\n")
-  get_ports.each do | port|  
-    a = port.strip
-    describe "#{a}" do
-      it { should be_in AUTHORIZED_PORTS }
-    end  
-  end 
+
+  query_port_name = %(
+    SELECT value_name, value_data FROM sys.dm_server_registry WHERE registry_key LIKE '%IPALL' AND value_name in ('TcpPort','TcpDynamicPorts')
+  )
+
+  query_port= %(
+    SELECT value_name, value_data FROM sys.dm_server_registry WHERE registry_key LIKE '%IPALL' AND value_name in ('TcpPort','TcpDynamicPorts') AND value_data != ''
+  )
+
+ sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+   port_name = sql_session.query(query_port_name).column('value_name')
+   port_name.each do |name1|
+      describe "port name: #{name1}" do
+        subject {name1}
+        it { should be_in AUTHORIZED_PORT_NAME }
+      end
+    end
+
+  port = sql_session.query(query_port).column('value_data')
+   port.each do |ports|
+      describe "port: #{ports}" do
+        subject {ports}
+        it { should be_in AUTHORIZED_PORTS }
+      end
+    end
 end
 

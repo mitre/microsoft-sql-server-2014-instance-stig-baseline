@@ -54,8 +54,18 @@ control "V-67827" do
 
   Follow the remaining prompts, to remove SQL Server Integration Services from
   SQL Server."
-  describe command("Get-Service | Findstr 'MsDtsServer'") do
-    its('stdout') { should eq '' }
+
+  sql_server_integration_services_used = attribute('sql_server_integration_services_used')
+  is_sql_server_integration_services_installed = command("Get-Service | Findstr 'MsDtsServer'").stdout.strip
+  describe.one do
+    describe 'SQL Server integration services is in use' do
+      subject { sql_server_integration_services_used }
+      it { should be true }
+    end
+    describe 'Is SQL Server integration services installed' do
+      subject { is_sql_server_integration_services_installed }
+      it { should eq '' }
+    end
   end
 end
 

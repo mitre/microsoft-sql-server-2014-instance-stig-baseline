@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67857" do
   title "Access to xp_cmdshell must be disabled, unless specifically required
   and approved."
@@ -68,8 +62,29 @@ control "V-67857" do
   GO
   RECONFIGURE;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"EXEC SP_CONFIGURE 'show advanced options', '1'; RECONFIGURE WITH OVERRIDE; EXEC SP_CONFIGURE 'xp_cmdshell';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'config_value'") do
-    its('stdout') { should eq "config_value : 0\r\n" }
+
+  query = %(
+     EXEC sys.sp_configure N'xp_cmdshell';
+  )
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+  is_xp_cmdshell_required = attribute('is_xp_cmdshell_required')
+
+   describe.one do
+     describe 'Master Data Services is in use' do
+      subject { data_quality_services_used }
+      it { should be true }
+    end
+    describe 'The xp_cmdshell config_value' do
+      subject { sql_session.query(query).column('config_value').uniq }
+      it { should cmp 0 }
+    end
   end
 end
 

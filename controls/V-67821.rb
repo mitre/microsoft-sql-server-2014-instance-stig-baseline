@@ -1,8 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
 
 control "V-67821" do
   title "SQL Server must have the publicly available AdventureWorks sample
@@ -60,8 +55,19 @@ control "V-67821" do
   GO
   DROP DATABASE AdventureWorks;
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sysdatabases WHERE name LIKE 'AdventureWorks%';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
-    its('stdout') { should eq '' }
+  query = %(
+   SELECT name FROM sysdatabases WHERE name LIKE 'AdventureWorks%';
+    )
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+  describe 'Listing the pubs database in sysdatabases' do
+    subject { sql_session.query(query).column('name')}
+    it { should be_empty }
   end
 end
 
