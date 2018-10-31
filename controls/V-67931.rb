@@ -110,6 +110,9 @@ control "V-67931" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
