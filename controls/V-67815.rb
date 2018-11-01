@@ -1,24 +1,8 @@
-APPROVED_USERS_SERVER= attribute(
-  'approved_users_server',
-  description: 'List of approved users',
-  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
-            'SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT',
-            'SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE',
-            'SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION']
-)
+APPROVED_USERS_SERVER = attribute('approved_users_server')
 
-APPROVED_USERS_DATABASE= attribute(
-  'approved_users_database',
-  description: 'List of approved users',
-  default: ['guest                                                       ALTER' ]
-)
+APPROVED_USERS_DATABASE = attribute('approved_users_database')
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+SERVER_INSTANCE = attribute('server_instance')
 
 control "V-67815" do
   title "The role(s)/group(s) used to modify database structure (including but
@@ -79,20 +63,42 @@ control "V-67815" do
   ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a
   server role or login."
   permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  permissions_server.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in APPROVED_USERS_SERVER }
-    end  
-  end 
+
+  if  permissions_server.empty?
+    impact 0.0
+    desc 'There are no sql audit permissions alter any server audit granted control not applicable'
+
+    describe "There are no sql audit permissions alter any server audit granted, control not applicable" do
+      skip "There are no sql audit permissions  alter any server audit granted, control not applicable"
+    end
+  else
+     permissions_server.each do |grantee|
+      a = grantee.strip
+      describe "sql audit server permissions: #{a}" do
+        subject {a}
+        it { should be_in APPROVED_USERS_SERVER  }
+      end
+    end 
+  end
+
 
   permissions_database = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  permissions_database.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in APPROVED_USERS_DATABASE }
-    end  
-  end 
 
+  if  permissions_database.empty?
+    impact 0.0
+    desc 'There are no sql audit permissions alter any server audit granted control not applicable'
+
+    describe "There are no sql audit permissions alter any server audit granted, control not applicable" do
+      skip "There are no sql audit permissions  alter any server audit granted, control not applicable"
+    end
+  else
+     permissions_database.each do |grantee|
+      a = grantee.strip
+      describe "sql audit permissions alter any server audit: #{a}" do
+        subject {a}
+        it { should be_in APPROVED_USERS_DATABASE }
+      end
+    end 
+  end
 end
 

@@ -55,8 +55,17 @@ control "V-67833" do
 
   Follow the remaining prompts, to remove Distributed Replay Controller from SQL
   Server."
-  describe command("Get-Service | Findstr /c:'Distributed Replay Contr...'") do
-    its('stdout') { should eq '' }
+  sql_server_distributed_replay_controller_used = attribute('sql_server_distributed_replay_controller_used')
+  is_sql_server_distributed_replay_controller_installed = command("Get-Service | Findstr /c:'Distributed Replay Contr...'").stdout.strip
+  describe.one do
+    describe 'SQL Server Distributed Replay Controller is in use' do
+      subject { sql_server_distributed_replay_controller_used }
+      it { should be true }
+    end
+    describe 'Is SQL Server Distributed Replay Controller installed' do
+      subject { is_sql_server_distributed_replay_controller_installed }
+      it { should eq '' }
+    end
   end
 end
 

@@ -56,8 +56,19 @@ control "V-67823" do
 
   Microsoft SQL Server Data Tools - Database Projects - Web installer entry point
   Prerequisites for SSDT"
-  describe command("Get-WmiObject -Class Win32_Product | Findstr /c:'Microsoft SQL Server Data Tools' | Findstr /v 'Caption'") do
-    its('stdout') { should eq '' }
+
+  sql_server_data_tools_required = attribute('sql_server_data_tools_required')
+
+  is_sql_server_data_tools_installed = command("Get-WmiObject -Class Win32_Product | Findstr /c:'Microsoft SQL Server Data Tools' | Findstr /v 'Caption'").stdout.strip
+  describe.one do
+     describe 'SQL Server data tools is required' do
+        subject { server_reproting_services_used }
+        it { should be true }
+      end
+      describe 'IS SQL Server data tools installed' do
+        subject { is_sql_server_data_tools_installed }
+        it { should eq '' }
+      end
   end
 end
 

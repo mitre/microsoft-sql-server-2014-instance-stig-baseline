@@ -54,8 +54,21 @@ control "V-67829" do
 
   Follow the remaining prompts, to remove SQL Server Analysis Services from SQL
   Server."
-  describe command("Get-Service | Findstr 'MSSQLServerOLAPService'") do
-    its('stdout') { should eq '' }
+ 
+  sql_server_analysis_services_used = attribute('sql_server_analysis_services_used')
+  is_sql_server_analysis_services_installed = command("Get-Service | Findstr 'MSSQLServerOLAPService'").stdout.strip
+  
+  describe.one do
+    describe 'SQL Server analysis services is in use' do
+      subject { sql_server_analysis_services_used }
+      it { should be true }
+    end
+    describe 'Is SQL Server analysis services installed' do
+      subject { is_sql_server_analysis_services_installed }
+      it { should eq '' }
+    end
   end
+
+
 end
 

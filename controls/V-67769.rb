@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67769" do
   title "Where SQL Server Audit is in use, SQL Server must generate audit
   records when privileges/permissions are retrieved."
@@ -98,12 +92,49 @@ control "V-67769" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should_not eq '' }
-  end
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.server_audit_specification_details WHERE server_specification_id = (SELECT server_specification_id FROM sys.server_audit_specifications WHERE [name] = 'spec1') AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP' AND audited_result != 'SUCCESS' AND audited_result != 'SUCCESS AND FAILURE';\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should eq '' }
-  end
   
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  query = %(
+   SELECT server_specification_id,
+           audit_action_name,
+           audited_result
+    FROM   sys.server_audit_specification_details
+    WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
+    )
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
+    end
+  end
+
+  if server_audit_implemented
+    describe 'SQL Server Audit:' do
+
+      describe 'Defined Audits with Audit Action SCHEMA_OBJECT_ACCESS_GROUP' do
+         subject { sql_session.query(query).column('server_specification_id')}
+        it { should_not eq '' }
+      end
+      
+
+      describe 'Audited Result for Defined Audit Actions' do
+        subject { mssql_session.query(query).column('audited_result').to_s}
+        it { should match /SUCCESS AND FAILURE|SUCCESS/ }
+      end
+    end
+  end  
 end
 

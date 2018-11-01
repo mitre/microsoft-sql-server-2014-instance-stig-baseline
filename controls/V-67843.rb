@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67843" do
   title "SQL Server must have the Data Quality Services software component
   removed if it is unused."
@@ -86,11 +80,42 @@ control "V-67843" do
   GO
 
   Restart the server."
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'missing'") do
-    its('stdout') { should eq '' }
+  
+  query = %(
+  SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');
+
+  ) 
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
+
+  data_quality_services_used = attribute('data_quality_services_used')
+
+  describe.one do
+    describe 'Master Data Services is in use' do
+        subject { data_quality_services_used }
+        it { should be true }
+      end
+
+    describe 'List if data quality services is used' do
+      subject { sql_session.query(query).column('name')}
+      it { should be_empty}
+    end
   end
-  describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Binn\\DQSInstaller.exe') do
-    it { should_not exist }
+
+  describe.one do
+    describe 'Master Data Services is in use' do
+        subject { data_quality_services_used }
+        it { should be true }
+      end
+  
+      describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Binn\\DQSInstaller.exe') do
+      it { should_not exist }
+    end
   end
 end
 

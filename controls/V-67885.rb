@@ -4,14 +4,7 @@ ALLOWED_USERS = attribute(
   default: ["guest                                                       ALTER"]
 ) 
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instanc we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
-permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-
+ SERVER_INSTANCE = attribute('server_instance')
 
 control "V-67885" do
   title "SQL Server must prevent non-privileged users from executing privileged
@@ -64,11 +57,7 @@ control "V-67885" do
   of DBMS security features, database triggers, other mechanisms, or a
   combination of these.
   "
-  if permissions != []
-    impact 0.7
-  else
-    impact 0.0
-  end
+  impact 0.7
   tag "gtitle": "SRG-APP-000340-DB-000304"
   tag "gid": "V-67885"
   tag "rid": "SV-82375r1_rule"
@@ -101,15 +90,25 @@ control "V-67885" do
   tag "fix": "Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER
   ... statements to align EXECUTE permissions (and any other relevant
   permissions) with documented requirements."
-  permissions.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in ALLOWED_USERS }
-    end  
-  end if permissions != []
 
-  describe "There are no privileged database users, control not applicable" do
-    skip "There are no privileged database users, control not applicable"
-  end if permissions == []
-end
+  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+
+  if  permissions.empty?
+    impact 0.0
+    desc 'There are no sql privileged users, control not applicable'
+
+    describe "There are no sql privileged users, control not applicable" do
+      skip "There are no sql privileged users, control not applicable"
+    end
+  else
+    permissions.each do | perms|  
+      a = perms.strip
+      describe "sql privileged users: #{a}" do
+        subject {a}
+        it { should be_in ALLOWED_USERS }
+      end 
+    end
+     
+  end
+end 
 

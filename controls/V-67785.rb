@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67785" do
   title "Unless it has been determined that availability is paramount, SQL
   Server must shut down upon the failure of an Audit, or a Trace used for
@@ -86,17 +80,58 @@ control "V-67785" do
   ALTER SERVER AUDIT <server_audit_name> WITH (STATE = ON);
   GO
   The audit defined in the supplemental file Audit.sql includes this setting."
-  describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should_not eq '' }
-  end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT audit_id FROM sys.server_audits;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'id --'").stdout.strip.split("\n")
-  
-  get_columnid.each do | perms|  
-    a = perms.strip
-    
-    describe command("Invoke-Sqlcmd -Query \"SELECT on_failure_desc FROM sys.server_audits WHERE on_failure_desc != 'SHUTDOWN SERVER INSTANCE';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'on_failure_desc ---'") do
-      its('stdout') { should eq '' }
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
     end
   end
+
+  query_trace_shutdown = %(
+  SELECT * FROM sys.traces WHERE is_shutdown = 0;
+
+  )
+
+  query_audit_shutdown = %(
+  SELECT * FROM sys.server_audits WHERE on_failure_desc != 'SHUTDOWN SERVER INSTANCE';
+
+  )
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+   if server_trace_implemented
+      describe 'List defined traces for the SQL server instance with shutdown disabled' do
+         subject { sql_session.query(query_trace_shutdown).column('id')}
+        it { should be_empty }
+      end
+
+  end
+
+  if server_audit_implemented
+      describe 'List defined audits for the SQL server instance with shutdown disabled' do
+         subject { sql_session.query(query_audit_shutdown).column('on_failure_desc')}
+        it { should be_empty }
+      end
+
+  end
+
 end
 

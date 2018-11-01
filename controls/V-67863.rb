@@ -1,35 +1,4 @@
-AUTHORIZED_SQL_USERS= attribute(
-  'authorized_sql_users',
-  description: 'List of authorized users for the SQL server',
-  default: ["public",
-            "sysadmin",
-            "securityadmin",
-            "serveradmin",
-            "setupadmin",
-            "processadmin",
-            "diskadmin",
-            "dbcreator",
-            "bulkadmin",
-            "##MS_SQLResourceSigningCertificate##",
-            "##MS_SQLReplicationSigningCertificate##",
-            "##MS_SQLAuthenticatorCertificate##",
-            "##MS_PolicySigningCertificate##",
-            "##MS_SmoExtendedSigningCertificate##",
-            "WIN-FC4ANINFUFP\\Administrator",
-            "NT SERVICE\\SQLWriter",
-            "NT SERVICE\\Winmgmt",
-            "NT Service\\MSSQLSERVER",
-            "NT AUTHORITY\\SYSTEM",
-            "NT SERVICE\\SQLSERVERAGENT",
-            "##MS_AgentSigningCertificate##",
-            "SERVER_AUDIT_MAINTAINERS",
-            "WIN-FC4ANINFUFP\\Admn"]                            
-)
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+AUTHORIZED_SQL_USERS = attribute('authorized_sql_users')
 
 control "V-67863" do
   title "SQL Server must uniquely identify and authenticate organizational
@@ -85,12 +54,26 @@ control "V-67863" do
 
   Ensure each user's identity is received and used in audit data in all relevant
   circumstances."
-  get_users = command("Invoke-Sqlcmd -Query \"select name from master.sys.server_principals where is_disabled = 0;\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'name ---'").stdout.strip.split("\r\n")
-  get_users.each do | user|  
-    a = user.strip
-    describe "#{a}" do
-      it { should be_in AUTHORIZED_SQL_USERS }
-    end  
-  end 
+
+  query= %(
+  select name from master.sys.server_principals where is_disabled = 0;
+  )
+
+ sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+   sql_users = sql_session.query(query).column('name')
+   sql_users.each do |user|
+      describe "authorized sql users: #{user}" do
+        subject {user}
+        it { should be_in AUTHORIZED_SQL_USERS }
+      end
+    end
+
+
 end
 

@@ -1,15 +1,7 @@
- ALLOWED_AUDIT_PERMISSIONS = attribute(
-  'allowed_audit_permissions',
-  description: 'List of approved audit permissions',
-  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT" ]
-) 
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+ALLOWED_AUDIT_PERMISSIONS = attribute('allowed_audit_permissions')
+
+SERVER_INSTANCE = attribute('server_instance')
 
 control "V-67767" do
   title "Where SQL Server Audit is in use, SQL Server must allow only the ISSM
@@ -118,11 +110,25 @@ control "V-67767" do
   to remove CONTROL SERVER, ALTER ANY DATABASE and CREATE ANY DATABASE
   permissions from logins that do not need them."
   permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  permissions.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in ALLOWED_AUDIT_PERMISSIONS }
-    end  
-  end 
+
+ if  permissions.empty?
+    impact 0.0
+    desc 'There are no users with audit permissions, control not applicable'
+
+    describe "There are no users with audit permissions, control not applicable" do
+      skip "There are no users with audit permissions, control not applicable"
+    end
+  else
+     permissions.each do |perms|
+      a = perms.strip
+      describe "sql audit permissions: #{a}" do
+        subject {a}
+        it { should be_in ALLOWED_AUDIT_PERMISSIONS }
+      end
+    end
+  end
+
+
+
 end
 

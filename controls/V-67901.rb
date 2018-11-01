@@ -1,37 +1,9 @@
-ALLOWED_SERVER_PERMISSIONS = attribute(
-  'allowed_server_permissions',
-  description: 'List of allowed server permissions',
-  default: ["NT AUTHORITY\\SYSTEM                                         ALTER ANY AVAILABILITY GROUP",
-            "##MS_SQLAuthenticatorCertificate##                          AUTHENTICATE SERVER",
-            "##MS_SQLReplicationSigningCertificate##                     AUTHENTICATE SERVER",
-            "public                                                      CONNECT",
-            "##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "public                                                      VIEW ANY DATABASE",
-            "##MS_PolicySigningCertificate##                             VIEW ANY DEFINITION",
-            "##MS_PolicyTsqlExecutionLogin##                             VIEW ANY DEFINITION",
-            "##MS_SmoExtendedSigningCertificate##                        VIEW ANY DEFINITION",
-            "##MS_SQLReplicationSigningCertificate##                     VIEW ANY DEFINITION",
-            "##MS_SQLResourceSigningCertificate##                        VIEW ANY DEFINITION",
-            "##MS_PolicyTsqlExecutionLogin##                             VIEW SERVER STATE",
-            "##MS_SQLReplicationSigningCertificate##                     VIEW SERVER STATE",
-            "NT AUTHORITY\\SYSTEM                                         VIEW SERVER STATE",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
-            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION"]
-) 
-ALLOWED_DATABASE_PERMISSIONS = attribute(
-  'allowed_database_permissions',
-  description: 'List of allowed database permissions',
-  default: ["guest                                                       ALTER",
-            "##MS_AgentSigningCertificate##                              EXECUTE",
-            "##MS_PolicyEventProcessingLogin##                           EXECUTE",
-            "public                                                      EXECUTE"]
-) 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+ALLOWED_SERVER_PERMISSIONS = attribute('allowed_server_permissions')
+
+ALLOWED_DATABASE_PERMISSIONS = attribute('allowed_database_permissions')
+
+SERVER_INSTANCE = attribute('server_instance') 
+ 
 control "V-67901" do
   title "SQL Server and Windows must enforce access restrictions associated
   with changes to the configuration of the SQL Server instance or database(s)."
@@ -103,18 +75,22 @@ control "V-67901" do
   get_server_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   get_server_permissions.each do | server_perms|  
     a = server_perms.strip
-    describe "#{a}" do
-      it { should be_in ALLOWED_SERVER_PERMISSIONS }
-    end  
+    describe "sql server permissions: #{a}" do
+        subject {a}
+        it { should be_in ALLOWED_SERVER_PERMISSIONS }
+      end 
   end 
   
   get_database_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
   get_database_permissions.each do | database_perms|  
     a = database_perms.strip
-    puts a 
     describe "#{a}" do
       it { should be_in ALLOWED_DATABASE_PERMISSIONS }
-    end  
+    end 
+    describe "sql database permissions: #{a}" do
+        subject {a}
+        it { should be_in ALLOWED_DATABASE_PERMISSIONS }
+      end  
   end 
 
 end

@@ -1,8 +1,4 @@
-inSERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+
 control "V-67945" do
   title "If SQL Server authentication, using passwords, is employed, SQL Server
   must enforce the DoD standards for password lifetime."
@@ -69,8 +65,22 @@ control "V-67945" do
 
   Alternatively, for each identified Login, run the statement:
   ALTER LOGIN <login name>  CHECK_EXPIRATION = ON;"
-  describe command("Invoke-Sqlcmd -Query \"SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0 AND is_expiration_checked = 0;\" -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should eq '' }
+
+   query = %(
+    SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0 AND is_expiration_checked = 0;
+  )
+
+ sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+
+
+  describe 'The list of sql logins' do
+      subject { sql_session.query(query).column('name')}
+      it { should be_empty}
   end
 end
 

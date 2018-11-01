@@ -1,9 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67849" do
   title "SQL Server must have the Filestream feature disabled if it is unused."
   desc  "Information systems are capable of providing a wide variety of
@@ -83,12 +77,24 @@ control "V-67849" do
   0 - Disabled
   1 - Transact-SQL access enabled
   2 - Full access enabled"
+
+  query = %(
+    EXEC sys.sp_configure N'filestream access level';
+  )
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
   describe.one do
-    describe command("Invoke-Sqlcmd -Query \"EXEC sys.sp_configure N'filestream access level';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'config_value'") do
-      its('stdout') { should_not eq "config_value : 1\r\n" }
+    describe 'The filestream access level' do
+      subject { sql_session.query(query).column('config_value').uniq }
+      it { should_not eq 1 }
     end
-    describe command("Invoke-Sqlcmd -Query \"EXEC sys.sp_configure N'filestream access level';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr 'config_value'") do
-      its('stdout') { should_not eq "config_value : 2\r\n" }
+    describe 'The filestream access level' do
+      subject { sql_session.query(query).column('config_value').uniq }
+      it { should_not eq 2 }
     end
   end
 end

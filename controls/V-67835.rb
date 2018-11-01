@@ -53,8 +53,18 @@ control "V-67835" do
 
   Follow the remaining prompts, to remove Full-Text and Semantic Extractions for
   Search from SQL Server."
-  describe command("Get-Service | Findstr 'MSSQLFDLauncher'") do
-    its('stdout') { should eq '' }
+
+  sql_server_full_text_search_used = attribute('sql_server_full_text_search_used')
+  is_sql_server_ifull_text_search_installed = command("Get-Service | Findstr 'MSSQLFDLauncher'").stdout.strip
+  describe.one do
+    describe 'SQL Server full-text search is in use' do
+      subject { sql_server_full_text_search_used }
+      it { should be true }
+    end
+    describe 'Is SQL Server full-text search installed' do
+      subject { is_sql_server_ifull_text_search_installed }
+      it { should eq '' }
+    end
   end
 end
 

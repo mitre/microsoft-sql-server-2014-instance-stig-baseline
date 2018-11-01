@@ -5,3 +5,263 @@ copyright: The Authors
 copyright_email: you@example.com
 license: Apache-2.0
 version: 0.1.0
+
+attributes:
+  - name: user
+    description: 'username MSSQL DB Server'
+    default: Null
+
+  - name: password
+    description: 'password MSSQL DB Server'
+    default: Null
+
+  - name: host
+    description: 'hostname MSSQL DB Server'
+    default: Null
+
+  - name: instance
+    description: 'instance name MSSQL DB Server'
+    default: Null
+
+  - name: port
+    description: 'port MSSQL DB Server'
+    type: numeric
+    default: 1433
+
+  - name: db_name
+    description: 'name of the specific DB being evaluated within the MSSQL server'
+    type: string
+    default: 'master'
+
+  - name: server_trace_implemented
+    description: 'Set to true If SQL Server Trace is in use for audit purposes'
+    type: boolean
+    default: true
+
+  - name: server_audit_implemented
+    description: 'Set to true If SQL Server Audit is in use for audit purposes'
+    type: boolean
+    default: true
+
+  - name: sql_server_reporting_services_used
+    description: 'Set to true if SQL Server Reporting Services is in use'
+    type: boolean
+    default: false
+
+  - name: sql_server_data_tools_required 
+    description: 'Set to true if SQL Server data tools is required'
+    type: boolean
+    default: false
+
+  - name: sql_server_integration_services_used
+    description: 'Set to true if SQL Server Integration Services is in use'
+    type: boolean
+    default: false
+
+  - name: sql_server_analysis_services_used
+    description: 'Set to true if SQL Server analysis Services is in use'
+    type: boolean
+    default: false
+
+  - name: sql_server_distributed_replay_client_used
+    description: 'Set to true if SQL Server Distributed Replay Client is in use'
+    type: boolean
+    default: false
+  
+  - name: sql_server_distributed_replay_controller_used
+    description: 'Set to true if SQL Server Distributed Replay Controller is in use'
+    type: boolean
+    default: false
+
+  - name: sql_server_full_text_search_used
+    description: 'Set to true if SQL Server full-text search is in use'
+    type: boolean
+    default: false
+
+  - name: master_data_services_used
+    description: 'Set to true if master data services is in use'
+    type: boolean
+    default: false
+
+  - name: data_quality_client_used
+    description: 'Set to true if data quality client is in use'
+    type: boolean
+    default: false
+
+  - name: data_quality_services_used
+    description: 'Set to true if data quality services is in use'
+    type: boolean
+    default: false
+
+  - name: data_quality_services_used
+    description: 'Set to true if data quality services is in use'
+    type: boolean
+    default: false
+
+  - name: client_tools_sdk_used
+    description: 'Set to true if client tools sdk is in use'
+    type: boolean
+    default: false
+
+  - name: sql_mgmt_tools_used
+    description: 'Set to true if sql server management tools is in use'
+    type: boolean
+    default: false
+
+  - name: sql_mgmt_tools_used
+    description: 'Set to true if xp_cmdhsell is required'
+    type: boolean
+    default: false
+
+  - name: server_instance
+    description: 'instance name MSSQL DB Server'
+    default: 'WIN-FC4ANINFUFP'
+
+  - name: approved_audit_maintainers
+    description: 'List of user with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION'
+    type: array
+    default: ["SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
+            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION" ]
+
+  - name: allowed_audit_permissions
+    description: 'List of user with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE'
+    type: array
+    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT" ]
+
+  - name: allowed_sql_alter_permissions
+    description: 'List of user with permissions -  ALTER ANY SERVER AUDIT, ALTER ANYDATABASE AUDIT, ALTER TRACE; or EXECUTE'
+    type: array
+    default: ["##MS_AgentSigningCertificate##                              No",
+
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
+            '##MS_AgentSigningCertificate##                              EXECUTE',
+            '##MS_PolicyEventProcessingLogin##                           EXECUTE',
+            'public                                                      EXECUTE']
+
+  - name: approved_users_sql_audits
+    description: 'List of approved users with access to SQL Server Audits'
+    type: array
+    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            "SERVER_AUDIT_MAINTAINERS                ALTER ANY SERVER AUDIT                  GRANT",
+            "SERVER_AUDIT_MAINTAINERS                ALTER TRACE                             GRANT"]
+
+
+  - name: approved_users_server
+    description: 'List of sql server users with permissions - alter, create, control'
+    type: array
+    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
+            'SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT',
+            'SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE',
+            'SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION']
+
+
+  - name: approved_users_database
+    description: 'List of sql database users with permissions - alter, create, control'
+    type: array
+    default: []
+
+  - name: sql_components
+    description: 'List of sql components installed'
+    type: array
+    default: ["MSSQLSERVER",
+            "SQL Server Distributed Replay Client",
+            "SQL Server Distributed Replay Controller",
+            "SQLBrowser",
+            "SQLSERVERAGENT",
+            "SQLWriter" ]
+
+  - name: authorized_protocols
+    description: 'List of authorized network protocols for the SQL server'
+    type: array
+    default: ["Named Pipes                                                 No",
+            "Shared Memory                                               Yes",
+            "TCP/IP                                                      Yes"]
+
+  - name: authorized_ports
+    description: 'LList of authorized network ports for the SQL server'
+    type: array
+    default: ["1433"]      
+
+  - name: authorized_ports_name
+    description: 'List of authorized network port names for the SQL server'
+    type: array
+    default: ["TcpPort",
+            "TcpDynamicPorts"]  
+
+  - name: authorized_sql_users
+    description: 'List of authorized users for the SQL server'
+    type: array
+    default: ["public",
+            "sysadmin",
+            "securityadmin",
+            "serveradmin",
+            "setupadmin",
+            "processadmin",
+            "diskadmin",
+            "dbcreator",
+            "bulkadmin",
+            "##MS_SQLResourceSigningCertificate##",
+            "##MS_SQLReplicationSigningCertificate##",
+            "##MS_SQLAuthenticatorCertificate##",
+            "##MS_PolicySigningCertificate##",
+            "##MS_SmoExtendedSigningCertificate##",
+            "WIN-FC4ANINFUFP\\Administrator",
+            "NT SERVICE\\SQLWriter",
+            "NT SERVICE\\Winmgmt",
+            "NT Service\\MSSQLSERVER",
+            "NT AUTHORITY\\SYSTEM",
+            "NT SERVICE\\SQLSERVERAGENT",
+            "##MS_AgentSigningCertificate##",
+            "SERVER_AUDIT_MAINTAINERS",
+            "WIN-FC4ANINFUFP\\Admn"]   
+
+  - name: allowed_users_priv_functions
+    description: 'List of users allowed to execute privileged functions - create, alter, delete'
+    type: array
+    default: []
+
+  - name: allowed_server_permissions
+    description: 'List of allowed server permissions'
+    type: array
+    default: ["NT AUTHORITY\\SYSTEM                                         ALTER ANY AVAILABILITY GROUP",
+            "##MS_SQLAuthenticatorCertificate##                          AUTHENTICATE SERVER",
+            "##MS_SQLReplicationSigningCertificate##                     AUTHENTICATE SERVER",
+            "public                                                      CONNECT",
+            "##MS_PolicySigningCertificate##                             CONTROL SERVER",
+            "public                                                      VIEW ANY DATABASE",
+            "##MS_PolicySigningCertificate##                             VIEW ANY DEFINITION",
+            "##MS_PolicyTsqlExecutionLogin##                             VIEW ANY DEFINITION",
+            "##MS_SmoExtendedSigningCertificate##                        VIEW ANY DEFINITION",
+            "##MS_SQLReplicationSigningCertificate##                     VIEW ANY DEFINITION",
+            "##MS_SQLResourceSigningCertificate##                        VIEW ANY DEFINITION",
+            "##MS_PolicyTsqlExecutionLogin##                             VIEW SERVER STATE",
+            "##MS_SQLReplicationSigningCertificate##                     VIEW SERVER STATE",
+            "NT AUTHORITY\\SYSTEM                                         VIEW SERVER STATE",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT",
+            "SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
+            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION"]
+
+  - name: allowed_database_permissions
+    description: 'List of allowed database permissions'
+    type: array
+    default: ["##MS_AgentSigningCertificate##                              EXECUTE",
+            "##MS_PolicyEventProcessingLogin##                           EXECUTE",
+            "public                                                      EXECUTE"]
+
+
+  - name: encrypted_databases
+    description: 'List of Databases that require encryption'
+    type: array
+    default: ['EmpData']
+
+  - name: data_at_rest_encryption_required
+    description: 'Set to true if data at rest encryption is required'
+    type: boolean
+    default: false
+
+  - name: full_disk_encryption_inplace
+    description: 'Set to true if full disk encryption is in place'
+    type: boolean
+    default: false

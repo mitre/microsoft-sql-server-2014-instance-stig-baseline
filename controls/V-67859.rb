@@ -1,17 +1,7 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+SERVER_INSTANCE = attribute('server_instance')
 
-AUTHORIZED_PROTOCOLS= attribute(
-  'authorized_protocols',
-  description: 'List of authorized network protocols for the SQL server',
-  default: ["Named Pipes                                                 No",
-            "Shared Memory                                               Yes",
-            "TCP/IP                                                      Yes"]
-)
-
+AUTHORIZED_PROTOCOLS = attribute('authorized_protocols')
+ 
 control "V-67859" do
   title "SQL Server must be configured to prohibit or restrict the use of
   unauthorized network protocols."
@@ -72,11 +62,9 @@ control "V-67859" do
   get_protocols = command("Invoke-Sqlcmd -Query \"SELECT 'Named Pipes' AS [Protocol], iif(value_data = 1, 'Yes', 'No') AS isEnabled FROM sys.dm_server_registry WHERE registry_key LIKE '%np' AND value_name = 'Enabled' UNION SELECT 'Shared Memory', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%sm' AND value_name = 'Enabled' UNION SELECT 'TCP/IP', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%tcp' AND value_name = 'Enabled'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Protocol ---'").stdout.strip.split("\r\n")
   get_protocols.each do | protocol|  
     a = protocol.strip
-    describe "#{a}" do
-      it { should be_in AUTHORIZED_PROTOCOLS }
-    end  
+    describe "sql enabled protocols: #{a}" do
+        subject {a}
+        it { should be_in AUTHORIZED_PROTOCOLS }
+      end
   end 
 end
-
-
-

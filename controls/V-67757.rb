@@ -1,8 +1,3 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
 control "V-67757" do
   title "The number of concurrent SQL Server sessions for each system account
   must be limited."
@@ -108,7 +103,18 @@ control "V-67757" do
   Implement one or more logon triggers to enforce the limit(s), without exposing
   the dynamic management views to general users."
 
-  describe command("Invoke-Sqlcmd -Query 'SELECT * FROM master.sys.server_triggers WHERE is_disabled = 0' -ServerInstance '#{SERVER_INSTANCE}'") do
-   its('stdout') { should_not eq '' }
-  end
+  query = %(
+    SELECT name FROM master.sys.server_triggers WHERE is_disabled = 0
+  )
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
+
+    describe 'Audited Result for Defined Audit Actions' do
+        subject { sql_session.query(query).column('name').uniq }
+        it { should_not eq '' }
+      end
 end

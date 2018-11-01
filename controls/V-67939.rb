@@ -1,8 +1,4 @@
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+
 control "V-67939" do
   title "SQL Server must generate Trace or Audit records when concurrent
   logons/connections by the same user from different workstations occur."
@@ -78,24 +74,82 @@ control "V-67939" do
 
   Where SQL Server Audit is in use, enable the SUCCESSFUL_LOGIN_GROUP and
   LOGOUT_GROUP, as described in other STIG requirements."
-   describe command("Invoke-Sqlcmd -Query \"SELECT * FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-   its('stdout') { should_not eq '' }
-  end
-  get_columnid = command("Invoke-Sqlcmd -Query \"SELECT id FROM sys.traces;\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'id --'").stdout.strip.split("\n")
+
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
+
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+  query_trace_eventinfo = %(
+    SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
+  )
+
+  query_audits_logout_group = %(
+    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
+  );
+
+  query_audits_successful_login_group = %(
+    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'SUCCESSFUL_LOGIN_GROUP'
+  );
   
-  get_columnid.each do | perms|  
-    a = perms.strip
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 14;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace_implemented }
+      it { should be true }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 15;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit_implemented }
+      it { should be true }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 16;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
+  end
+
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+
+
+  if server_trace_implemented
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces) }
+      it { should_not be_empty }
     end
-    describe command("Invoke-Sqlcmd -Query \"SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#{a}) WHERE eventid = 17;\" -ServerInstance 'WIN-FC4ANINFUFP'") do
-      its('stdout') { should_not eq '' }
+
+    trace_ids = sql_session.query(query_traces).column('id')
+    describe.one do
+      trace_ids.each do |trace_id|
+        found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+        describe "EventsIDs in Trace ID:#{trace_id}" do
+          subject { found_events }
+          it { should include '14' }
+          it { should include '15' }
+          it { should include '16' }
+          it { should include '17' }
+        end
+
+      end
+    end
+  end 
+
+  if server_audit_implemented
+    describe 'SQL Server Audit:' do
+      describe 'Defined Audits with Audit name LOGOUT_GROUP' do
+        subject { sql_session.query(query_audits_logout_group) }
+        it { should_not be_empty }
+      end
+      describe 'Defined Audits with Audit name SUCCESSFUL_LOGIN_GROUP' do
+        subject { sql_session.query(query_audits_successful_login_group) }
+        it { should_not be_empty }
+      end
     end
   end
 

@@ -1,17 +1,8 @@
-APPROVED_USERS_SQL_AUDITS = attribute(
-  'approved_users_sql_audits',
-  description: 'List of approved audit permissions',
-  default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "SERVER_AUDIT_MAINTAINERS                ALTER ANY SERVER AUDIT                  GRANT",
-            "SERVER_AUDIT_MAINTAINERS                ALTER TRACE                             GRANT"]
-)
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
+APPROVED_USERS_SQL_AUDITS = attribute('approved_users_sql_audits')
 
+SERVER_INSTANCE = attribute('server_instance')
+ 
 control "V-67797" do
   title "SQL Server Profiler must be protected  from unauthorized access,
   modification, or removal."
@@ -67,11 +58,23 @@ control "V-67797" do
   DENY [ALTER ANY SERVER AUDIT] TO [User];
   GO"
   permissions = command("Invoke-Sqlcmd -Query \"SELECT login.name, perm.permission_name, perm.state_desc FROM sys.server_permissions perm JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT','ALTER TRACE') and login.name not like '##MS_%';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee name ---'").stdout.strip.split("\n")
-  permissions.each do | perms|  
-    a = perms.strip
-    describe "#{a}" do
-      it { should be_in APPROVED_USERS_SQL_AUDITS }
-    end  
+
+  if  permissions.empty?
+    impact 0.0
+    desc 'There are no sql audit permissions alter any server audit granted control not applicable'
+
+    describe "There are no sql audit permissions alter any server audit granted, control not applicable" do
+      skip "There are no sql audit permissions  alter any server audit granted, control not applicable"
+    end
+  else
+     permissions.each do |grantee|
+      a = grantee.strip
+      describe "sql audit permissions alter any server audit: #{a}" do
+        subject {a}
+        it { should be_in APPROVED_USERS_SQL_AUDITS }
+      end
+    end 
   end 
+
 end
 
