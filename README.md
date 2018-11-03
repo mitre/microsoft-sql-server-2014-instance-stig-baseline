@@ -182,5 +182,4 @@ For further information, please contact The MITRE Corporation, Contracts Managem
 
 ### NOTICE
 
-DISA STIGs are published by DISA IASE, see: https://iase.disa.mil/Pages/privacy_policy.aspx   
-LICENSE
+DISA STIGs are published by DISA IASE, see: https://iase.disa.mil/Pages/privacy_policy.aspx
