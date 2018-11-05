@@ -7,7 +7,7 @@
 |Quality checks|Alignment (including tagging) to original<br> standard (i.e. STIG, CIS Benchmark, NIST Tags)|*|*|*|
 ||Descriptive output for findings details|Rony Xavier|*|#5|
 |Docs|Documentation quality (i.e. README)<br> novice level instructions including prerequisites|Yarick Tsagoyko|10/31/2018|n/a|
-||Consistency across other profile conventions |Rony Xavier|*|#3|
+||Consistency across other profile conventions |Rony Xavier|11/2/2018|#3|
 ||Spelling grammar|*|*|*|
 ||Removing debugging documentation and code|*|*|*|
 | Error handling |“Profile Error” containment: “null” responses <br>should only happen if InSpec is run with incorrect privileges|Rony Xavier|*|#2#5|
