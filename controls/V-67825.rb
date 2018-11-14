@@ -56,16 +56,14 @@ control "V-67825" do
   Follow the remaining prompts, to remove SQL Server Reporting Services from SQL
   Server."
   server_reporting_services_used = attribute('sql_server_reporting_services_used')
-  is_server_reporting_installed = command("Get-Service | Findstr 'ReportServer'").stdout.strip
   describe.one do
-     describe 'SQL Server Audit reporting is in use' do
-        subject { server_reporting_services_used }
-        it { should be true }
-      end
-      describe 'Is SQL Server Audit reporting installed' do
-        subject { is_server_reporting_installed }
-        it { should eq '' }
-      end
+    describe 'SQL Server Audit reporting is in use' do
+      subject { server_reporting_services_used }
+      it { should be true }
+    end
+    describe service('ReportServer') do
+      it { should_not be_installed }
+    end
   end
 end 
 

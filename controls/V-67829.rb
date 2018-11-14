@@ -56,19 +56,15 @@ control "V-67829" do
   Server."
  
   sql_server_analysis_services_used = attribute('sql_server_analysis_services_used')
-  is_sql_server_analysis_services_installed = command("Get-Service | Findstr 'MSSQLServerOLAPService'").stdout.strip
   
   describe.one do
     describe 'SQL Server analysis services is in use' do
       subject { sql_server_analysis_services_used }
       it { should be true }
     end
-    describe 'Is SQL Server analysis services installed' do
-      subject { is_sql_server_analysis_services_installed }
-      it { should eq '' }
+    describe service('MSSQLServerOLAPService') do
+      it { should_not be_installed }
     end
   end
-
-
 end
 

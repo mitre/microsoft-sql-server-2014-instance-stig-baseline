@@ -57,15 +57,13 @@ control "V-67831" do
   Server."
 
   sql_server_distributed_replay_client_used = attribute('sql_server_distributed_replay_client_used')
-  is_sql_server_distributed_replay_client_installed = command("Get-Service | Findstr /c:'Distributed Replay Client'").stdout.strip
   describe.one do
     describe 'SQL Server Distributed Replay Client is in use' do
       subject { sql_server_distributed_replay_client_used }
       it { should be true }
     end
-    describe 'Is SQL Server Distributed Replay Client installed' do
-      subject { is_sql_server_distributed_replay_client_installed }
-      it { should eq '' }
+    describe service('Distributed Replay Client') do
+      it { should_not be_installed }
     end
   end
 end

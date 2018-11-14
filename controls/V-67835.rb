@@ -55,15 +55,13 @@ control "V-67835" do
   Search from SQL Server."
 
   sql_server_full_text_search_used = attribute('sql_server_full_text_search_used')
-  is_sql_server_ifull_text_search_installed = command("Get-Service | Findstr 'MSSQLFDLauncher'").stdout.strip
   describe.one do
     describe 'SQL Server full-text search is in use' do
       subject { sql_server_full_text_search_used }
       it { should be true }
     end
-    describe 'Is SQL Server full-text search installed' do
-      subject { is_sql_server_ifull_text_search_installed }
-      it { should eq '' }
+    describe service('MSSQLFDLauncher') do
+      it { should_not be_installed }
     end
   end
 end

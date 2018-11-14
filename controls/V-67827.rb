@@ -56,16 +56,13 @@ control "V-67827" do
   SQL Server."
 
   sql_server_integration_services_used = attribute('sql_server_integration_services_used')
-  is_sql_server_integration_services_installed = command("Get-Service | Findstr 'MsDtsServer'").stdout.strip
   describe.one do
     describe 'SQL Server integration services is in use' do
       subject { sql_server_integration_services_used }
       it { should be true }
     end
-    describe 'Is SQL Server integration services installed' do
-      subject { is_sql_server_integration_services_installed }
-      it { should eq '' }
+    describe service('MsDtsServer') do
+      it { should_not be_installed }
     end
   end
 end
-
