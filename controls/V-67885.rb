@@ -1,10 +1,5 @@
-ALLOWED_USERS = attribute(
-  'allowed_users',
-  description: 'List of user allowed to execute privileged functions',
-  default: ["guest                                                       ALTER"]
-) 
 
- SERVER_INSTANCE = attribute('server_instance')
+ ALLOWED_USERS = attribute('allowed_users')
 
 control "V-67885" do
   title "SQL Server must prevent non-privileged users from executing privileged
@@ -91,7 +86,14 @@ control "V-67885" do
   ... statements to align EXECUTE permissions (and any other relevant
   permissions) with documented requirements."
 
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' \" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  permissions  = sql.query("SELECT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%'").column('result')
+
 
   if  permissions.empty?
     impact 0.0

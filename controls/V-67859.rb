@@ -1,5 +1,3 @@
-SERVER_INSTANCE = attribute('server_instance')
-
 AUTHORIZED_PROTOCOLS = attribute('authorized_protocols')
  
 control "V-67859" do
@@ -59,7 +57,27 @@ control "V-67859" do
   If any listed protocol is enabled but not authorized, this is a finding."
   tag "fix": "In SQL Server Configuration Manager, right-click on each listed
   protocol that is enabled but not authorized; select Disable."
-  get_protocols = command("Invoke-Sqlcmd -Query \"SELECT 'Named Pipes' AS [Protocol], iif(value_data = 1, 'Yes', 'No') AS isEnabled FROM sys.dm_server_registry WHERE registry_key LIKE '%np' AND value_name = 'Enabled' UNION SELECT 'Shared Memory', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%sm' AND value_name = 'Enabled' UNION SELECT 'TCP/IP', iif(value_data = 1, 'Yes', 'No') FROM sys.dm_server_registry WHERE registry_key LIKE '%tcp' AND value_name = 'Enabled'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Protocol ---'").stdout.strip.split("\r\n")
+
+  
+
+ sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  get_protocols = sql.query("SELECT sr.value_data AS 'result'
+
+  FROM sys.dm_server_registry sr
+
+  WHERE sr.registry_key IN (SELECT k.registry_key
+
+  FROM sys.dm_server_registry k
+
+  WHERE k.value_name = 'Enabled' AND k.value_data = 1)
+
+  AND sr.value_name = 'DisplayName';").column('result')
+
   get_protocols.each do | protocol|  
     a = protocol.strip
     describe "sql enabled protocols: #{a}" do

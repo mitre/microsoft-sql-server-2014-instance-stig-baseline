@@ -167,8 +167,18 @@ control "V-67789" do
   7.b.ii) Select the \"SQLAgent$<instance name>\" user and click OK
   8) Click OK
   9) Permission like a normal user from here"
-  get_path = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'Audit Path' FROM sys.traces UNION SELECT log_file_path AS 'Audit Path' FROM sys.server_file_audits\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Audit ----'").stdout.strip.split("\n")
-  get_path.each do | path|  
+  #get_path = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'Audit Path' FROM sys.traces UNION SELECT log_file_path AS 'Audit Path' FROM sys.server_file_audits\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Audit ----'").stdout.strip.split("\n")
+  
+   sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+    get_path  = sql.query("SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'result' FROM sys.traces
+ UNION SELECT log_file_path AS 'result' FROM sys.server_file_audits").column('result')
+
+  get_path .each do | path|  
     a = path.strip
     
     describe.one do

@@ -1,8 +1,6 @@
 
 ALLOWED_AUDIT_PERMISSIONS = attribute('allowed_audit_permissions')
 
-SERVER_INSTANCE = attribute('server_instance')
-
 control "V-67767" do
   title "Where SQL Server Audit is in use, SQL Server must allow only the ISSM
   (or individuals or roles appointed by the ISSM) to select which auditable
@@ -109,9 +107,24 @@ control "V-67767" do
   Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
   to remove CONTROL SERVER, ALTER ANY DATABASE and CREATE ANY DATABASE
   permissions from logins that do not need them."
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  #permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
 
- if  permissions.empty?
+   sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+    permissions = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
+          P.[Permission] IN
+          (
+          'ALTER ANY SERVER AUDIT',
+          'CONTROL SERVER',
+          'ALTER ANY DATABASE',
+          'CREATE ANY DATABASE'
+          );").column('result')
+
+  if  permissions.empty?
     impact 0.0
     desc 'There are no users with audit permissions, control not applicable'
 
@@ -127,8 +140,5 @@ control "V-67767" do
       end
     end
   end
-
-
-
 end
 

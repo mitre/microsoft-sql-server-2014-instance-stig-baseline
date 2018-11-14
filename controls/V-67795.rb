@@ -1,12 +1,6 @@
 
 ALLOWED_SQL_ALTER_PERMISSIONS = attribute('allowed_sql_alter_permissions')
 
-SERVER_INSTANCE= attribute(
-  'server_instance',
-  description: 'SQL server instance we are connecting to',
-  default: "WIN-FC4ANINFUFP"
-)
-
 control "V-67795" do
   title "SQL Server must protect its audit features from unauthorized access,
   modification, or removal."
@@ -54,17 +48,28 @@ control "V-67795" do
   tag "fix": "Use REVOKE and/or DENY statements to remove audit-related
   permissions from individuals and roles not authorized to have them."
  
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission IN ('ALTER ANY SERVER AUDIT', 'ALTER ANY DATABASE', 'ALTER TRACE', 'EXECUTE')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+   sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+    permissions = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
+          P.[Permission] IN
+          (
+          'ALTER ANY SERVER AUDIT',
+          'ALTER ANY DATABASE',
+          'ALTER TRACE',
+          'EXECUTE'
+          );").column('result')
 
   if  permissions.empty?
     impact 0.0
-    desc 'There are no sql audit permissions ALTER ANY SERVER AUDIT, ALTER ANY
-  DATABASE AUDIT, ALTER TRACE; or EXECUTE granted control not applicable'
 
     describe "There are no sql audit permissions ALTER ANY SERVER AUDIT, ALTER ANY
-  DATABASE AUDIT, ALTER TRACE; or EXECUTE granted, control not applicable" do
+      DATABASE AUDIT, ALTER TRACE; or EXECUTE granted, control not applicable" do
       skip "There are no sql audit permissions  ALTER ANY SERVER AUDIT, ALTER ANY
-  DATABASE AUDIT, ALTER TRACE; or EXECUTEgranted, control not applicable"
+      DATABASE AUDIT, ALTER TRACE; or EXECUTEgranted, control not applicable"
     end
   else
      permissions.each do |grantee|
@@ -76,7 +81,5 @@ control "V-67795" do
       end
     end
   end
-
-
 end
 

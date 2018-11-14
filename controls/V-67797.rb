@@ -1,7 +1,5 @@
 
 APPROVED_USERS_SQL_AUDITS = attribute('approved_users_sql_audits')
-
-SERVER_INSTANCE = attribute('server_instance')
  
 control "V-67797" do
   title "SQL Server Profiler must be protected  from unauthorized access,
@@ -57,7 +55,14 @@ control "V-67797" do
   USE master;
   DENY [ALTER ANY SERVER AUDIT] TO [User];
   GO"
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT login.name, perm.permission_name, perm.state_desc FROM sys.server_permissions perm JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT','ALTER TRACE') and login.name not like '##MS_%';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee name ---'").stdout.strip.split("\n")
+
+  sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  permissions = sql.query("SELECT login.name as 'result' FROM sys.server_permissions perm JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT','ALTER TRACE') and login.name not like '##MS_%';").column('result')
 
   if  permissions.empty?
     impact 0.0

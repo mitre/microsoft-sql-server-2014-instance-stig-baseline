@@ -1,5 +1,3 @@
-SERVER_INSTANCE = attribute('server_instance')
- 
 control "V-67779" do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish the outcome (success or failure) of the events."
