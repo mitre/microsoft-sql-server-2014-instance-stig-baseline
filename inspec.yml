@@ -9,19 +9,19 @@ version: 0.1.0
 attributes:
   - name: user
     description: 'username MSSQL DB Server'
-    default: Null
+    default: null
 
   - name: password
     description: 'password MSSQL DB Server'
-    default: Null
+    default: null
 
   - name: host
     description: 'hostname MSSQL DB Server'
-    default: Null
+    default: 'WIN-FC4ANINFUFP'
 
   - name: instance
     description: 'instance name MSSQL DB Server'
-    default: Null
+    default: 'MSSQL2014'
 
   - name: port
     description: 'port MSSQL DB Server'
@@ -118,43 +118,41 @@ attributes:
     default: 'WIN-FC4ANINFUFP'
 
   - name: approved_audit_maintainers
-    description: 'List of user with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION'
+    description: 'List of users with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION'
     type: array
-    default: ["SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
-            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION" ]
+    default: ["SERVER_AUDIT_MAINTAINERS" ]
 
   - name: allowed_audit_permissions
-    description: 'List of user with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE'
+    description: 'List of users with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE'
     type: array
-    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT" ]
+    default: ["##MS_PolicySigningCertificate##",
+            "SERVER_AUDIT_MAINTAINERS" ]
 
   - name: allowed_sql_alter_permissions
     description: 'List of user with permissions -  ALTER ANY SERVER AUDIT, ALTER ANYDATABASE AUDIT, ALTER TRACE; or EXECUTE'
     type: array
-    default: ["##MS_AgentSigningCertificate##                              No",
-
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
-            '##MS_AgentSigningCertificate##                              EXECUTE',
-            '##MS_PolicyEventProcessingLogin##                           EXECUTE',
-            'public                                                      EXECUTE']
+    default: [
+            'SERVER_AUDIT_MAINTAINERS',
+            '##MS_AgentSigningCertificate##',
+            'NT AUTHORITY\SYSTEM',
+            '##MS_AgentSigningCertificate##',
+            '##MS_PolicyEventProcessingLogin##',
+            'public']
 
   - name: approved_users_sql_audits
     description: 'List of approved users with access to SQL Server Audits'
     type: array
-    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "SERVER_AUDIT_MAINTAINERS                ALTER ANY SERVER AUDIT                  GRANT",
-            "SERVER_AUDIT_MAINTAINERS                ALTER TRACE                             GRANT"]
+    default: ["##MS_PolicySigningCertificate##",
+            "SERVER_AUDIT_MAINTAINERS",
+            "SERVER_AUDIT_MAINTAINERS"]
 
 
   - name: approved_users_server
     description: 'List of sql server users with permissions - alter, create, control'
     type: array
-    default: ["##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            'NT AUTHORITY\SYSTEM                                         ALTER ANY AVAILABILITY GROUP',
-            'SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT',
-            'SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE',
-            'SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION']
+    default: ['##MS_PolicySigningCertificate##',
+            'NT AUTHORITY\SYSTEM',
+            'SERVER_AUDIT_MAINTAINERS']
 
 
   - name: approved_users_database
@@ -175,9 +173,8 @@ attributes:
   - name: authorized_protocols
     description: 'List of authorized network protocols for the SQL server'
     type: array
-    default: ["Named Pipes                                                 No",
-            "Shared Memory                                               Yes",
-            "TCP/IP                                                      Yes"]
+    default: ["Shared Memory",
+            "TCP/IP"]
 
   - name: authorized_ports
     description: 'LList of authorized network ports for the SQL server'
@@ -225,30 +222,30 @@ attributes:
   - name: allowed_server_permissions
     description: 'List of allowed server permissions'
     type: array
-    default: ["NT AUTHORITY\\SYSTEM                                         ALTER ANY AVAILABILITY GROUP",
-            "##MS_SQLAuthenticatorCertificate##                          AUTHENTICATE SERVER",
-            "##MS_SQLReplicationSigningCertificate##                     AUTHENTICATE SERVER",
-            "public                                                      CONNECT",
-            "##MS_PolicySigningCertificate##                             CONTROL SERVER",
-            "public                                                      VIEW ANY DATABASE",
-            "##MS_PolicySigningCertificate##                             VIEW ANY DEFINITION",
-            "##MS_PolicyTsqlExecutionLogin##                             VIEW ANY DEFINITION",
-            "##MS_SmoExtendedSigningCertificate##                        VIEW ANY DEFINITION",
-            "##MS_SQLReplicationSigningCertificate##                     VIEW ANY DEFINITION",
-            "##MS_SQLResourceSigningCertificate##                        VIEW ANY DEFINITION",
-            "##MS_PolicyTsqlExecutionLogin##                             VIEW SERVER STATE",
-            "##MS_SQLReplicationSigningCertificate##                     VIEW SERVER STATE",
-            "NT AUTHORITY\\SYSTEM                                         VIEW SERVER STATE",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER ANY SERVER AUDIT",
-            "SERVER_AUDIT_MAINTAINERS                                    ALTER TRACE",
-            "SERVER_AUDIT_MAINTAINERS                                    CREATE TRACE EVENT NOTIFICATION"]
+    default: ["NT AUTHORITY\\SYSTEM",
+            "##MS_SQLAuthenticatorCertificate##",
+            "##MS_SQLReplicationSigningCertificate##",
+            "public",
+            "##MS_PolicySigningCertificate##",
+            "public",
+            "##MS_PolicySigningCertificate##",
+            "##MS_PolicyTsqlExecutionLogin##",
+            "##MS_SmoExtendedSigningCertificate##",
+            "##MS_SQLReplicationSigningCertificate##",
+            "##MS_SQLResourceSigningCertificate##",
+            "##MS_PolicyTsqlExecutionLogin##",
+            "##MS_SQLReplicationSigningCertificate##",
+            "NT AUTHORITY\\SYSTEM",
+            "SERVER_AUDIT_MAINTAINERS",
+            "SERVER_AUDIT_MAINTAINERS",
+            "SERVER_AUDIT_MAINTAINERS"]
 
   - name: allowed_database_permissions
     description: 'List of allowed database permissions'
     type: array
-    default: ["##MS_AgentSigningCertificate##                              EXECUTE",
-            "##MS_PolicyEventProcessingLogin##                           EXECUTE",
-            "public                                                      EXECUTE"]
+    default: ["##MS_AgentSigningCertificate##",
+            "##MS_PolicyEventProcessingLogin##",
+            "public"]
 
 
   - name: encrypted_databases
@@ -265,3 +262,10 @@ attributes:
     description: 'Set to true if full disk encryption is in place'
     type: boolean
     default: false
+
+  - name: allowed_users
+    description: 'List of user allowed to execute privileged functions'
+    type: array
+    default: ['guest']
+
+

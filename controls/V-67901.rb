@@ -1,8 +1,6 @@
 ALLOWED_SERVER_PERMISSIONS = attribute('allowed_server_permissions')
 
 ALLOWED_DATABASE_PERMISSIONS = attribute('allowed_database_permissions')
-
-SERVER_INSTANCE = attribute('server_instance') 
  
 control "V-67901" do
   title "SQL Server and Windows must enforce access restrictions associated
@@ -72,7 +70,15 @@ control "V-67901" do
   designed for supplemental configuration and security purposes."
   tag "fix": "Configure SQL Server to enforce access restrictions associated
   with changes to the configuration of the SQL Server instance and database(s)."
-  get_server_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+
+  sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  
+  get_server_permissions = sql.query("SELECT DISTINCT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
   get_server_permissions.each do | server_perms|  
     a = server_perms.strip
     describe "sql server permissions: #{a}" do
@@ -81,7 +87,8 @@ control "V-67901" do
       end 
   end 
   
-  get_database_permissions = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  #get_server_permissions = sql.query("SELECT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
+  get_database_permissions = sql.query("SELECT DISTINCT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');").column('result')
   get_database_permissions.each do | database_perms|  
     a = database_perms.strip
     describe "#{a}" do

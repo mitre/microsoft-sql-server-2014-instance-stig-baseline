@@ -1,8 +1,6 @@
+APPROVED_AUDIT_MAINTAINERS = attribute('approved_audit_maintainers')
 
- SERVER_INSTANCE = attribute('server_instance')
-
- APPROVED_AUDIT_MAINTAINERS = attribute('approved_audit_maintainers')
-
+  
 control "V-67765" do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
   must allow only the ISSM (or individuals or roles appointed by the ISSM) to
@@ -104,22 +102,27 @@ control "V-67765" do
   Then, for each authorized login, run the statement:
   ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
   GO"
-  permissions_audit = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER TRACE', 'CREATE TRACE EVENT NOTIFICATION')\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-  
-  if  permissions_audit.empty?
+   sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+   permissions_audit = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
+          P.[Permission] IN
+          (
+          'ALTER TRACE',
+          'CREATE TRACE EVENT NOTIFICATION'
+          );").column('result')
+  if  permissions_audit.empty? 
     impact 0.0
-    permissions_audit.each do |grantee|
-      a = grantee.strip
-      describe "sql audit maintainers: #{a}" do
-        subject {a}
-        it { should be_in APPROVED_AUDIT_MAINTAINERS }
-      end
+    describe "There are no sql approved audit maintainers, control N/A" do
+      skip "There are no sql approved audit maintainers, control N/A"
     end
   else
      permissions_audit.each do |grantee|
-      a = grantee.strip
-      describe "sql audit maintainers: #{a}" do
-        subject {a}
+      describe "sql audit maintainers: #{grantee}" do
+        subject {grantee}
         it { should be_in APPROVED_AUDIT_MAINTAINERS }
       end
     end

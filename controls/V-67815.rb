@@ -2,8 +2,6 @@ APPROVED_USERS_SERVER = attribute('approved_users_server')
 
 APPROVED_USERS_DATABASE = attribute('approved_users_database')
 
-SERVER_INSTANCE = attribute('server_instance')
-
 control "V-67815" do
   title "The role(s)/group(s) used to modify database structure (including but
   not necessarily limited to tables, indexes, storage, etc.) and logic modules
@@ -62,7 +60,16 @@ control "V-67815" do
   database user.
   ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a
   server role or login."
-  permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  #permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+
+  sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  permissions_server = sql.query("SELECT Grantee as result FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%';").column('result')
+
 
   if  permissions_server.empty?
     impact 0.0
@@ -82,7 +89,7 @@ control "V-67815" do
   end
 
 
-  permissions_database = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  permissions_database = sql.query("SELECT Grantee as result FROM STIG.database_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%';").column('result')
 
   if  permissions_database.empty?
     impact 0.0

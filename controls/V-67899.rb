@@ -1,7 +1,5 @@
 ALLOWED_USERS_PRIV_FUNCTIONS = attribute('allowed_users_priv_functions')
 
-SERVER_INSTANCE = attribute('server_instance')
-
 control "V-67899" do
   title "SQL Server must prohibit user installation of logic modules (stored
   procedures, functions, triggers, views, etc.) without explicit privileged
@@ -64,8 +62,13 @@ control "V-67899" do
   Implement the approved permissions. Revoke (or Deny) any unapproved
   permissions, and remove any unauthorized role memberships."
 
-  permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission LIKE '%DELETE%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-
+  sql = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              )
+  permissions = sql.query("SELECT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission LIKE '%DELETE%'").column('result')
   if  permissions.empty?
     impact 0.0
     desc 'There are no sql privileged database users, control not applicable'
