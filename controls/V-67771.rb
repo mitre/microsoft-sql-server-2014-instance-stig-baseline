@@ -143,8 +143,8 @@ control "V-67771" do
     describe 'SQL Server Audit:' do
 
       describe 'Defined Audits with Audit Action SCHEMA_OBJECT_ACCESS_GROUP' do
-         subject { sql_session.query(query).column('server_specification_id')}
-        it { should_not eq '' }
+        subject { sql_session.query(query).column('server_specification_id')}
+        it { should_not be_empty }
       end
 
       describe 'Audited Result for Defined Audit Actions' do

@@ -149,8 +149,8 @@ control "V-67775" do
   )
    if server_trace_implemented
       describe 'List defined traces for the SQL server instance' do
-         subject { sql_session.query(query_traces).column('id')}
-        it { should_not eq '' }
+        subject { sql_session.query(query_traces).column('id')}
+        it { should_not be_empty }
       end
   
 

@@ -113,8 +113,8 @@ control "V-67757" do
                               port: attribute('port'),
                               db_name: attribute('db_name'))
 
-    describe 'Audited Result for Defined Audit Actions' do
-        subject { sql_session.query(query).column('name').uniq }
-        it { should_not eq '' }
-      end
+  describe 'Audited Result for Defined Audit Actions' do
+    subject { sql_session.query(query).column('name').uniq }
+    it { should_not be_empty }
+  end
 end
