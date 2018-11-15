@@ -55,7 +55,7 @@ control 'V-67851' do
   If any unused components or features of SQL Server are installed and cannot be
   uninstalled or removed, then disable those components or features."
   get_installed_components = command("Get-Service -Name '*SQL*' | select -expand name").stdout.strip.split("\r\n")
-  
+
   describe 'The list of installed sql components' do
     subject { get_installed_components }
     it { should match_array SQL_COMPONENTS }

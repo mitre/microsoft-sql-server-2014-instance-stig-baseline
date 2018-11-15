@@ -276,7 +276,7 @@ control 'V-67925' do
       end
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
-        it { should match /SUCCESS AND FAILURE|SUCCESS/ }
+        it { should match(/SUCCESS AND FAILURE|SUCCESS/) }
       end
     end
   end
