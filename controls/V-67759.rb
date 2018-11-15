@@ -163,6 +163,10 @@ control 'V-67759' do
 
   account_list = sql_session.query(query).column('name')
 
+  describe registry_key("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQLServer") do
+      its('LoginMode') { should eq 1 }
+  end
+
   if account_list.empty?
     impact 0.0
     desc 'There are no sql managed accounts, control not applicable'
