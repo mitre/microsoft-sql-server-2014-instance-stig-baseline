@@ -1,7 +1,7 @@
-control "V-67857" do
+control 'V-67857' do
   title "Access to xp_cmdshell must be disabled, unless specifically required
   and approved."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by
   default, may not be necessary to support essential organizational operations
   (e.g., key missions, functions).
@@ -25,13 +25,13 @@ control "V-67857" do
   additional malicious activity.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000093"
-  tag "gid": "V-67857"
-  tag "rid": "SV-82347r1_rule"
-  tag "stig_id": "SQL4-00-017200"
-  tag "fix_id": "F-73973r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000093'
+  tag "gid": 'V-67857'
+  tag "rid": 'SV-82347r1_rule'
+  tag "stig_id": 'SQL4-00-017200'
+  tag "fix_id": 'F-73973r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -71,14 +71,13 @@ control "V-67857" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
   is_xp_cmdshell_required = attribute('is_xp_cmdshell_required')
 
-   describe.one do
-     describe 'Master Data Services is in use' do
-      subject { data_quality_services_used }
+  describe.one do
+    describe 'Is xp cmdshell required' do
+      subject { is_xp_cmdshell_required }
       it { should be true }
     end
     describe 'The xp_cmdshell config_value' do
@@ -87,4 +86,3 @@ control "V-67857" do
     end
   end
 end
-

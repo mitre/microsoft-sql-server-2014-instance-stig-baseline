@@ -1,8 +1,8 @@
-control "V-67807" do
+control 'V-67807' do
   title "Software, applications, and configuration files that are part of, or
   related to, the SQL Server  installation must be monitored to discover
   unauthorized changes."
-  desc  "When dealing with change control issues, it should be noted, any
+  desc "When dealing with change control issues, it should be noted, any
   changes to the hardware, software, and/or firmware components of applications
   and tools related to SQL Server can potentially have significant effects on the
   overall security of the system. Only qualified and authorized individuals shall
@@ -16,13 +16,13 @@ control "V-67807" do
   auditing and/or audit file management must be protected and monitored.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000179"
-  tag "gid": "V-67807"
-  tag "rid": "SV-82297r1_rule"
-  tag "stig_id": "SQL4-00-015350"
-  tag "fix_id": "F-73923r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000179'
+  tag "gid": 'V-67807'
+  tag "rid": 'SV-82297r1_rule'
+  tag "stig_id": 'SQL4-00-015350'
+  tag "fix_id": 'F-73923r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -116,7 +116,6 @@ control "V-67807" do
   files that require this access reside by default in the ..\\Microsoft SQL
   Server\\110\\ directory.)"
   describe command("Get-Acl -Path 'C:\\Program Files (x86)\\Microsoft SQL Server\\110' | Format-List | Findstr All") do
-   its('stdout') { should eq "Access : NT SERVICE\\TrustedInstaller Allow  FullControl\r\n         NT SERVICE\\TrustedInstaller Allow  268435456\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  268435456\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Administrators Allow  268435456\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         BUILTIN\\Users Allow  -1610612736\r\n         CREATOR OWNER Allow  268435456\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  -1610612736\r\n" }
+    its('stdout') { should eq "Access : NT SERVICE\\TrustedInstaller Allow  FullControl\r\n         NT SERVICE\\TrustedInstaller Allow  268435456\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  268435456\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Administrators Allow  268435456\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         BUILTIN\\Users Allow  -1610612736\r\n         CREATOR OWNER Allow  268435456\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  -1610612736\r\n" }
   end
 end
-

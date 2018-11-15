@@ -1,5 +1,5 @@
-control "V-67853" do
-  title "The SQL Server default account [sa] must be disabled."
+control 'V-67853' do
+  title 'The SQL Server default account [sa] must be disabled.'
   desc  "SQL Server's [sa] account has special privileges required to
   administer the database. The [sa] account is a well-known SQL Server account
   and is likely to be targeted by attackers and thus more prone to providing
@@ -17,13 +17,13 @@ control "V-67853" do
   that require the [sa] account to be enabled are usually legacy systems.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000092"
-  tag "gid": "V-67853"
-  tag "rid": "SV-82343r1_rule"
-  tag "stig_id": "SQL4-00-017100"
-  tag "fix_id": "F-73969r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000092'
+  tag "gid": 'V-67853'
+  tag "rid": 'SV-82343r1_rule'
+  tag "stig_id": 'SQL4-00-017100'
+  tag "fix_id": 'F-73969r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -60,25 +60,21 @@ control "V-67853" do
   GO
   ALTER LOGIN [sa] DISABLE;
   GO"
-  
+
   query = %(
     SELECT name, is_disabled
-     FROM sys.sql_logins 
+     FROM sys.sql_logins
      WHERE principal_id = 1 AND is_disabled != 1;
   )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-
+                              port: attribute('port'))
 
   describe 'The sa account in sys.sql_logs' do
-      subject { sql_session.query(query).column('name')}
-      it { should be_empty}
+    subject { sql_session.query(query).column('name') }
+    it { should be_empty }
   end
-
 end
- 

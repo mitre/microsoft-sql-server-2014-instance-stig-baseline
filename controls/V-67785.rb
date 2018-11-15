@@ -1,4 +1,4 @@
-control "V-67785" do
+control 'V-67785' do
   title "Unless it has been determined that availability is paramount, SQL
   Server must shut down upon the failure of an Audit, or a Trace used for
   auditing purposes, to include the unavailability of space for more audit/trace
@@ -27,13 +27,13 @@ control "V-67785" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000109-DB-000049"
-  tag "gid": "V-67785"
-  tag "rid": "SV-82275r1_rule"
-  tag "stig_id": "SQL4-00-013000"
-  tag "fix_id": "F-73901r2_fix"
-  tag "cci": ["CCI-000140"]
-  tag "nist": ["AU-5 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000109-DB-000049'
+  tag "gid": 'V-67785'
+  tag "rid": 'SV-82275r1_rule'
+  tag "stig_id": 'SQL4-00-013000'
+  tag "fix_id": 'F-73901r2_fix'
+  tag "cci": ['CCI-000140']
+  tag "nist": ['AU-5 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -85,9 +85,7 @@ control "V-67785" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-
+                              port: attribute('port'))
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -117,21 +115,22 @@ control "V-67785" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-   if server_trace_implemented
-      describe 'List defined traces for the SQL server instance with shutdown disabled' do
-         subject { sql_session.query(query_trace_shutdown).column('id')}
-        it { should be_empty }
-      end
+  if server_trace_implemented
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces) }
+      it { should_not be_empty }
+    end
+    describe 'List defined traces for the SQL server instance with shutdown disabled' do
+      subject { sql_session.query(query_trace_shutdown).column('id') }
+      it { should be_empty }
+    end
 
   end
 
   if server_audit_implemented
-      describe 'List defined audits for the SQL server instance with shutdown disabled' do
-         subject { sql_session.query(query_audit_shutdown).column('on_failure_desc')}
-        it { should be_empty }
-      end
-
+    describe 'List defined audits for the SQL server instance with shutdown disabled' do
+      subject { sql_session.query(query_audit_shutdown).column('on_failure_desc') }
+      it { should be_empty }
+    end
   end
-
 end
-

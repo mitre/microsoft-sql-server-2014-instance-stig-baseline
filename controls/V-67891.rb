@@ -1,7 +1,7 @@
-control "V-67891" do
+control 'V-67891' do
   title "SQL Server must allocate audit record storage capacity in accordance
   with organization-defined audit record storage requirements."
-  desc  "In order to ensure sufficient storage capacity for the audit logs, SQL
+  desc "In order to ensure sufficient storage capacity for the audit logs, SQL
   Server must be able to allocate audit record storage capacity. Although another
   requirement (SRG-APP-000515-DB-000318) mandates that audit data be off-loaded
   to a centralized log management system, it remains necessary to provide space
@@ -19,13 +19,13 @@ control "V-67891" do
   features can be used for auditing purposes.  This requirement applies to both.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000357-DB-000316"
-  tag "gid": "V-67891"
-  tag "rid": "SV-82381r1_rule"
-  tag "stig_id": "SQL4-00-033000"
-  tag "fix_id": "F-74007r1_fix"
-  tag "cci": ["CCI-001849"]
-  tag "nist": ["AU-4", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000357-DB-000316'
+  tag "gid": 'V-67891'
+  tag "rid": 'SV-82381r1_rule'
+  tag "stig_id": 'SQL4-00-033000'
+  tag "fix_id": 'F-74007r1_fix'
+  tag "cci": ['CCI-001849']
+  tag "nist": ['AU-4', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -42,10 +42,9 @@ control "V-67891" do
   taken.
 
   If there have been, this is a finding."
-  tag "fix": "Allocate sufficient audit storage space to support peak demand."
+  tag "fix": 'Allocate sufficient audit storage space to support peak demand.'
   describe "SQL Server must allocate audit record storage capacity in accordance
   with organization-defined audit record storage requirements." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

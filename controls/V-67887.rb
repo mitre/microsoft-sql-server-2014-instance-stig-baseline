@@ -1,8 +1,8 @@
-control "V-67887" do
+control 'V-67887' do
   title "Execution of software modules (to include stored procedures,
   functions, and triggers) with elevated privileges must be restricted to
   necessary cases only."
-  desc  "In certain situations, to provide required functionality, a DBMS needs
+  desc "In certain situations, to provide required functionality, a DBMS needs
   to execute internal logic (stored procedures, functions, triggers, etc.) and/or
   external code modules with elevated privileges. However, if the privileges
   required for execution are at a higher level than the privileges assigned to
@@ -23,13 +23,13 @@ control "V-67887" do
   addressed and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000342-DB-000302"
-  tag "gid": "V-67887"
-  tag "rid": "SV-82377r2_rule"
-  tag "stig_id": "SQL4-00-032600"
-  tag "fix_id": "F-74003r1_fix"
-  tag "cci": ["CCI-002233"]
-  tag "nist": ["AC-6 (8)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000342-DB-000302'
+  tag "gid": 'V-67887'
+  tag "rid": 'SV-82377r2_rule'
+  tag "stig_id": 'SQL4-00-032600'
+  tag "fix_id": 'F-74003r1_fix'
+  tag "cci": ['CCI-002233']
+  tag "nist": ['AC-6 (8)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -67,7 +67,6 @@ control "V-67887" do
   describe "Execution of software modules (to include stored procedures,
   functions, and triggers) with elevated privileges must be restricted to
   necessary cases only." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

@@ -1,7 +1,7 @@
-control "V-67875" do
+control 'V-67875' do
   title "SQL Server must be configured to separate user functionality
   (including user interface services) from database management functionality."
-  desc  "Information system management functionality includes functions
+  desc "Information system management functionality includes functions
   necessary to administer databases, network components, workstations, or servers
   and typically requires privileged user access.
 
@@ -23,13 +23,13 @@ control "V-67875" do
   be inadvertently made available to the user.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000211-DB-000122"
-  tag "gid": "V-67875"
-  tag "rid": "SV-82365r1_rule"
-  tag "stig_id": "SQL4-00-020500"
-  tag "fix_id": "F-73991r1_fix"
-  tag "cci": ["CCI-001082"]
-  tag "nist": ["SC-2", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000211-DB-000122'
+  tag "gid": 'V-67875'
+  tag "rid": 'SV-82365r1_rule'
+  tag "stig_id": 'SQL4-00-020500'
+  tag "fix_id": 'F-73991r1_fix'
+  tag "cci": ['CCI-001082']
+  tag "nist": ['SC-2', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -54,7 +54,6 @@ control "V-67875" do
   general users."
   describe "SQL Server must be configured to separate user functionality
   (including user interface services) from database management functionality." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

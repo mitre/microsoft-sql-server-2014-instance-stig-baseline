@@ -1,9 +1,9 @@
 AUTHORIZED_PROTOCOLS = attribute('authorized_protocols')
- 
-control "V-67859" do
+
+control 'V-67859' do
   title "SQL Server must be configured to prohibit or restrict the use of
   unauthorized network protocols."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by
   default, may not be necessary to support essential organizational operations
   (e.g., key missions, functions).
@@ -33,13 +33,13 @@ control "V-67859" do
   functionality, not to functions in mathematics and programming languages.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000142-DB-000094"
-  tag "gid": "V-67859"
-  tag "rid": "SV-82349r1_rule"
-  tag "stig_id": "SQL4-00-017400"
-  tag "fix_id": "F-73975r1_fix"
-  tag "cci": ["CCI-000382"]
-  tag "nist": ["CM-7 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000142-DB-000094'
+  tag "gid": 'V-67859'
+  tag "rid": 'SV-82349r1_rule'
+  tag "stig_id": 'SQL4-00-017400'
+  tag "fix_id": 'F-73975r1_fix'
+  tag "cci": ['CCI-000382']
+  tag "nist": ['CM-7 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -58,14 +58,11 @@ control "V-67859" do
   tag "fix": "In SQL Server Configuration Manager, right-click on each listed
   protocol that is enabled but not authorized; select Disable."
 
-  
-
- sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+  sql = mssql_session(user: attribute('user'),
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
   get_protocols = sql.query("SELECT sr.value_data AS 'result'
 
   FROM sys.dm_server_registry sr
@@ -75,14 +72,13 @@ control "V-67859" do
   FROM sys.dm_server_registry k
 
   WHERE k.value_name = 'Enabled' AND k.value_data = 1)
-
   AND sr.value_name = 'DisplayName';").column('result')
 
-  get_protocols.each do | protocol|  
+  get_protocols.each do |protocol|
     a = protocol.strip
     describe "sql enabled protocols: #{a}" do
-        subject {a}
-        it { should be_in AUTHORIZED_PROTOCOLS }
-      end
-  end 
+      subject { a }
+      it { should be_in AUTHORIZED_PROTOCOLS }
+    end
+  end
 end

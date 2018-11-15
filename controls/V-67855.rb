@@ -1,5 +1,5 @@
-control "V-67855" do
-  title "SQL Server default account [sa] must have its name changed."
+control 'V-67855' do
+  title 'SQL Server default account [sa] must have its name changed.'
   desc  "SQL Server's [sa] account has special privileges required to
   administer the database. The [sa] account is a well-known SQL Server account
   name and is likely to be targeted by attackers, and is thus more prone to
@@ -12,13 +12,13 @@ control "V-67855" do
   [sa] account name.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000092"
-  tag "gid": "V-67855"
-  tag "rid": "SV-82345r1_rule"
-  tag "stig_id": "SQL4-00-010200"
-  tag "fix_id": "F-73971r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000092'
+  tag "gid": 'V-67855'
+  tag "rid": 'SV-82345r1_rule'
+  tag "stig_id": 'SQL4-00-010200'
+  tag "fix_id": 'F-73971r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -53,27 +53,23 @@ control "V-67855" do
     SELECT * FROM sys.sql_logins WHERE [name] = 'sa';
   )
 
-  query_SA = %(
+  query_sa2 = %(
    SELECT * FROM sys.sql_logins WHERE [name] = 'SA';
   )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-
+                              port: attribute('port'))
 
   describe 'The sa account in sys.sql_logs' do
-    subject { sql_session.query(query_sa).column('name')}
-    it { should be_empty}
+    subject { sql_session.query(query_sa).column('name') }
+    it { should be_empty }
   end
 
   describe 'The sa account in sys.sql_logs' do
-    subject { sql_session.query(query_SA).column('name')}
-    it { should be_empty}
+    subject { sql_session.query(query_sa2).column('name') }
+    it { should be_empty }
   end
-
 end
-

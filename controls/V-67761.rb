@@ -1,8 +1,8 @@
-control "V-67761" do
+control 'V-67761' do
   title "SQL Server must enforce approved authorizations for logical access to
   server-level system resources in accordance with applicable access control
   policies."
-  desc  "Authentication with a DoD-approved PKI certificate does not
+  desc "Authentication with a DoD-approved PKI certificate does not
   necessarily imply authorization to access the SQL Server instance and
   server-level resources.  To mitigate the risk of unauthorized access to
   sensitive information by entities that have been issued certificates by
@@ -32,13 +32,13 @@ control "V-67761" do
   policy.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000033-DB-000084"
-  tag "gid": "V-67761"
-  tag "rid": "SV-82251r1_rule"
-  tag "stig_id": "SQL4-00-002010"
-  tag "fix_id": "F-73875r1_fix"
-  tag "cci": ["CCI-000213"]
-  tag "nist": ["AC-3", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000033-DB-000084'
+  tag "gid": 'V-67761'
+  tag "rid": 'SV-82251r1_rule'
+  tag "stig_id": 'SQL4-00-002010'
+  tag "fix_id": 'F-73875r1_fix'
+  tag "cci": ['CCI-000213']
+  tag "nist": ['AC-3', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -63,8 +63,7 @@ control "V-67761" do
    ALTER SERVER ROLE  …. DROP MEMBER statements to add and remove permissions on
   server-level securables, bringing them into line with the documented
   requirements."
-  describe "The Service Master Key must be backed up, stored offline and off-site." do
-    skip "This control is manual"
+  describe 'The Service Master Key must be backed up, stored offline and off-site.' do
+    skip 'This control is manual'
   end
 end
-

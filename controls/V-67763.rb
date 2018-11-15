@@ -1,7 +1,7 @@
-control "V-67763" do
+control 'V-67763' do
   title "SQL Server must protect against an individual using a shared account
   from falsely denying having performed a particular action."
-  desc  "Non-repudiation of actions taken is required in order to maintain
+  desc "Non-repudiation of actions taken is required in order to maintain
   application integrity. Examples of particular actions taken by individuals
   include creating information, sending a message, approving information (e.g.,
   indicating concurrence or signing a contract), and receiving a message.
@@ -26,13 +26,13 @@ control "V-67763" do
   in role-based access control.)
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000080-DB-000063"
-  tag "gid": "V-67763"
-  tag "rid": "SV-82253r1_rule"
-  tag "stig_id": "SQL4-00-023700"
-  tag "fix_id": "F-73877r1_fix"
-  tag "cci": ["CCI-000166"]
-  tag "nist": ["AU-10", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000080-DB-000063'
+  tag "gid": 'V-67763'
+  tag "rid": 'SV-82253r1_rule'
+  tag "stig_id": 'SQL4-00-023700'
+  tag "fix_id": 'F-73877r1_fix'
+  tag "cci": ['CCI-000166']
+  tag "nist": ['AU-10', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -82,7 +82,6 @@ control "V-67763" do
   the fewest persons possible."
   describe "SQL Server must protect against an individual using a shared account
   from falsely denying having performed a particular action." do
-    skip "This is a manual check"
+    skip 'This is a manual check'
   end
 end
-

@@ -1,4 +1,4 @@
-control "V-67913" do
+control 'V-67913' do
   title "Security-relevant software updates to SQL Server must be installed
   within the time period directed by an authoritative source (e.g., IAVM, CTOs,
   DTMs, and STIGs)."
@@ -28,13 +28,13 @@ control "V-67913" do
   authoritative source (e.g. IAVM, CTOs, DTMs, and STIGs).
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000456-DB-000390"
-  tag "gid": "V-67913"
-  tag "rid": "SV-82403r1_rule"
-  tag "stig_id": "SQL4-00-035400"
-  tag "fix_id": "F-74029r1_fix"
-  tag "cci": ["CCI-002605"]
-  tag "nist": ["SI-2 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000456-DB-000390'
+  tag "gid": 'V-67913'
+  tag "rid": 'SV-82403r1_rule'
+  tag "stig_id": 'SQL4-00-035400'
+  tag "fix_id": 'F-74029r1_fix'
+  tag "cci": ['CCI-002605']
+  tag "nist": ['SI-2 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -55,7 +55,6 @@ control "V-67913" do
   describe "Security-relevant software updates to SQL Server must be installed
   within the time period directed by an authoritative source (e.g., IAVM, CTOs,
   DTMs, and STIGs)." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

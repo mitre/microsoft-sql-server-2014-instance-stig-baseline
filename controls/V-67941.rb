@@ -1,9 +1,9 @@
-control "V-67941" do
+control 'V-67941' do
   title "SQL Server must off-load audit data to a separate log management
   facility; this must be continuous and in near real time for systems with a
   network connection to the storage facility and weekly or more often for
   stand-alone systems."
-  desc  "Information stored in one location is vulnerable to accidental or
+  desc "Information stored in one location is vulnerable to accidental or
   incidental deletion or alteration.
 
       Off-loading is a common process in information systems with limited audit
@@ -19,13 +19,13 @@ control "V-67941" do
   information built into application data.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000515-DB-000318"
-  tag "gid": "V-67941"
-  tag "rid": "SV-82431r1_rule"
-  tag "stig_id": "SQL4-00-038700"
-  tag "fix_id": "F-74057r1_fix"
-  tag "cci": ["CCI-001851"]
-  tag "nist": ["AU-4 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000515-DB-000318'
+  tag "gid": 'V-67941'
+  tag "rid": 'SV-82431r1_rule'
+  tag "stig_id": 'SQL4-00-038700'
+  tag "fix_id": 'F-74057r1_fix'
+  tag "cci": ['CCI-001851']
+  tag "nist": ['AU-4 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -56,7 +56,6 @@ control "V-67941" do
   facility; this must be continuous and in near real time for systems with a
   network connection to the storage facility and weekly or more often for
   stand-alone systems." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

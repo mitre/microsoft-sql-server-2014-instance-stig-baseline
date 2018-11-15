@@ -1,7 +1,7 @@
-control "V-67823" do
+control 'V-67823' do
   title "SQL Server must have the SQL Server Data Tools (SSDT) software
   component removed if it is unused."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by default
   or selected for installation by an administrator, may not be necessary to
   support essential organizational operations (e.g., key missions, functions).
@@ -16,13 +16,13 @@ control "V-67823" do
   SQL Server if it is unused.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000091"
-  tag "gid": "V-67823"
-  tag "rid": "SV-82313r1_rule"
-  tag "stig_id": "SQL4-00-016500"
-  tag "fix_id": "F-73939r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000091'
+  tag "gid": 'V-67823'
+  tag "rid": 'SV-82313r1_rule'
+  tag "stig_id": 'SQL4-00-016500'
+  tag "fix_id": 'F-73939r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -61,14 +61,13 @@ control "V-67823" do
 
   is_sql_server_data_tools_installed = command("Get-WmiObject -Class Win32_Product | Findstr /c:'Microsoft SQL Server Data Tools' | Findstr /v 'Caption'").stdout.strip
   describe.one do
-     describe 'SQL Server data tools is required' do
-        subject { server_reproting_services_used }
-        it { should be true }
-      end
-      describe 'IS SQL Server data tools installed' do
-        subject { is_sql_server_data_tools_installed }
-        it { should eq '' }
-      end
+    describe 'SQL Server data tools is required' do
+      subject { sql_server_data_tools_required  }
+      it { should be true }
+    end
+    describe 'IS SQL Server data tools installed' do
+      subject { is_sql_server_data_tools_installed }
+      it { should eq '' }
+    end
   end
 end
-

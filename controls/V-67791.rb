@@ -1,7 +1,7 @@
-control "V-67791" do
+control 'V-67791' do
   title "The audit information produced by  SQL Server must be protected from
   unauthorized modification."
-  desc  "If audit data were to become compromised, competent forensic analysis
+  desc "If audit data were to become compromised, competent forensic analysis
   and discovery of the true source of potentially malicious system activity would
   be impossible to achieve.
 
@@ -26,13 +26,13 @@ control "V-67791" do
   modification of sensitive data stored in the database.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000119-DB-000060"
-  tag "gid": "V-67791"
-  tag "rid": "SV-82281r2_rule"
-  tag "stig_id": "SQL4-00-013700"
-  tag "fix_id": "F-73907r2_fix"
-  tag "cci": ["CCI-000163"]
-  tag "nist": ["AU-9", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000119-DB-000060'
+  tag "gid": 'V-67791'
+  tag "rid": 'SV-82281r2_rule'
+  tag "stig_id": 'SQL4-00-013700'
+  tag "fix_id": 'F-73907r2_fix'
+  tag "cci": ['CCI-000163']
+  tag "nist": ['AU-9', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -170,40 +170,37 @@ control "V-67791" do
   7.b.ii) Select the \"SQLAgent$<instance name>\" user and click OK
   8) Click OK
   9) Permission like a normal user from here"
-  #get_path = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'Audit Path' FROM sys.traces UNION SELECT log_file_path AS 'Audit Path' FROM sys.server_file_audits\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Audit ----'").stdout.strip.split("\n")
-  
-    sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-    get_path  = sql.query("SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'result' FROM sys.traces UNION SELECT log_file_path AS 'result' FROM sys.server_file_audits").column('result')
+  # get_path = command("Invoke-Sqlcmd -Query \"SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'Audit Path' FROM sys.traces UNION SELECT log_file_path AS 'Audit Path' FROM sys.server_file_audits\" -ServerInstance 'WIN-FC4ANINFUFP' | Findstr /v 'Audit ----'").stdout.strip.split("\n")
 
+  sql = mssql_session(user: attribute('user'),
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
+  get_path = sql.query("SELECT DISTINCT LEFT(path, (LEN(path) - CHARINDEX('\\',REVERSE(path)) + 1)) AS 'result' FROM sys.traces UNION SELECT log_file_path AS 'result' FROM sys.server_file_audits").column('result')
 
-  get_path.each do | path|  
+  get_path.each do |path|
     a = path.strip
-    
+
     describe.one do
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  Modify, Synchronize\r\n"}
-      end 
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
-      end 
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
-      end 
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  Modify, Synchronize\r\n" }
       end
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n"}
-      end 
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+      end
       describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n"}
-      end 
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      end
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      end
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+      end
+      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
+        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      end
     end
   end
 end
-

@@ -1,4 +1,4 @@
-control "V-67845" do
+control 'V-67845' do
   title "SQL Server must have the Client Tools SDK software component removed
   if it is unused."
   desc  "Information systems are capable of providing a wide variety of
@@ -16,13 +16,13 @@ control "V-67845" do
   if it is unused.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000091"
-  tag "gid": "V-67845"
-  tag "rid": "SV-82335r1_rule"
-  tag "stig_id": "SQL4-00-016845"
-  tag "fix_id": "F-73961r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000091'
+  tag "gid": 'V-67845'
+  tag "rid": 'SV-82335r1_rule'
+  tag "stig_id": 'SQL4-00-016845'
+  tag "fix_id": 'F-73961r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -64,9 +64,7 @@ control "V-67845" do
       it { should be true }
     end
     describe registry_key('HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\120\Tools\Setup\Client_Components_Full') do
-      its("FeatureList") { should_not include 'SDK' }
+      its('FeatureList') { should_not include 'SDK' }
     end
   end
-
-end   
-
+end

@@ -1,4 +1,4 @@
-control "V-67915" do
+control 'V-67915' do
   title "Software updates to SQL Server must be tested before being applied to
   production systems."
   desc  "While it is important to apply SQL Server updates in a timely manner,
@@ -9,13 +9,13 @@ control "V-67915" do
   non-production systems, and the resulting version of SQL Server assessed for
   correct operation."
   impact 0.7
-  tag "gtitle": "SRG-APP-000456-DB-000390"
-  tag "gid": "V-67915"
-  tag "rid": "SV-82405r1_rule"
-  tag "stig_id": "SQL4-00-035500"
-  tag "fix_id": "F-74031r1_fix"
-  tag "cci": ["CCI-002605"]
-  tag "nist": ["SI-2 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000456-DB-000390'
+  tag "gid": 'V-67915'
+  tag "rid": 'SV-82405r1_rule'
+  tag "stig_id": 'SQL4-00-035500'
+  tag "fix_id": 'F-74031r1_fix'
+  tag "cci": ['CCI-002605']
+  tag "nist": ['SI-2 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -36,7 +36,6 @@ control "V-67915" do
   SQL Server updates are tested prior to installation on production servers."
   describe "Software updates to SQL Server must be tested before being applied to
   production systems." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

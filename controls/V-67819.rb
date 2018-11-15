@@ -1,7 +1,7 @@
-control "V-67819" do
+control 'V-67819' do
   title "SQL Server must have the publicly available pubs sample database
   removed."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by
   default, may not be necessary to support essential organizational operations
   (e.g., key missions, functions).
@@ -24,13 +24,13 @@ control "V-67819" do
   and the OS.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000090"
-  tag "gid": "V-67819"
-  tag "rid": "SV-82309r1_rule"
-  tag "stig_id": "SQL4-00-016300"
-  tag "fix_id": "F-73935r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000090'
+  tag "gid": 'V-67819'
+  tag "rid": 'SV-82309r1_rule'
+  tag "stig_id": 'SQL4-00-016300'
+  tag "fix_id": 'F-73935r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -47,14 +47,14 @@ control "V-67819" do
   SELECT name FROM sysdatabases WHERE name LIKE 'pubs%';
 
   If the \"pubs\" database is present, this is a finding."
-    tag "fix": "Remove the publicly available \"pubs\" database from SQL Server
-  by running the following script:
+  tag "fix": "Remove the publicly available \"pubs\" database from SQL Server
+by running the following script:
 
-  USE master;
-  GO
-  DROP DATABASE pubs;
-  GO"
- 
+USE master;
+GO
+DROP DATABASE pubs;
+GO"
+
   query = %(
    SELECT name FROM sysdatabases WHERE name LIKE 'pubs%';
     )
@@ -62,12 +62,10 @@ control "V-67819" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
   describe 'Listing the pubs database in sysdatabases' do
-    subject { sql_session.query(query).column('name')}
+    subject { sql_session.query(query).column('name') }
     it { should be_empty }
   end
 end
-

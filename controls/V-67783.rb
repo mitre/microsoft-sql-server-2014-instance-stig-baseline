@@ -1,8 +1,8 @@
-control "V-67783" do
+control 'V-67783' do
   title "SQL Server must include organization-defined additional, more detailed
   information in Trace or Audit records for events identified by type, location,
   or subject."
-  desc  "SQL Server auditing capability is critical for accurate forensic
+  desc "SQL Server auditing capability is critical for accurate forensic
   analysis. Audit record content which may be necessary to satisfy the
   requirement of this control includes:  time stamps, source and destination
   addresses, user/process identifiers, event descriptions, success/fail
@@ -28,13 +28,13 @@ control "V-67783" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000101-DB-000044"
-  tag "gid": "V-67783"
-  tag "rid": "SV-82273r1_rule"
-  tag "stig_id": "SQL4-00-012400"
-  tag "fix_id": "F-73899r1_fix"
-  tag "cci": ["CCI-000135"]
-  tag "nist": ["AU-3 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000101-DB-000044'
+  tag "gid": 'V-67783'
+  tag "rid": 'SV-82273r1_rule'
+  tag "stig_id": 'SQL4-00-012400'
+  tag "fix_id": 'F-73899r1_fix'
+  tag "cci": ['CCI-000135']
+  tag "nist": ['AU-3 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -48,7 +48,7 @@ control "V-67783" do
   tag "check": "If neither SQL Server Audit nor SQL Server Trace is in use for
   audit purposes, this is a finding.
 
-  Review system documentation to determine whether SQL Server is required to 
+  Review system documentation to determine whether SQL Server is required to
   audit any events, and any fields, in addition to those in the standard audit or
   audit-oriented trace.
 
@@ -86,7 +86,6 @@ control "V-67783" do
   describe "SQL Server must include organization-defined additional, more detailed
   information in Trace or Audit records for events identified by type, location,
   or subject" do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

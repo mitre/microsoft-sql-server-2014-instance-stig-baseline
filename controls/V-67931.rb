@@ -1,7 +1,7 @@
-control "V-67931" do
+control 'V-67931' do
   title "SQL Server must generate Trace or Audit records when unsuccessful
   logons or connection attempts occur."
-  desc  "For completeness of forensic analysis, it is necessary to track failed
+  desc "For completeness of forensic analysis, it is necessary to track failed
   attempts to log on to SQL Server. While positive identification may not be
   possible in a case of failed authentication, as much information as possible
   about the incident must be captured.
@@ -14,13 +14,13 @@ control "V-67931" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000503-DB-000351"
-  tag "gid": "V-67931"
-  tag "rid": "SV-82421r2_rule"
-  tag "stig_id": "SQL4-00-037600"
-  tag "fix_id": "F-74047r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000503-DB-000351'
+  tag "gid": 'V-67931'
+  tag "rid": 'SV-82421r2_rule'
+  tag "stig_id": 'SQL4-00-037600'
+  tag "fix_id": 'F-74047r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -147,7 +147,6 @@ control "V-67931" do
     SELECT * FROM sys.traces
   )
 
-
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
       subject { sql_session.query(query_traces) }
@@ -164,7 +163,7 @@ control "V-67931" do
         end
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -178,8 +177,4 @@ control "V-67931" do
       end
     end
   end
-
-
-
 end
-

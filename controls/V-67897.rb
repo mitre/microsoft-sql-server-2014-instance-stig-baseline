@@ -1,7 +1,7 @@
-control "V-67897" do
+control 'V-67897' do
   title "SQL Server must produce time stamps that can be mapped to Coordinated
   Universal Time (UTC, formerly GMT)."
-  desc  "If time stamps are not consistently applied and there is no common
+  desc "If time stamps are not consistently applied and there is no common
   time reference, it is difficult to perform forensic analysis, in audit files,
   trace files/tables, and application data tables.
 
@@ -21,13 +21,13 @@ control "V-67897" do
   requirement, as are SQL Server's audit and trace capabilities.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000374-DB-000322"
-  tag "gid": "V-67897"
-  tag "rid": "SV-82387r1_rule"
-  tag "stig_id": "SQL4-00-033600"
-  tag "fix_id": "F-74013r1_fix"
-  tag "cci": ["CCI-001890"]
-  tag "nist": ["AU-8 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000374-DB-000322'
+  tag "gid": 'V-67897'
+  tag "rid": 'SV-82387r1_rule'
+  tag "stig_id": 'SQL4-00-033600'
+  tag "fix_id": 'F-74013r1_fix'
+  tag "cci": ['CCI-001890']
+  tag "nist": ['AU-8 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -63,8 +63,7 @@ control "V-67897" do
     its('Type') { should_not cmp == 'NTP' }
     its('Type') { should_not cmp == 'AllSync' }
   end
-    describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\W32time\Parameters') do
-      its('NTPServer') { should_not cmp == 'time.windows.com' }
-    end
+  describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\W32time\Parameters') do
+    its('NTPServer') { should_not cmp == 'time.windows.com' }
+  end
 end
-

@@ -1,11 +1,10 @@
+ALLOWED_USERS = attribute('allowed_users')
 
- ALLOWED_USERS = attribute('allowed_users')
-
-control "V-67885" do
+control 'V-67885' do
   title "SQL Server must prevent non-privileged users from executing privileged
   functionality, to include disabling, circumventing, or altering implemented
   security safeguards/countermeasures."
-  desc  "Preventing non-privileged users from executing privileged functions
+  desc "Preventing non-privileged users from executing privileged functions
   mitigates the risk that unauthorized individuals or processes may gain
   unnecessary access to information or privileges.
 
@@ -53,13 +52,13 @@ control "V-67885" do
   combination of these.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000340-DB-000304"
-  tag "gid": "V-67885"
-  tag "rid": "SV-82375r1_rule"
-  tag "stig_id": "SQL4-00-032500"
-  tag "fix_id": "F-74001r1_fix"
-  tag "cci": ["CCI-002235"]
-  tag "nist": ["AC-6 (10)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000340-DB-000304'
+  tag "gid": 'V-67885'
+  tag "rid": 'SV-82375r1_rule'
+  tag "stig_id": 'SQL4-00-032500'
+  tag "fix_id": 'F-74001r1_fix'
+  tag "cci": ['CCI-002235']
+  tag "nist": ['AC-6 (10)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -87,30 +86,27 @@ control "V-67885" do
   permissions) with documented requirements."
 
   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-  permissions  = sql.query("SELECT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%'").column('result')
-
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
+  permissions = sql.query("SELECT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%'").column('result')
 
   if  permissions.empty?
     impact 0.0
     desc 'There are no sql privileged users, control not applicable'
 
-    describe "There are no sql privileged users, control not applicable" do
-      skip "There are no sql privileged users, control not applicable"
+    describe 'There are no sql privileged users, control not applicable' do
+      skip 'There are no sql privileged users, control not applicable'
     end
   else
-    permissions.each do | perms|  
+    permissions.each do |perms|
       a = perms.strip
       describe "sql privileged users: #{a}" do
-        subject {a}
+        subject { a }
         it { should be_in ALLOWED_USERS }
-      end 
+      end
     end
-     
-  end
-end 
 
+  end
+end

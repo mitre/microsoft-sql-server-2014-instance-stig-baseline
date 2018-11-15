@@ -1,5 +1,5 @@
-control "V-67879" do
-  title "SQL Server must isolate security functions from nonsecurity functions."
+control 'V-67879' do
+  title 'SQL Server must isolate security functions from nonsecurity functions.'
   desc  "An isolation boundary provides access control and protects the
 integrity of the hardware, software, and firmware that perform security
 functions.
@@ -26,13 +26,13 @@ and nonsecurity functionality is commingled, users who have access to
 nonsecurity functionality may be able to access security functionality.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000233-DB-000124"
-  tag "gid": "V-67879"
-  tag "rid": "SV-82369r1_rule"
-  tag "stig_id": "SQL4-00-021500"
-  tag "fix_id": "F-73995r1_fix"
-  tag "cci": ["CCI-001084"]
-  tag "nist": ["SC-3", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000233-DB-000124'
+  tag "gid": 'V-67879'
+  tag "rid": 'SV-82369r1_rule'
+  tag "stig_id": 'SQL4-00-021500'
+  tag "fix_id": 'F-73995r1_fix'
+  tag "cci": ['CCI-001084']
+  tag "nist": ['SC-3', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -62,8 +62,7 @@ objects and code implementing application logic.
 In all cases, use GRANT, REVOKE, DENY, ALTER ROLE … ADD MEMBER …  and/or  ALTER
 ROLE  …. DROP MEMBER statements to add and remove permissions on server-level
 and database-level security-related objects to provide effective isolation."
-  describe "SQL Server must isolate security functions from nonsecurity functions" do
-    skip "This control is manual"
+  describe 'SQL Server must isolate security functions from nonsecurity functions' do
+    skip 'This control is manual'
   end
 end
-

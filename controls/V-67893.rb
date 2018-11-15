@@ -1,4 +1,4 @@
-control "V-67893" do
+control 'V-67893' do
   title "SQL Server, the operating system, or the storage system must provide a
   warning to appropriate support staff when allocated audit record storage volume
   reaches 75% of maximum audit record storage capacity."
@@ -23,13 +23,13 @@ control "V-67893" do
   DBA/SA.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000359-DB-000319"
-  tag "gid": "V-67893"
-  tag "rid": "SV-82383r1_rule"
-  tag "stig_id": "SQL4-00-033400"
-  tag "fix_id": "F-74009r1_fix"
-  tag "cci": ["CCI-001855"]
-  tag "nist": ["AU-5 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000359-DB-000319'
+  tag "gid": 'V-67893'
+  tag "rid": 'SV-82383r1_rule'
+  tag "stig_id": 'SQL4-00-033400'
+  tag "fix_id": 'F-74009r1_fix'
+  tag "cci": ['CCI-001855']
+  tag "nist": ['AU-5 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -49,7 +49,6 @@ control "V-67893" do
   describe "SQL Server, the operating system, or the storage system must provide a
   warning to appropriate support staff when allocated audit record storage volume
   reaches 75% of maximum audit record storage capacity." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

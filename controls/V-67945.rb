@@ -1,8 +1,7 @@
-
-control "V-67945" do
+control 'V-67945' do
   title "If SQL Server authentication, using passwords, is employed, SQL Server
   must enforce the DoD standards for password lifetime."
-  desc  "Windows domain/enterprise authentication and identification must be
+  desc "Windows domain/enterprise authentication and identification must be
   used (SQL4-00-030300).  Native SQL Server authentication may be used only when
   circumstances make it unavoidable; and must be documented and AO-approved.
 
@@ -25,13 +24,13 @@ control "V-67945" do
   the rules from Windows.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000164-DB-000401"
-  tag "gid": "V-67945"
-  tag "rid": "SV-82435r2_rule"
-  tag "stig_id": "SQL4-00-038910"
-  tag "fix_id": "F-74061r1_fix"
-  tag "cci": ["CCI-000198", "CCI-000199", "CCI-000200"]
-  tag "nist": ["IA-5 (1) (d)", "IA-5 (1) (d)", "IA-5 (1) (e)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000164-DB-000401'
+  tag "gid": 'V-67945'
+  tag "rid": 'SV-82435r2_rule'
+  tag "stig_id": 'SQL4-00-038910'
+  tag "fix_id": 'F-74061r1_fix'
+  tag "cci": ['CCI-000198', 'CCI-000199', 'CCI-000200']
+  tag "nist": ['IA-5 (1) (d)', 'IA-5 (1) (d)', 'IA-5 (1) (e)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -66,21 +65,18 @@ control "V-67945" do
   Alternatively, for each identified Login, run the statement:
   ALTER LOGIN <login name>  CHECK_EXPIRATION = ON;"
 
-   query = %(
-    SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0 AND is_expiration_checked = 0;
-  )
+  query = %(
+   SELECT name FROM sys.sql_logins WHERE type_desc = 'SQL_LOGIN' AND is_disabled = 0 AND is_expiration_checked = 0;
+ )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-
+                              port: attribute('port'))
 
   describe 'The list of sql logins' do
-      subject { sql_session.query(query).column('name')}
-      it { should be_empty}
+    subject { sql_session.query(query).column('name') }
+    it { should be_empty }
   end
 end
-

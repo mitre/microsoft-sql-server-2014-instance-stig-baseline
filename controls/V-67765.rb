@@ -1,11 +1,10 @@
 APPROVED_AUDIT_MAINTAINERS = attribute('approved_audit_maintainers')
 
-  
-control "V-67765" do
+control 'V-67765' do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
   must allow only the ISSM (or individuals or roles appointed by the ISSM) to
   select which auditable events are to be traced."
-  desc  "Without the capability to restrict which roles and individuals can
+  desc "Without the capability to restrict which roles and individuals can
   select which events are audited, unauthorized personnel may be able to prevent
   or interfere with the auditing of critical events.
 
@@ -22,17 +21,17 @@ control "V-67765" do
   reasons, the instance may be using SQL Server Trace for auditing, which remains
   an acceptable solution for the time being.  Note, however, that Microsoft
   intends to remove most aspects of Trace at some point after SQL Server 2016.
- 
+
       This version of the requirement deals with Trace-based audit trails.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000090-DB-000065"
-  tag "gid": "V-67765"
-  tag "rid": "SV-82255r1_rule"
-  tag "stig_id": "SQL4-00-011300"
-  tag "fix_id": "F-73879r1_fix"
-  tag "cci": ["CCI-000171"]
-  tag "nist": ["AU-12 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000090-DB-000065'
+  tag "gid": 'V-67765'
+  tag "rid": 'SV-82255r1_rule'
+  tag "stig_id": 'SQL4-00-011300'
+  tag "fix_id": 'F-73879r1_fix'
+  tag "cci": ['CCI-000171']
+  tag "nist": ['AU-12 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -102,27 +101,26 @@ control "V-67765" do
   Then, for each authorized login, run the statement:
   ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
   GO"
-   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-   permissions_audit = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
-          P.[Permission] IN
-          (
-          'ALTER TRACE',
-          'CREATE TRACE EVENT NOTIFICATION'
-          );").column('result')
-  if  permissions_audit.empty? 
+  sql = mssql_session(user: attribute('user'),
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
+  permissions_audit = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
+         P.[Permission] IN
+         (
+         'ALTER TRACE',
+         'CREATE TRACE EVENT NOTIFICATION'
+         );").column('result')
+  if  permissions_audit.empty?
     impact 0.0
-    describe "There are no sql approved audit maintainers, control N/A" do
-      skip "There are no sql approved audit maintainers, control N/A"
+    describe 'There are no sql approved audit maintainers, control N/A' do
+      skip 'There are no sql approved audit maintainers, control N/A'
     end
   else
-     permissions_audit.each do |grantee|
+    permissions_audit.each do |grantee|
       describe "sql audit maintainers: #{grantee}" do
-        subject {grantee}
+        subject { grantee }
         it { should be_in APPROVED_AUDIT_MAINTAINERS }
       end
     end

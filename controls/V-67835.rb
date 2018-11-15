@@ -1,4 +1,4 @@
-control "V-67835" do
+control 'V-67835' do
   title "SQL Server must have the Full-Text Search software component removed
   if it is unused."
   desc  "Information systems are capable of providing a wide variety of
@@ -16,13 +16,13 @@ control "V-67835" do
   it is unused.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000091"
-  tag "gid": "V-67835"
-  tag "rid": "SV-82325r1_rule"
-  tag "stig_id": "SQL4-00-016815"
-  tag "fix_id": "F-73951r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000091'
+  tag "gid": 'V-67835'
+  tag "rid": 'SV-82325r1_rule'
+  tag "stig_id": 'SQL4-00-016815'
+  tag "fix_id": 'F-73951r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -65,4 +65,3 @@ control "V-67835" do
     end
   end
 end
-

@@ -1,7 +1,7 @@
-control "V-67871" do
+control 'V-67871' do
   title "SQL Server must use NIST FIPS 140-2 validated cryptographic modules
   for cryptographic operations."
-  desc  "Use of weak or not validated cryptographic algorithms undermines the
+  desc "Use of weak or not validated cryptographic algorithms undermines the
   purposes of utilizing encryption and digital signatures to protect data.  Weak
   algorithms can be easily broken and not validated cryptographic modules may not
   implement algorithms correctly. Unapproved cryptographic modules or algorithms
@@ -27,13 +27,13 @@ control "V-67871" do
   encryption modules.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000179-DB-000114"
-  tag "gid": "V-67871"
-  tag "rid": "SV-82361r1_rule"
-  tag "stig_id": "SQL4-00-031100"
-  tag "fix_id": "F-73987r1_fix"
-  tag "cci": ["CCI-000803", "CCI-002450"]
-  tag "nist": ["IA-7", "SC-13", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000179-DB-000114'
+  tag "gid": 'V-67871'
+  tag "rid": 'SV-82361r1_rule'
+  tag "stig_id": 'SQL4-00-031100'
+  tag "fix_id": 'F-73987r1_fix'
+  tag "cci": ['CCI-000803', 'CCI-002450']
+  tag "nist": ['IA-7', 'SC-13', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -60,9 +60,8 @@ control "V-67871" do
   and then click Apply.  If the radio buttons are grayed out, use Group Policy
   Management (on the appropriate server for this domain) to enforce the Enabled
   policy, and deploy it to the server(s) running SQL Server."
-  describe registry_key("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy") do
-    it { should have_property "Enabled" }
-    its("Enabled") { should cmp == 1 }
+  describe registry_key('HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy') do
+    it { should have_property 'Enabled' }
+    its('Enabled') { should cmp == 1 }
   end
 end
-

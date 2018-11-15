@@ -1,5 +1,4 @@
-
-control "V-67803" do
+control 'V-67803' do
   title "SQL Server and/or the operating system must protect its audit
   configuration from unauthorized modification."
   desc  "Protecting audit data also includes identifying and protecting the
@@ -21,13 +20,13 @@ control "V-67803" do
   definitions.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000122-DB-000203"
-  tag "gid": "V-67803"
-  tag "rid": "SV-82293r1_rule"
-  tag "stig_id": "SQL4-00-014000"
-  tag "fix_id": "F-73919r1_fix"
-  tag "cci": ["CCI-001494"]
-  tag "nist": ["AU-9", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000122-DB-000203'
+  tag "gid": 'V-67803'
+  tag "rid": 'SV-82293r1_rule'
+  tag "stig_id": 'SQL4-00-014000'
+  tag "fix_id": 'F-73919r1_fix'
+  tag "cci": ['CCI-001494']
+  tag "nist": ['AU-9', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -48,7 +47,6 @@ control "V-67803" do
   accessible by authorized personnel only."
   describe "SQL Server and/or the operating system must protect its audit
   configuration from unauthorized modification." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

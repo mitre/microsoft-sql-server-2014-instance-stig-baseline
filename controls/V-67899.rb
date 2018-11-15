@@ -1,10 +1,10 @@
 ALLOWED_USERS_PRIV_FUNCTIONS = attribute('allowed_users_priv_functions')
 
-control "V-67899" do
+control 'V-67899' do
   title "SQL Server must prohibit user installation of logic modules (stored
   procedures, functions, triggers, views, etc.) without explicit privileged
   status."
-  desc  "Allowing regular users to install software, without explicit
+  desc "Allowing regular users to install software, without explicit
   privileges, creates the risk that untested or potentially malicious software
   will be installed on the system. Explicit privileges (escalated or
   administrative privileges) provide the regular user with explicit capabilities
@@ -26,13 +26,13 @@ control "V-67899" do
   procedures, functions, triggers, views, etc.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000378-DB-000365"
-  tag "gid": "V-67899"
-  tag "rid": "SV-82389r1_rule"
-  tag "stig_id": "SQL4-00-033800"
-  tag "fix_id": "F-74015r1_fix"
-  tag "cci": ["CCI-001812"]
-  tag "nist": ["CM-11 (2)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000378-DB-000365'
+  tag "gid": 'V-67899'
+  tag "rid": 'SV-82389r1_rule'
+  tag "stig_id": 'SQL4-00-033800'
+  tag "fix_id": 'F-74015r1_fix'
+  tag "cci": ['CCI-001812']
+  tag "nist": ['CM-11 (2)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -63,28 +63,26 @@ control "V-67899" do
   permissions, and remove any unauthorized role memberships."
 
   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
   permissions = sql.query("SELECT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission LIKE '%DELETE%'").column('result')
   if  permissions.empty?
     impact 0.0
     desc 'There are no sql privileged database users, control not applicable'
 
-    describe "There are no sql privileged database users, control not applicable" do
-      skip "There are no sql privileged database users, control not applicable"
+    describe 'There are no sql privileged database users, control not applicable' do
+      skip 'There are no sql privileged database users, control not applicable'
     end
   else
-    permissions.each do | perms|  
+    permissions.each do |perms|
       a = perms.strip
       describe "sql privileged database users: #{a}" do
-        subject {a}
-        it { should be_in ALLOWED_USERS_PRIV_FUNCTIONS  }
-      end 
+        subject { a }
+        it { should be_in ALLOWED_USERS_PRIV_FUNCTIONS }
+      end
     end
-     
+
   end
 end
-

@@ -1,10 +1,10 @@
 AUTHORIZED_PORTS = attribute('authorized_ports')
 AUTHORIZED_PORT_NAME = attribute('authorized_ports_name')
 
-control "V-67861" do
+control 'V-67861' do
   title "SQL Server and Windows must be configured to prohibit or restrict the
   use of unauthorized network ports."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by
   default, may not be necessary to support essential organizational operations
   (e.g., key missions, functions).
@@ -34,13 +34,13 @@ control "V-67861" do
   functionality, not to functions in mathematics and programming languages.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000142-DB-000094"
-  tag "gid": "V-67861"
-  tag "rid": "SV-82351r1_rule"
-  tag "stig_id": "SQL4-00-017410"
-  tag "fix_id": "F-73977r1_fix"
-  tag "cci": ["CCI-000382"]
-  tag "nist": ["CM-7 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000142-DB-000094'
+  tag "gid": 'V-67861'
+  tag "rid": 'SV-82351r1_rule'
+  tag "stig_id": 'SQL4-00-017410'
+  tag "fix_id": 'F-73977r1_fix'
+  tag "cci": ['CCI-000382']
+  tag "nist": ['CM-7 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -63,31 +63,29 @@ control "V-67861" do
     SELECT value_name, value_data FROM sys.dm_server_registry WHERE registry_key LIKE '%IPALL' AND value_name in ('TcpPort','TcpDynamicPorts')
   )
 
-  query_port= %(
+  query_port = %(
     SELECT value_name, value_data FROM sys.dm_server_registry WHERE registry_key LIKE '%IPALL' AND value_name in ('TcpPort','TcpDynamicPorts') AND value_data != ''
   )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
-   port_name = sql_session.query(query_port_name).column('value_name')
-   port_name.each do |name1|
-      describe "port name: #{name1}" do
-        subject {name1}
-        it { should be_in AUTHORIZED_PORT_NAME }
-      end
+  port_name = sql_session.query(query_port_name).column('value_name')
+  port_name.each do |name1|
+    describe "port name: #{name1}" do
+      subject { name1 }
+      it { should be_in AUTHORIZED_PORT_NAME }
     end
+  end
 
   port = sql_session.query(query_port).column('value_data')
-   port.each do |ports|
-      describe "port: #{ports}" do
-        subject {ports}
-        it { should be_in AUTHORIZED_PORTS }
-      end
+  port.each do |ports|
+    describe "port: #{ports}" do
+      subject { ports }
+      it { should be_in AUTHORIZED_PORTS }
     end
+  end
 end
-

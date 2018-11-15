@@ -1,8 +1,8 @@
-control "V-67869" do
+control 'V-67869' do
   title "When using command-line tools such as SQLCMD in a mixed-mode
   authentication environment, users must use a logon method that does not expose
   the password."
-  desc  "To prevent the compromise of authentication information, such as
+  desc "To prevent the compromise of authentication information, such as
   passwords and PINs, during the authentication process, the feedback from the
   information system must not provide any information that would allow an
   unauthorized user to compromise the authentication mechanism.
@@ -27,13 +27,13 @@ control "V-67869" do
   matter of practice and procedure.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000178-DB-000083"
-  tag "gid": "V-67869"
-  tag "rid": "SV-82359r1_rule"
-  tag "stig_id": "SQL4-00-039020"
-  tag "fix_id": "F-73985r1_fix"
-  tag "cci": ["CCI-000206"]
-  tag "nist": ["IA-6", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000178-DB-000083'
+  tag "gid": 'V-67869'
+  tag "rid": 'SV-82359r1_rule'
+  tag "stig_id": 'SQL4-00-039020'
+  tag "fix_id": 'F-73985r1_fix'
+  tag "cci": ['CCI-000206']
+  tag "nist": ['IA-6', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -74,20 +74,18 @@ control "V-67869" do
   2) Train all users of the tool in the importance of not using the plain-text
   password option and in how to keep the password hidden."
 
-  query= %(
+  query = %(
   EXEC master.sys.xp_loginconfig 'login mode';
   )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
-   describe 'The sql server authentication mode' do
-      subject { sql_session.query(query).column('config_value')}
-      it { should_not cmp 'Mixed'}
+  describe 'The sql server authentication mode' do
+    subject { sql_session.query(query).column('config_value') }
+    it { should_not cmp 'Mixed' }
   end
 end
-

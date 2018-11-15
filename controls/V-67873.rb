@@ -1,4 +1,4 @@
-control "V-67873" do
+control 'V-67873' do
   title "SQL Server must uniquely identify and authenticate non-organizational
   users (or processes acting on behalf of non-organizational users)."
   desc  "Non-organizational users include all information system users other
@@ -26,17 +26,17 @@ control "V-67873" do
   organizations.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000180-DB-000115"
-  tag "gid": "V-67873"
-  tag "rid": "SV-82363r1_rule"
-  tag "stig_id": "SQL4-00-018900"
-  tag "fix_id": "F-73989r1_fix"
-  tag "cci": ["CCI-000804"]
-  tag "nist": ["IA-8", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000180-DB-000115'
+  tag "gid": 'V-67873'
+  tag "rid": 'SV-82363r1_rule'
+  tag "stig_id": 'SQL4-00-018900'
+  tag "fix_id": 'F-73989r1_fix'
+  tag "cci": ['CCI-000804']
+  tag "nist": ['IA-8', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
-  tag "mitigations": nil 
+  tag "mitigations": nil
   tag "severity_override_guidance": false
   tag "potential_impacts": nil
   tag "third_party_tools": nil
@@ -57,8 +57,7 @@ control "V-67873" do
   non-organizational users who log onto the system. This likely would be done via
   a combination of the operating system with unique accounts and the SQL Server
   by ensuring mapping to individual accounts."
-  describe "The Service Master Key must be backed up, stored offline and off-site." do
-    skip "This controls is manual"
+  describe 'The Service Master Key must be backed up, stored offline and off-site.' do
+    skip 'This controls is manual'
   end
 end
-

@@ -164,11 +164,9 @@ attributes:
     description: 'List of sql components installed'
     type: array
     default: ["MSSQLSERVER",
-            "SQL Server Distributed Replay Client",
-            "SQL Server Distributed Replay Controller",
-            "SQLBrowser",
             "SQLSERVERAGENT",
-            "SQLWriter" ]
+            "SQLWriter",
+            "SQLBrowser" ]
 
   - name: authorized_protocols
     description: 'List of authorized network protocols for the SQL server'

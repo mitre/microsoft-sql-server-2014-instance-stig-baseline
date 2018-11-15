@@ -1,7 +1,6 @@
-
 APPROVED_USERS_SQL_AUDITS = attribute('approved_users_sql_audits')
- 
-control "V-67797" do
+
+control 'V-67797' do
   title "SQL Server Profiler must be protected  from unauthorized access,
   modification, or removal."
   desc  "Protecting audit data also includes identifying and protecting the
@@ -13,13 +12,13 @@ control "V-67797" do
   could also manipulate logs to hide evidence of malicious activity.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000121-DB-000202"
-  tag "gid": "V-67797"
-  tag "rid": "SV-82287r2_rule"
-  tag "stig_id": "SQL4-00-013910"
-  tag "fix_id": "F-73913r2_fix"
-  tag "cci": ["CCI-001493"]
-  tag "nist": ["AU-9", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000121-DB-000202'
+  tag "gid": 'V-67797'
+  tag "rid": 'SV-82287r2_rule'
+  tag "stig_id": 'SQL4-00-013910'
+  tag "fix_id": 'F-73913r2_fix'
+  tag "cci": ['CCI-001493']
+  tag "nist": ['AU-9', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -57,29 +56,26 @@ control "V-67797" do
   GO"
 
   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
   permissions = sql.query("SELECT login.name as 'result' FROM sys.server_permissions perm JOIN sys.server_principals login ON perm.grantee_principal_id = login.principal_id WHERE permission_name in ('CONTROL SERVER', 'ALTER ANY DATABASE AUDIT', 'ALTER ANY SERVER AUDIT','ALTER TRACE') and login.name not like '##MS_%';").column('result')
 
   if  permissions.empty?
     impact 0.0
     desc 'There are no sql audit permissions alter any server audit granted control not applicable'
 
-    describe "There are no sql audit permissions alter any server audit granted, control not applicable" do
-      skip "There are no sql audit permissions  alter any server audit granted, control not applicable"
+    describe 'There are no sql audit permissions alter any server audit granted, control not applicable' do
+      skip 'There are no sql audit permissions  alter any server audit granted, control not applicable'
     end
   else
-     permissions.each do |grantee|
+    permissions.each do |grantee|
       a = grantee.strip
       describe "sql audit permissions alter any server audit: #{a}" do
-        subject {a}
+        subject { a }
         it { should be_in APPROVED_USERS_SQL_AUDITS }
       end
-    end 
-  end 
-
+    end
+  end
 end
-

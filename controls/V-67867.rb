@@ -1,8 +1,8 @@
-control "V-67867" do
+control 'V-67867' do
   title "Applications must obscure feedback of authentication information
   during the authentication process to protect the information from possible
   exploitation/use by unauthorized individuals."
-  desc  "To prevent the compromise of authentication information, such as
+  desc "To prevent the compromise of authentication information, such as
   passwords and PINs, during the authentication process, the feedback from the
   information system must not provide any information that would allow an
   unauthorized user to compromise the authentication mechanism.
@@ -27,13 +27,13 @@ control "V-67867" do
   and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000178-DB-000083"
-  tag "gid": "V-67867"
-  tag "rid": "SV-82357r2_rule"
-  tag "stig_id": "SQL4-00-039010"
-  tag "fix_id": "F-73983r1_fix"
-  tag "cci": ["CCI-000206"]
-  tag "nist": ["IA-6", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000178-DB-000083'
+  tag "gid": 'V-67867'
+  tag "rid": 'SV-82357r2_rule'
+  tag "stig_id": 'SQL4-00-039010'
+  tag "fix_id": 'F-73983r1_fix'
+  tag "cci": ['CCI-000206']
+  tag "nist": ['IA-6', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -54,7 +54,6 @@ control "V-67867" do
   describe "Applications must obscure feedback of authentication information
   during the authentication process to protect the information from possible
   exploitation/use by unauthorized individuals." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

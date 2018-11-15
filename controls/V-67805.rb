@@ -1,5 +1,4 @@
-
-control "V-67805" do
+control 'V-67805' do
   title "SQL Server and the operating system must protect SQL Server audit
   features from unauthorized removal."
   desc  "Protecting audit data also includes identifying and protecting the
@@ -21,13 +20,13 @@ control "V-67805" do
   definitions.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000123-DB-000204"
-  tag "gid": "V-67805"
-  tag "rid": "SV-82295r1_rule"
-  tag "stig_id": "SQL4-00-014100"
-  tag "fix_id": "F-73921r1_fix"
-  tag "cci": ["CCI-001495"]
-  tag "nist": ["AU-9", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000123-DB-000204'
+  tag "gid": 'V-67805'
+  tag "rid": 'SV-82295r1_rule'
+  tag "stig_id": 'SQL4-00-014100'
+  tag "fix_id": 'F-73921r1_fix'
+  tag "cci": ['CCI-001495']
+  tag "nist": ['AU-9', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -48,7 +47,6 @@ control "V-67805" do
   accessible by authorized personnel only."
   describe "SQL Server and the operating system must protect SQL Server audit
   features from unauthorized removal" do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

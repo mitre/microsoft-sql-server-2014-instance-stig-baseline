@@ -1,7 +1,7 @@
-control "V-67771" do
+control 'V-67771' do
   title "Where SQL Server Audit is in use, SQL Server must generate audit
   records when unsuccessful attempts to retrieve privileges/permissions occur."
-  desc  "Under some circumstances, it may be useful to monitor who/what is
+  desc "Under some circumstances, it may be useful to monitor who/what is
   reading privilege/permission/role information. Therefore, it must be possible
   to configure auditing to do this. DBMSs typically make such information
   available through views or functions.
@@ -36,13 +36,13 @@ control "V-67771" do
   all.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000091-DB-000325"
-  tag "gid": "V-67771"
-  tag "rid": "SV-82261r2_rule"
-  tag "stig_id": "SQL4-00-030410"
-  tag "fix_id": "F-73885r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000091-DB-000325'
+  tag "gid": 'V-67771'
+  tag "rid": 'SV-82261r2_rule'
+  tag "stig_id": 'SQL4-00-030410'
+  tag "fix_id": 'F-73885r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -109,7 +109,7 @@ control "V-67771" do
   ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
   = ON);
   GO"
-  
+
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
 
@@ -124,8 +124,7 @@ control "V-67771" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
@@ -141,17 +140,15 @@ control "V-67771" do
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
-
       describe 'Defined Audits with Audit Action SCHEMA_OBJECT_ACCESS_GROUP' do
-        subject { sql_session.query(query).column('server_specification_id')}
+        subject { sql_session.query(query).column('server_specification_id') }
         it { should_not be_empty }
       end
 
       describe 'Audited Result for Defined Audit Actions' do
-        subject { mssql_session.query(query).column('audited_result').to_s}
+        subject { mssql_session.query(query).column('audited_result').to_s }
         it { should match /SUCCESS AND FAILURE|FAILURE/ }
       end
     end
-  end  
+  end
 end
-

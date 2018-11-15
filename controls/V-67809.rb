@@ -1,7 +1,7 @@
-control "V-67809" do
+control 'V-67809' do
   title "SQL Server security-relevant configuration settings must be monitored
   to discover unauthorized changes."
-  desc  "When dealing with change control issues, it should be noted, any
+  desc "When dealing with change control issues, it should be noted, any
   changes to security-relevant configuration settings of SQL Server can
   potentially have significant effects on the overall security of the system.
 
@@ -20,13 +20,13 @@ control "V-67809" do
   configuration can lead to unauthorized or compromised installations.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000179"
-  tag "gid": "V-67809"
-  tag "rid": "SV-82299r1_rule"
-  tag "stig_id": "SQL4-00-015300"
-  tag "fix_id": "F-73925r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000179'
+  tag "gid": 'V-67809'
+  tag "rid": 'SV-82299r1_rule'
+  tag "stig_id": 'SQL4-00-015300'
+  tag "fix_id": 'F-73925r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -58,7 +58,6 @@ control "V-67809" do
   changes."
   describe "SQL Server security-relevant configuration settings must be monitored
   to discover unauthorized changes." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

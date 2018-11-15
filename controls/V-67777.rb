@@ -1,7 +1,7 @@
-control "V-67777" do
+control 'V-67777' do
   title "SQL Server must produce Trace or Audit records containing sufficient
   information to establish the sources (origins) of the events."
-  desc  "Information system auditing capability is critical for accurate
+  desc "Information system auditing capability is critical for accurate
   forensic analysis. Audit record content which may be necessary to satisfy the
   requirement of this control includes, but is not limited to:  time stamps,
   source and destination addresses, user/process identifiers, event descriptions,
@@ -29,13 +29,13 @@ control "V-67777" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000098-DB-000042"
-  tag "gid": "V-67777"
-  tag "rid": "SV-82267r2_rule"
-  tag "stig_id": "SQL4-00-012100"
-  tag "fix_id": "F-73891r1_fix"
-  tag "cci": ["CCI-000133"]
-  tag "nist": ["AU-3", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000098-DB-000042'
+  tag "gid": 'V-67777'
+  tag "rid": 'SV-82267r2_rule'
+  tag "stig_id": 'SQL4-00-012100'
+  tag "fix_id": 'F-73891r1_fix'
+  tag "cci": ['CCI-000133']
+  tag "nist": ['AU-3', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -146,9 +146,7 @@ control "V-67777" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-
+                              port: attribute('port'))
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -173,23 +171,21 @@ control "V-67777" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-   if server_trace_implemented
-      describe 'List defined traces for the SQL server instance' do
-        subject { sql_session.query(query_traces).column('id')}
-        it { should_not be_empty }
-      end
-  
+  if server_trace_implemented
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces).column('id') }
+      it { should_not be_empty }
+    end
 
     trace_ids = sql_session.query(query_traces).column('id')
-      describe.one do
-        trace_ids.each do |trace_id|
-          found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
-          describe 'List defined traces for the SQL server instance that are missing' do
-           subject { found_events}
+    describe.one do
+      trace_ids.each do |trace_id|
+        found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+        describe 'List defined traces for the SQL server instance that are missing' do
+          subject { found_events }
           it { should be_empty }
         end
       end
     end
   end
 end
-

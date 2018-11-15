@@ -1,7 +1,7 @@
-control "V-67919" do
+control 'V-67919' do
   title "SQL Server must produce Trace or Audit records when unsuccessful
   attempts to access security objects occur."
-  desc  "Changes to the security configuration must be tracked.  To aid in
+  desc "Changes to the security configuration must be tracked.  To aid in
   diagnosis, it is necessary to keep track of failed attempts in addition to the
   successful ones.
 
@@ -42,13 +42,13 @@ control "V-67919" do
   selecting from a table that does not exist) may not appear at all.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000492-DB-000333"
-  tag "gid": "V-67919"
-  tag "rid": "SV-82409r2_rule"
-  tag "stig_id": "SQL4-00-035700"
-  tag "fix_id": "F-74035r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000492-DB-000333'
+  tag "gid": 'V-67919'
+  tag "rid": 'SV-82409r2_rule'
+  tag "stig_id": 'SQL4-00-035700'
+  tag "fix_id": 'F-74035r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -186,7 +186,6 @@ control "V-67919" do
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
   )
-  
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
@@ -206,7 +205,6 @@ control "V-67919" do
       it { should_not be_empty }
     end
 
-
     trace_ids = sql_session.query(query_traces).column('id')
     describe.one do
       trace_ids.each do |trace_id|
@@ -217,11 +215,10 @@ control "V-67919" do
           it { should include '43' }
           it { should include '90' }
           it { should include '162' }
-
         end
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -235,9 +232,4 @@ control "V-67919" do
       end
     end
   end
-
-
 end
-
-
-

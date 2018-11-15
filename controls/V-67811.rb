@@ -1,7 +1,7 @@
-control "V-67811" do
+control 'V-67811' do
   title "SQL Server software installation account(s) must be restricted to
   authorized users."
-  desc  "When dealing with change control issues, it should be noted, any
+  desc "When dealing with change control issues, it should be noted, any
   changes to the hardware, software, and/or firmware components of the
   information system and/or application can potentially have significant effects
   on the overall security of the system.
@@ -29,13 +29,13 @@ control "V-67811" do
   use them.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000198"
-  tag "gid": "V-67811"
-  tag "rid": "SV-82301r1_rule"
-  tag "stig_id": "SQL4-00-015400"
-  tag "fix_id": "F-73927r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000198'
+  tag "gid": 'V-67811'
+  tag "rid": 'SV-82301r1_rule'
+  tag "stig_id": 'SQL4-00-015400'
+  tag "fix_id": 'F-73927r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -76,7 +76,6 @@ control "V-67811" do
   software installation account."
   describe "SQL Server software installation account(s) must be restricted to
   authorized users" do
-    skip "This is a manual check"
+    skip 'This is a manual check'
   end
 end
-

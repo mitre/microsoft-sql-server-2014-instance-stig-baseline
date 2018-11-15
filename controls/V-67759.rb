@@ -1,9 +1,9 @@
-control "V-67759" do
+control 'V-67759' do
   title "SQL Server authentication and identity management must be integrated
   with an organization-level authentication/access mechanism providing account
   management and automation for all users, groups, roles, and any other
   principals."
-  desc  "Enterprise environments make account management for applications and
+  desc "Enterprise environments make account management for applications and
   databases challenging and complex. A manual process for account management
   functions adds the risk of a potential oversight or other error. Managing
   accounts for the same person in multiple places is inefficient and prone to
@@ -44,14 +44,14 @@ control "V-67759" do
   implemented.
 
   "
-    impact 0.7
-  tag "gtitle": "SRG-APP-000023-DB-000001"
-  tag "gid": "V-67759"
-  tag "rid": "SV-82249r1_rule"
-  tag "stig_id": "SQL4-00-030300"
-  tag "fix_id": "F-73873r1_fix"
-  tag "cci": ["CCI-000015"]
-  tag "nist": ["AC-2 (1)", "Rev_4"]
+  impact 0.7
+  tag "gtitle": 'SRG-APP-000023-DB-000001'
+  tag "gid": 'V-67759'
+  tag "rid": 'SV-82249r1_rule'
+  tag "stig_id": 'SQL4-00-030300'
+  tag "fix_id": 'F-73873r1_fix'
+  tag "cci": ['CCI-000015']
+  tag "nist": ['AC-2 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -145,41 +145,37 @@ control "V-67759" do
   USE <database name>;
   DROP USER <user name>;"
 
-    query = %(
-    SELECT
-        name
-    FROM
-        sys.sql_logins
-    WHERE
-        type_desc = 'SQL_LOGIN'
-        AND is_disabled = 0;
-  )
+  query = %(
+  SELECT
+      name
+  FROM
+      sys.sql_logins
+  WHERE
+      type_desc = 'SQL_LOGIN'
+      AND is_disabled = 0;
+)
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
- account_list = sql_session.query(query).column('name')
+  account_list = sql_session.query(query).column('name')
 
   if account_list.empty?
     impact 0.0
     desc 'There are no sql managed accounts, control not applicable'
 
-    describe "There are no sql managed accounts, control not applicable" do
-      skip "There are no sql managed accounts, control not applicable"
+    describe 'There are no sql managed accounts, control not applicable' do
+      skip 'There are no sql managed accounts, control not applicable'
     end
   else
     account_list.each do |account|
       describe "sql managed account: #{account}" do
-        subject {account}
+        subject { account }
         it { should be_in SQL_MANAGED_ACCOUNTS }
       end
     end
   end
-
-
 end
-

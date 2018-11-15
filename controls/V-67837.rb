@@ -1,7 +1,7 @@
-control "V-67837" do
+control 'V-67837' do
   title "SQL Server must have the Master Data Services software component
   removed if it is unused."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by default
   or selected for installation by an administrator, may not be necessary to
   support essential organizational operations (e.g., key missions, functions).
@@ -16,13 +16,13 @@ control "V-67837" do
   if it is unused.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000091"
-  tag "gid": "V-67837"
-  tag "rid": "SV-82327r1_rule"
-  tag "stig_id": "SQL4-00-016820"
-  tag "fix_id": "F-73953r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000091'
+  tag "gid": 'V-67837'
+  tag "rid": 'SV-82327r1_rule'
+  tag "stig_id": 'SQL4-00-016820'
+  tag "fix_id": 'F-73953r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -64,10 +64,9 @@ control "V-67837" do
       subject { master_data_services_used }
       it { should be true }
     end
-  
+
     describe directory('C:\\Program Files\\Microsoft SQL Server\\120\\Master Data Services') do
       it { should_not exist }
     end
   end
 end
-

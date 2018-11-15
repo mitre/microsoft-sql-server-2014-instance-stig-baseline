@@ -1,8 +1,8 @@
-control "V-67903" do
+control 'V-67903' do
   title "SQL Server must produce Trace or Audit records of its enforcement of
   access restrictions associated with changes to the configuration of the DBMS or
   database(s)."
-  desc  "Without auditing the enforcement of access restrictions against
+  desc "Without auditing the enforcement of access restrictions against
   changes to configuration, it would be difficult to identify attempted attacks
   and an audit trail would not be available for forensic investigation for
   after-the-fact actions.
@@ -21,13 +21,13 @@ control "V-67903" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000381-DB-000361"
-  tag "gid": "V-67903"
-  tag "rid": "SV-82393r3_rule"
-  tag "stig_id": "SQL4-00-034000"
-  tag "fix_id": "F-74019r2_fix"
-  tag "cci": ["CCI-001814"]
-  tag "nist": ["CM-5 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000381-DB-000361'
+  tag "gid": 'V-67903'
+  tag "rid": 'SV-82393r3_rule'
+  tag "stig_id": 'SQL4-00-034000'
+  tag "fix_id": 'F-74019r2_fix'
+  tag "cci": ['CCI-001814']
+  tag "nist": ['CM-5 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -261,7 +261,7 @@ control "V-67903" do
   'SERVER_STATE_CHANGE_GROUP',
   'TRACE_CHANGE_GROUP'
   );
-  
+
   )
 
   describe.one do
@@ -279,7 +279,6 @@ control "V-67903" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-
 
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
@@ -327,11 +326,10 @@ control "V-67903" do
           it { should include '175' }
           it { should include '176' }
           it { should include '177' }
-
         end
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -345,7 +343,4 @@ control "V-67903" do
       end
     end
   end
-
-
 end
-

@@ -1,7 +1,7 @@
-control "V-67883" do
+control 'V-67883' do
   title "SQL Server must automatically terminate a user session after
   organization-defined conditions or trigger events requiring session disconnect."
-  desc  "This addresses the termination of user-initiated logical sessions in
+  desc "This addresses the termination of user-initiated logical sessions in
   contrast to the termination of network connections that are associated with
   communications sessions (i.e., network disconnect). A logical session (for
   local, network, and remote access) is initiated whenever a user (or process
@@ -22,13 +22,13 @@ control "V-67883" do
   owner, data owner, or organization requires additional assurance.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000295-DB-000305"
-  tag "gid": "V-67883"
-  tag "rid": "SV-82373r1_rule"
-  tag "stig_id": "SQL4-00-031700"
-  tag "fix_id": "F-73999r1_fix"
-  tag "cci": ["CCI-002361"]
-  tag "nist": ["AC-12", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000295-DB-000305'
+  tag "gid": 'V-67883'
+  tag "rid": 'SV-82373r1_rule'
+  tag "stig_id": 'SQL4-00-031700'
+  tag "fix_id": 'F-73999r1_fix'
+  tag "cci": ['CCI-002361']
+  tag "nist": ['AC-12', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -53,7 +53,6 @@ control "V-67883" do
   trigger events requiring session termination."
   describe "SQL Server must automatically terminate a user session after
   organization-defined conditions or trigger events requiring session disconnect." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

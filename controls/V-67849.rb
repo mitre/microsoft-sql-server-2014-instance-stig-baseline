@@ -1,5 +1,5 @@
-control "V-67849" do
-  title "SQL Server must have the Filestream feature disabled if it is unused."
+control 'V-67849' do
+  title 'SQL Server must have the Filestream feature disabled if it is unused.'
   desc  "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by default
   or selected for installation by an administrator, may not be necessary to
@@ -14,13 +14,13 @@ control "V-67849" do
       The Filestream feature must be disabled if it is unused.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000091"
-  tag "gid": "V-67849"
-  tag "rid": "SV-82339r1_rule"
-  tag "stig_id": "SQL4-00-016855"
-  tag "fix_id": "F-73965r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000091'
+  tag "gid": 'V-67849'
+  tag "rid": 'SV-82339r1_rule'
+  tag "stig_id": 'SQL4-00-016855'
+  tag "fix_id": 'F-73965r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -98,4 +98,3 @@ control "V-67849" do
     end
   end
 end
-

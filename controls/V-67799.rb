@@ -1,4 +1,4 @@
-control "V-67799" do
+control 'V-67799' do
   title "Audit tools used in conjunction with SQL Server  must be protected
   from unauthorized access."
   desc  "Protecting audit data also includes identifying and protecting the
@@ -27,13 +27,13 @@ control "V-67799" do
   definitions.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000121-DB-000202"
-  tag "gid": "V-67799"
-  tag "rid": "SV-82289r1_rule"
-  tag "stig_id": "SQL4-00-013920"
-  tag "fix_id": "F-73915r1_fix"
-  tag "cci": ["CCI-001493"]
-  tag "nist": ["AU-9", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000121-DB-000202'
+  tag "gid": 'V-67799'
+  tag "rid": 'SV-82289r1_rule'
+  tag "stig_id": 'SQL4-00-013920'
+  tag "fix_id": 'F-73915r1_fix'
+  tag "cci": ['CCI-001493']
+  tag "nist": ['AU-9', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -54,7 +54,6 @@ control "V-67799" do
   accessible by authorized personnel only."
   describe "Audit tools used in conjunction with SQL Server  must be protected
   from unauthorized access." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

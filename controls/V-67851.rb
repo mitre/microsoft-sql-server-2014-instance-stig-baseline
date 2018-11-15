@@ -1,9 +1,9 @@
 SQL_COMPONENTS = attribute('sql_components')
 
-control "V-67851" do
+control 'V-67851' do
   title "Unused database components that are integrated in SQL Server and
   cannot be uninstalled must be disabled."
-  desc  "SQL Server is capable of providing a wide variety of functions and
+  desc "SQL Server is capable of providing a wide variety of functions and
   services. Some of the functions and services, provided by default, may not be
   necessary to support essential organizational operations (e.g., key missions,
   functions).
@@ -24,13 +24,13 @@ control "V-67851" do
   that are unused and cannot be uninstalled must be disabled.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000092"
-  tag "gid": "V-67851"
-  tag "rid": "SV-82341r2_rule"
-  tag "stig_id": "SQL4-00-017000"
-  tag "fix_id": "F-73967r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000092'
+  tag "gid": 'V-67851'
+  tag "rid": 'SV-82341r2_rule'
+  tag "stig_id": 'SQL4-00-017000'
+  tag "fix_id": 'F-73967r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -54,13 +54,10 @@ control "V-67851" do
 
   If any unused components or features of SQL Server are installed and cannot be
   uninstalled or removed, then disable those components or features."
-  get_installed_components = command("Get-Service -Name '*SQL*' | select -expand name").stdout.strip.split("\n")
-  get_installed_components.each do | component|  
-    a = component.strip
-     describe "The installed sql component: #{a}" do
-        subject { "#{a}"}
-        it { should be_in SQL_COMPONENTS }
-      end
+  get_installed_components = command("Get-Service -Name '*SQL*' | select -expand name").stdout.strip.split("\r\n")
+  
+  describe 'The list of installed sql components' do
+    subject { get_installed_components }
+    it { should match_array SQL_COMPONENTS }
   end
 end
-

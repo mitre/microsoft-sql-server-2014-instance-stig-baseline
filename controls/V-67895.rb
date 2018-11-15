@@ -1,4 +1,4 @@
-control "V-67895" do
+control 'V-67895' do
   title "SQL Server or software monitoring SQL Server must provide an immediate
   real-time alert to appropriate support staff of all audit failure events
   requiring real-time alerts."
@@ -18,13 +18,13 @@ control "V-67895" do
   in seconds or less).
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000360-DB-000320"
-  tag "gid": "V-67895"
-  tag "rid": "SV-82385r1_rule"
-  tag "stig_id": "SQL4-00-033500"
-  tag "fix_id": "F-74011r1_fix"
-  tag "cci": ["CCI-001858"]
-  tag "nist": ["AU-5 (2)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000360-DB-000320'
+  tag "gid": 'V-67895'
+  tag "rid": 'SV-82385r1_rule'
+  tag "stig_id": 'SQL4-00-033500'
+  tag "fix_id": 'F-74011r1_fix'
+  tag "cci": ['CCI-001858']
+  tag "nist": ['AU-5 (2)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -46,7 +46,6 @@ control "V-67895" do
   describe "SQL Server or software monitoring SQL Server must provide an immediate
   real-time alert to appropriate support staff of all audit failure events
   requiring real-time alerts." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

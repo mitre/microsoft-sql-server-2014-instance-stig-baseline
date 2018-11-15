@@ -1,7 +1,7 @@
-control "V-70623" do
+control 'V-70623' do
   title "The SQL Server Browser service must be disabled if its use is not
   necessary.."
-  desc  "The SQL Server Browser simplifies the administration of SQL Server,
+  desc "The SQL Server Browser simplifies the administration of SQL Server,
   particularly when multiple instances of SQL Server coexist on the same
   computer.  It avoids the need to hard-assign port numbers to the instances and
   to set and maintain those port numbers in client systems.  It enables
@@ -21,13 +21,13 @@ control "V-70623" do
   consequences.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000516-DB-999900"
-  tag "gid": "V-70623"
-  tag "rid": "SV-85245r1_rule"
-  tag "stig_id": "SQL4-00-039100"
-  tag "fix_id": "F-77157r2_fix"
-  tag "cci": ["CCI-000366"]
-  tag "nist": ["CM-6 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000516-DB-999900'
+  tag "gid": 'V-70623'
+  tag "rid": 'SV-85245r1_rule'
+  tag "stig_id": 'SQL4-00-039100'
+  tag "fix_id": 'F-77157r2_fix'
+  tag "cci": ['CCI-000366']
+  tag "nist": ['CM-6 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -61,12 +61,10 @@ control "V-70623" do
   If Service Status is \"Running\", click on \"Stop\".
 
   Click on \"OK\"."
-  describe wmi({
-  class: 'win32_service',
-  filter: "name like '%SQLBrowser%'"
-  }) do
+  describe wmi(
+    class: 'win32_service',
+    filter: "name like '%SQLBrowser%'"
+  ) do
     its('StartMode') { should cmp 'Disabled' }
-  end 
-  
+  end
 end
-

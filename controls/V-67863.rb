@@ -1,6 +1,6 @@
 AUTHORIZED_SQL_USERS = attribute('authorized_sql_users')
 
-control "V-67863" do
+control 'V-67863' do
   title "SQL Server must uniquely identify and authenticate organizational
   users (or processes acting on behalf of organizational users)."
   desc  "To ensure accountability and prevent unauthorized SQL Server access,
@@ -17,13 +17,13 @@ control "V-67863" do
   identification or authentication.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000148-DB-000103"
-  tag "gid": "V-67863"
-  tag "rid": "SV-82353r1_rule"
-  tag "stig_id": "SQL4-00-018400"
-  tag "fix_id": "F-73979r1_fix"
-  tag "cci": ["CCI-000764"]
-  tag "nist": ["IA-2", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000148-DB-000103'
+  tag "gid": 'V-67863'
+  tag "rid": 'SV-82353r1_rule'
+  tag "stig_id": 'SQL4-00-018400'
+  tag "fix_id": 'F-73979r1_fix'
+  tag "cci": ['CCI-000764']
+  tag "nist": ['IA-2', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -55,25 +55,21 @@ control "V-67863" do
   Ensure each user's identity is received and used in audit data in all relevant
   circumstances."
 
-  query= %(
+  query = %(
   select name from master.sys.server_principals where is_disabled = 0;
   )
 
- sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
-   sql_users = sql_session.query(query).column('name')
-   sql_users.each do |user|
-      describe "authorized sql users: #{user}" do
-        subject {user}
-        it { should be_in AUTHORIZED_SQL_USERS }
-      end
+  sql_users = sql_session.query(query).column('name')
+  sql_users.each do |user|
+    describe "authorized sql users: #{user}" do
+      subject { user }
+      it { should be_in AUTHORIZED_SQL_USERS }
     end
-
-
+  end
 end
-

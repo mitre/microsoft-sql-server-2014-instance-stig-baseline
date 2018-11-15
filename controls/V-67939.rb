@@ -1,8 +1,7 @@
-
-control "V-67939" do
+control 'V-67939' do
   title "SQL Server must generate Trace or Audit records when concurrent
   logons/connections by the same user from different workstations occur."
-  desc  "For completeness of forensic analysis, it is necessary to track who
+  desc "For completeness of forensic analysis, it is necessary to track who
   logs on to SQL Server.
 
       Concurrent connections by the same user from multiple workstations may be
@@ -24,13 +23,13 @@ control "V-67939" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000506-DB-000353"
-  tag "gid": "V-67939"
-  tag "rid": "SV-82429r1_rule"
-  tag "stig_id": "SQL4-00-038000"
-  tag "fix_id": "F-74055r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000506-DB-000353'
+  tag "gid": 'V-67939'
+  tag "rid": 'SV-82429r1_rule'
+  tag "stig_id": 'SQL4-00-038000'
+  tag "fix_id": 'F-74055r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -94,12 +93,11 @@ control "V-67939" do
 
   query_audits_logout_group = %(
     SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
-  );
+  )
 
   query_audits_successful_login_group = %(
     SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'SUCCESSFUL_LOGIN_GROUP'
-  );
-  
+  )
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
@@ -116,7 +114,6 @@ control "V-67939" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-
 
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
@@ -135,10 +132,9 @@ control "V-67939" do
           it { should include '16' }
           it { should include '17' }
         end
-
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -152,6 +148,4 @@ control "V-67939" do
       end
     end
   end
-
 end
-

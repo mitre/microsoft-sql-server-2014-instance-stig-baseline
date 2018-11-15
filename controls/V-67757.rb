@@ -1,7 +1,7 @@
-control "V-67757" do
+control 'V-67757' do
   title "The number of concurrent SQL Server sessions for each system account
   must be limited."
-  desc  "A variety of technologies exist to limit or, in some cases, eliminate
+  desc "A variety of technologies exist to limit or, in some cases, eliminate
   the effects of DoS attacks. For example, boundary protection devices can filter
   certain types of packets to protect devices on an organizations internal
   network from being directly affected by DoS attacks.
@@ -40,13 +40,13 @@ control "V-67757" do
   most circumstances.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000001-DB-000031"
-  tag "gid": "V-67757"
-  tag "rid": "SV-82247r1_rule"
-  tag "stig_id": "SQL4-00-000100"
-  tag "fix_id": "F-73871r1_fix"
-  tag "cci": ["CCI-000054"]
-  tag "nist": ["AC-10", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000001-DB-000031'
+  tag "gid": 'V-67757'
+  tag "rid": 'SV-82247r1_rule'
+  tag "stig_id": 'SQL4-00-000100'
+  tag "fix_id": 'F-73871r1_fix'
+  tag "cci": ['CCI-000054']
+  tag "nist": ['AC-10', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

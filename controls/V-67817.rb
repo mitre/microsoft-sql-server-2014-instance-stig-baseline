@@ -1,8 +1,7 @@
-
-control "V-67817" do
+control 'V-67817' do
   title "SQL Server must have the publicly available Northwind sample database
   removed."
-  desc  "Information systems are capable of providing a wide variety of
+  desc "Information systems are capable of providing a wide variety of
   functions and services. Some of the functions and services, provided by
   default, may not be necessary to support essential organizational operations
   (e.g., key missions, functions).
@@ -25,13 +24,13 @@ control "V-67817" do
   and the OS.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000141-DB-000090"
-  tag "gid": "V-67817"
-  tag "rid": "SV-82307r1_rule"
-  tag "stig_id": "SQL4-00-016200"
-  tag "fix_id": "F-73933r1_fix"
-  tag "cci": ["CCI-000381"]
-  tag "nist": ["CM-7 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000141-DB-000090'
+  tag "gid": 'V-67817'
+  tag "rid": 'SV-82307r1_rule'
+  tag "stig_id": 'SQL4-00-016200'
+  tag "fix_id": 'F-73933r1_fix'
+  tag "cci": ['CCI-000381']
+  tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -63,12 +62,10 @@ control "V-67817" do
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                              port: attribute('port'))
 
   describe 'Listing the Northwind database in sysdatabases' do
-    subject { sql_session.query(query).column('name')}
+    subject { sql_session.query(query).column('name') }
     it { should be_empty }
   end
 end
-

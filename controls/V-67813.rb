@@ -1,4 +1,4 @@
-control "V-67813" do
+control 'V-67813' do
   title "Database software directories, including SQL Server configuration
   files, must be stored in dedicated directories, separate from the host OS and
   other applications."
@@ -20,13 +20,13 @@ control "V-67813" do
   protection between applications.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000199"
-  tag "gid": "V-67813"
-  tag "rid": "SV-82303r2_rule"
-  tag "stig_id": "SQL4-00-015500"
-  tag "fix_id": "F-73929r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000199'
+  tag "gid": 'V-67813'
+  tag "rid": 'SV-82303r2_rule'
+  tag "stig_id": 'SQL4-00-015500'
+  tag "fix_id": 'F-73929r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -78,7 +78,6 @@ control "V-67813" do
   describe "Database software directories, including SQL Server configuration
   files, must be stored in dedicated directories, separate from the host OS and
   other applications." do
-    skip "Control is manual"
-    end
+    skip 'Control is manual'
+  end
 end
-

@@ -1,8 +1,8 @@
-control "V-67907" do
+control 'V-67907' do
   title "SQL Server must implement and/or support cryptographic mechanisms
   preventing the unauthorized disclosure of organization-defined information at
   rest on organization-defined information system components."
-  desc  "DBMSs handling data requiring \"data at rest\" protections must employ
+  desc "DBMSs handling data requiring \"data at rest\" protections must employ
   cryptographic mechanisms to prevent unauthorized disclosure and modification of
   the information at rest. These cryptographic mechanisms may be native to the
   DBMS or implemented via additional software or operating system/file system
@@ -20,13 +20,13 @@ control "V-67907" do
   media on which the information resides.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000429-DB-000387"
-  tag "gid": "V-67907"
-  tag "rid": "SV-82397r1_rule"
-  tag "stig_id": "SQL4-00-034800"
-  tag "fix_id": "F-74023r1_fix"
-  tag "cci": ["CCI-002476"]
-  tag "nist": ["SC-28 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000429-DB-000387'
+  tag "gid": 'V-67907'
+  tag "rid": 'SV-82397r1_rule'
+  tag "stig_id": 'SQL4-00-034800'
+  tag "fix_id": 'F-74023r1_fix'
+  tag "cci": ['CCI-002476']
+  tag "nist": ['SC-28 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -146,10 +146,8 @@ control "V-67907" do
     sql_session.query(query).rows.each do |row|
       describe "Database: #{row['database name']} encryption state" do
         subject { row['encryption state'] }
-        it { should cmp 'Encrypted'}
+        it { should cmp 'Encrypted' }
       end
     end
   end
-  
 end
-

@@ -1,7 +1,7 @@
-control "V-67917" do
+control 'V-67917' do
   title "SQL Server must produce Trace or Audit records when security objects
   are accessed."
-  desc  "Changes to the security configuration must be tracked.
+  desc "Changes to the security configuration must be tracked.
 
     This requirement applies to situations where security data is retrieved or
   modified via data manipulation operations, as opposed to via SQL Server's
@@ -30,13 +30,13 @@ control "V-67917" do
   Audit does.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000492-DB-000332"
-  tag "gid": "V-67917"
-  tag "rid": "SV-82407r2_rule"
-  tag "stig_id": "SQL4-00-035600"
-  tag "fix_id": "F-74033r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000492-DB-000332'
+  tag "gid": 'V-67917'
+  tag "rid": 'SV-82407r2_rule'
+  tag "stig_id": 'SQL4-00-035600'
+  tag "fix_id": 'F-74033r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -175,8 +175,6 @@ control "V-67917" do
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
   )
-  
-  
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
@@ -190,13 +188,11 @@ control "V-67917" do
     end
   end
 
-
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
       subject { sql_session.query(query_traces) }
       it { should_not be_empty }
     end
-
 
     trace_ids = sql_session.query(query_traces).column('id')
     describe.one do
@@ -211,7 +207,7 @@ control "V-67917" do
         end
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -226,4 +222,3 @@ control "V-67917" do
     end
   end
 end
-

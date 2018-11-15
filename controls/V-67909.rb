@@ -1,7 +1,7 @@
-control "V-67909" do
+control 'V-67909' do
   title "The confidentiality and integrity of information managed by SQL Server
   must be maintained during preparation for transmission."
-  desc  "Information can be either unintentionally or maliciously disclosed or
+  desc "Information can be either unintentionally or maliciously disclosed or
   modified during preparation for transmission, including, for example, during
   aggregation, at protocol transformation points, and during packing/unpacking.
   These unauthorized disclosures or modifications compromise the confidentiality
@@ -15,13 +15,13 @@ control "V-67909" do
   infrastructure must leverage transmission protection mechanisms.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000441-DB-000378"
-  tag "gid": "V-67909"
-  tag "rid": "SV-82399r1_rule"
-  tag "stig_id": "SQL4-00-035000"
-  tag "fix_id": "F-74025r1_fix"
-  tag "cci": ["CCI-002420"]
-  tag "nist": ["SC-8 (2)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000441-DB-000378'
+  tag "gid": 'V-67909'
+  tag "rid": 'SV-82399r1_rule'
+  tag "stig_id": 'SQL4-00-035000'
+  tag "fix_id": 'F-74025r1_fix'
+  tag "cci": ['CCI-002420']
+  tag "nist": ['SC-8 (2)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -43,7 +43,6 @@ control "V-67909" do
   modification during preparation for transmission."
   describe "The confidentiality and integrity of information managed by SQL Server
   must be maintained during preparation for transmission." do
-    skip "This control is manual"
+    skip 'This control is manual'
   end
 end
-

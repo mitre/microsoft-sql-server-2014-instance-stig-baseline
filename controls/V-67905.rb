@@ -1,18 +1,18 @@
 AUTHORIZED_PROTOCOLS = attribute('authorized_protocols')
 
-control "V-67905" do
+control 'V-67905' do
   title "SQL Server must disable communication protocols not required for
   operation."
-  desc  "Having unnecessary protocols enabled exposes the system to avoidable
+  desc "Having unnecessary protocols enabled exposes the system to avoidable
   threats.  In a typical installation, only TCP/IP will be required."
   impact 0.7
-  tag "gtitle": "SRG-APP-000383-DB-000364"
-  tag "gid": "V-67905"
-  tag "rid": "SV-82395r1_rule"
-  tag "stig_id": "SQL4-00-034200"
-  tag "fix_id": "F-74021r1_fix"
-  tag "cci": ["CCI-001762"]
-  tag "nist": ["CM-7 (1) (b)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000383-DB-000364'
+  tag "gid": 'V-67905'
+  tag "rid": 'SV-82395r1_rule'
+  tag "stig_id": 'SQL4-00-034200'
+  tag "fix_id": 'F-74021r1_fix'
+  tag "cci": ['CCI-001762']
+  tag "nist": ['CM-7 (1) (b)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -37,11 +37,10 @@ control "V-67905" do
 
   Close SQL Server Configuration Manager.  Restart SQL Server."
   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
   get_protocols = sql.query("SELECT sr.value_data AS 'result'
 
   FROM sys.dm_server_registry sr
@@ -51,16 +50,13 @@ control "V-67905" do
   FROM sys.dm_server_registry k
 
   WHERE k.value_name = 'Enabled' AND k.value_data = 1)
-
   AND sr.value_name = 'DisplayName';").column('result')
 
-  get_protocols.each do | protocol|  
+  get_protocols.each do |protocol|
     a = protocol.strip
     describe "sql enabled protocols: #{a}" do
-        subject {a}
-        it { should be_in AUTHORIZED_PROTOCOLS }
-      end
-  end 
-end 
-
- 
+      subject { a }
+      it { should be_in AUTHORIZED_PROTOCOLS }
+    end
+  end
+end

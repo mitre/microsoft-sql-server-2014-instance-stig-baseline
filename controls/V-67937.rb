@@ -1,8 +1,7 @@
-
-control "V-67937" do
+control 'V-67937' do
   title "SQL Server must generate Trace or Audit records when logoffs or
   disconnections occur."
-  desc  "For completeness of forensic analysis, it is necessary to track
+  desc "For completeness of forensic analysis, it is necessary to track
   who/what (a user or other principal) logs on to and off from SQL Server.
 
       Use of SQL Server Audit is recommended.  All features of SQL Server Audit
@@ -13,13 +12,13 @@ control "V-67937" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000505-DB-000352"
-  tag "gid": "V-67937"
-  tag "rid": "SV-82427r2_rule"
-  tag "stig_id": "SQL4-00-037900"
-  tag "fix_id": "F-74053r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000505-DB-000352'
+  tag "gid": 'V-67937'
+  tag "rid": 'SV-82427r2_rule'
+  tag "stig_id": 'SQL4-00-037900'
+  tag "fix_id": 'F-74053r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -131,8 +130,7 @@ control "V-67937" do
 
   query_audits = %(
     SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
-  );
-  
+  )
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
@@ -149,7 +147,6 @@ control "V-67937" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-
 
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
@@ -168,10 +165,9 @@ control "V-67937" do
           it { should include '16' }
           it { should include '17' }
         end
-
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -186,4 +182,3 @@ control "V-67937" do
     end
   end
 end
-

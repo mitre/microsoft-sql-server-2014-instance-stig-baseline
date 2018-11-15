@@ -1,11 +1,11 @@
 ALLOWED_SERVER_PERMISSIONS = attribute('allowed_server_permissions')
 
 ALLOWED_DATABASE_PERMISSIONS = attribute('allowed_database_permissions')
- 
-control "V-67901" do
+
+control 'V-67901' do
   title "SQL Server and Windows must enforce access restrictions associated
   with changes to the configuration of the SQL Server instance or database(s)."
-  desc  "Failure to provide logical access restrictions associated with changes
+  desc "Failure to provide logical access restrictions associated with changes
   to configuration may have significant effects on the overall security of the
   system.
 
@@ -19,13 +19,13 @@ control "V-67901" do
   of initiating changes, including upgrades and modifications.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000380-DB-000360"
-  tag "gid": "V-67901"
-  tag "rid": "SV-82391r1_rule"
-  tag "stig_id": "SQL4-00-033900"
-  tag "fix_id": "F-74017r1_fix"
-  tag "cci": ["CCI-001813"]
-  tag "nist": ["CM-5 (1)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000380-DB-000360'
+  tag "gid": 'V-67901'
+  tag "rid": 'SV-82391r1_rule'
+  tag "stig_id": 'SQL4-00-033900'
+  tag "fix_id": 'F-74017r1_fix'
+  tag "cci": ['CCI-001813']
+  tag "nist": ['CM-5 (1)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -72,33 +72,30 @@ control "V-67901" do
   with changes to the configuration of the SQL Server instance and database(s)."
 
   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-  
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
+
   get_server_permissions = sql.query("SELECT DISTINCT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
-  get_server_permissions.each do | server_perms|  
+  get_server_permissions.each do |server_perms|
     a = server_perms.strip
     describe "sql server permissions: #{a}" do
-        subject {a}
-        it { should be_in ALLOWED_SERVER_PERMISSIONS }
-      end 
-  end 
-  
-  #get_server_permissions = sql.query("SELECT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
+      subject { a }
+      it { should be_in ALLOWED_SERVER_PERMISSIONS }
+    end
+  end
+
+  # get_server_permissions = sql.query("SELECT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
   get_database_permissions = sql.query("SELECT DISTINCT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');").column('result')
-  get_database_permissions.each do | database_perms|  
+  get_database_permissions.each do |database_perms|
     a = database_perms.strip
-    describe "#{a}" do
+    describe a.to_s do
       it { should be_in ALLOWED_DATABASE_PERMISSIONS }
-    end 
+    end
     describe "sql database permissions: #{a}" do
-        subject {a}
-        it { should be_in ALLOWED_DATABASE_PERMISSIONS }
-      end  
-  end 
-
+      subject { a }
+      it { should be_in ALLOWED_DATABASE_PERMISSIONS }
+    end
+  end
 end
-

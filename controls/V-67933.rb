@@ -1,7 +1,7 @@
-control "V-67933" do
+control 'V-67933' do
   title "SQL Server must generate Trace or Audit records for all privileged
   activities or other system-level access."
-  desc  "Without tracking privileged activity, it would be difficult to
+  desc "Without tracking privileged activity, it would be difficult to
   establish, correlate, and investigate the events relating to an incident or
   identify those responsible for one.
 
@@ -47,13 +47,13 @@ control "V-67933" do
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000504-DB-000354"
-  tag "gid": "V-67933"
-  tag "rid": "SV-82423r2_rule"
-  tag "stig_id": "SQL4-00-037700"
-  tag "fix_id": "F-74049r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000504-DB-000354'
+  tag "gid": 'V-67933'
+  tag "rid": 'SV-82423r2_rule'
+  tag "stig_id": 'SQL4-00-037700'
+  tag "fix_id": 'F-74049r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -259,7 +259,7 @@ control "V-67933" do
   'SUCCESSFUL_LOGIN_GROUP',
   'TRACE_CHANGE_GROUP'
   );
-  
+
   )
 
   describe.one do
@@ -277,7 +277,6 @@ control "V-67933" do
   query_traces = %(
     SELECT * FROM sys.traces
   )
-
 
   if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
@@ -311,10 +310,9 @@ control "V-67933" do
           it { should include '176' }
           it { should include '177' }
         end
-
       end
     end
-  end 
+  end
 
   if server_audit_implemented
     describe 'SQL Server Audit:' do
@@ -328,6 +326,4 @@ control "V-67933" do
       end
     end
   end
-
 end
-

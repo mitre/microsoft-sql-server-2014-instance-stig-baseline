@@ -1,11 +1,10 @@
-
 ALLOWED_AUDIT_PERMISSIONS = attribute('allowed_audit_permissions')
 
-control "V-67767" do
+control 'V-67767' do
   title "Where SQL Server Audit is in use, SQL Server must allow only the ISSM
   (or individuals or roles appointed by the ISSM) to select which auditable
   events are to be audited at the server level."
-  desc  "Without the capability to restrict which roles and individuals can
+  desc "Without the capability to restrict which roles and individuals can
   select which events are audited, unauthorized personnel may be able to prevent
   or interfere with the auditing of critical events.
 
@@ -27,13 +26,13 @@ control "V-67767" do
     trails.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000090-DB-000065"
-  tag "gid": "V-67767"
-  tag "rid": "SV-82257r1_rule"
-  tag "stig_id": "SQL4-00-011310"
-  tag "fix_id": "F-73881r1_fix"
-  tag "cci": ["CCI-000171"]
-  tag "nist": ["AU-12 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000090-DB-000065'
+  tag "gid": 'V-67767'
+  tag "rid": 'SV-82257r1_rule'
+  tag "stig_id": 'SQL4-00-011310'
+  tag "fix_id": 'F-73881r1_fix'
+  tag "cci": ['CCI-000171']
+  tag "nist": ['AU-12 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -107,38 +106,36 @@ control "V-67767" do
   Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
   to remove CONTROL SERVER, ALTER ANY DATABASE and CREATE ANY DATABASE
   permissions from logins that do not need them."
-  #permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
+  # permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
 
-   sql = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              )
-    permissions = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
-          P.[Permission] IN
-          (
-          'ALTER ANY SERVER AUDIT',
-          'CONTROL SERVER',
-          'ALTER ANY DATABASE',
-          'CREATE ANY DATABASE'
-          );").column('result')
+  sql = mssql_session(user: attribute('user'),
+                      password: attribute('password'),
+                      host: attribute('host'),
+                      instance: attribute('instance'),
+                      port: attribute('port'))
+  permissions = sql.query("SELECT Grantee as result FROM STIG.server_permissions P WHERE
+        P.[Permission] IN
+        (
+        'ALTER ANY SERVER AUDIT',
+        'CONTROL SERVER',
+        'ALTER ANY DATABASE',
+        'CREATE ANY DATABASE'
+        );").column('result')
 
   if  permissions.empty?
     impact 0.0
     desc 'There are no users with audit permissions, control not applicable'
 
-    describe "There are no users with audit permissions, control not applicable" do
-      skip "There are no users with audit permissions, control not applicable"
+    describe 'There are no users with audit permissions, control not applicable' do
+      skip 'There are no users with audit permissions, control not applicable'
     end
   else
-     permissions.each do |perms|
+    permissions.each do |perms|
       a = perms.strip
       describe "sql audit permissions: #{a}" do
-        subject {a}
+        subject { a }
         it { should be_in ALLOWED_AUDIT_PERMISSIONS }
       end
     end
   end
 end
-

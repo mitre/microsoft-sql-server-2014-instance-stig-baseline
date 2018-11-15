@@ -1,4 +1,4 @@
-control "V-67787" do
+control 'V-67787' do
   title "Where availability is paramount, the SQL Server must continue
   processing (preferably overwriting existing records, oldest first), in the
   event of lack of space for more Audit/Trace log records; and must keep
@@ -42,13 +42,13 @@ control "V-67787" do
   audit failure.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000109-DB-000321"
-  tag "gid": "V-67787"
-  tag "rid": "SV-82277r4_rule"
-  tag "stig_id": "SQL4-00-030600"
-  tag "fix_id": "F-73903r2_fix"
-  tag "cci": ["CCI-000140"]
-  tag "nist": ["AU-5 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000109-DB-000321'
+  tag "gid": 'V-67787'
+  tag "rid": 'SV-82277r4_rule'
+  tag "stig_id": 'SQL4-00-030600'
+  tag "fix_id": 'F-73903r2_fix'
+  tag "cci": ['CCI-000140']
+  tag "nist": ['AU-5 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -70,7 +70,7 @@ control "V-67787" do
 
   SELECT [name], [max_rollover_files] FROM sys.server_file_audits
   WHERE is_state_enabled = 1;
- 
+
   By observing the [name] and [max_rollover_files] columns, identify the row or
   rows in use.
 
@@ -89,25 +89,19 @@ control "V-67787" do
   ALTER SERVER AUDIT [AuditName] WITH (STATE = ON);
   GO"
 
-  
-
-  server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
 
   describe 'SQL Server Audit is in use for audit purposes' do
-      subject { server_audit_implemented }
-      it { should be true }
-    end
+    subject { server_audit_implemented }
+    it { should be true }
+  end
 
-sql_session = mssql_session(user: attribute('user'),
+  sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
                               instance: attribute('instance'),
                               port: attribute('port'),
                               db_name: attribute('db_name'))
-
-
-
 
   query_audit = %(
   SELECT * FROM sys.server_file_audits WHERE is_state_enabled = 1 AND max_rollover_files <= 0;
@@ -115,11 +109,9 @@ sql_session = mssql_session(user: attribute('user'),
   )
   if server_audit_implemented
     describe 'List audits enabled with max_rollover_files less than 0' do
-      subject { sql_session.query(query_audit).column('name')}
+      subject { sql_session.query(query_audit).column('name') }
       it { should be_empty }
     end
 
   end
-
 end
-
