@@ -117,4 +117,8 @@ control 'V-67757' do
     subject { sql_session.query(query).column('name').uniq }
     it { should_not be_empty }
   end
+
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'A manual review of the triggers should be performed to determine whether any of them limit the number of concurrent sessions per user'
+  end
 end
