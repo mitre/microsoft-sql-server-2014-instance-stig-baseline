@@ -146,7 +146,7 @@ control 'V-67771' do
       end
 
       describe 'Audited Result for Defined Audit Actions' do
-        subject { mssql_session.query(query).column('audited_result').to_s }
+        subject { sql_session.query(query).column('audited_result').to_s }
         it { should match /SUCCESS AND FAILURE|FAILURE/ }
       end
     end
