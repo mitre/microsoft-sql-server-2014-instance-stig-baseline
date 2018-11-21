@@ -128,7 +128,7 @@ control 'V-67931' do
   )
 
   query_audits = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'FAILED_LOGIN_GROUP'
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name = 'FAILED_LOGIN_GROUP'
   )
 
   describe.one do

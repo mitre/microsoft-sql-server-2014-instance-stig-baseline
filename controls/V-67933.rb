@@ -224,7 +224,7 @@ control 'V-67933' do
   )
 
   query_audits = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name IN
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name IN
   (
   'APPLICATION_ROLE_CHANGE_PASSWORD_GROUP',
   'AUDIT_CHANGE_GROUP',

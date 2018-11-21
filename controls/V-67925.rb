@@ -200,7 +200,7 @@ control 'V-67925' do
   )
 
   query_audits = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name IN
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name IN
   (
   'DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP',
   'DATABASE_OBJECT_PERMISSION_CHANGE_GROUP',

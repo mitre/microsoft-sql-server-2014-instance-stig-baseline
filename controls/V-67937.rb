@@ -129,7 +129,7 @@ control 'V-67937' do
   )
 
   query_audits = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
   )
 
   describe.one do

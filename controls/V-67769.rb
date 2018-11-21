@@ -97,9 +97,7 @@ control 'V-67769' do
   server_audit_implemented = attribute('server_audit_implemented')
 
   query = %(
-   SELECT server_specification_id,
-           audit_action_name,
-           audited_result
+   SELECT audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
     )

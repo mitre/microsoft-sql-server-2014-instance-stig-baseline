@@ -92,11 +92,11 @@ control 'V-67939' do
   )
 
   query_audits_logout_group = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name = 'LOGOUT_GROUP'
   )
 
   query_audits_successful_login_group = %(
-    SELECT * FROM sys.server_audit_specification_details WHERE audit_action_name = 'SUCCESSFUL_LOGIN_GROUP'
+    SELECT audited_result FROM sys.server_audit_specification_details WHERE audit_action_name = 'SUCCESSFUL_LOGIN_GROUP'
   )
 
   describe.one do

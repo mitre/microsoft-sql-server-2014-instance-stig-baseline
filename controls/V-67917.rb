@@ -171,7 +171,7 @@ control 'V-67917' do
   )
 
   query_audits = %(
-    SELECT *
+    SELECT audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
   )
