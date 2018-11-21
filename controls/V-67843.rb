@@ -82,7 +82,7 @@ control 'V-67843' do
   Restart the server."
 
   query = %(
-  SELECT * FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');
+  SELECT name FROM sys.databases WHERE name in ('DQS_MAIN', 'DQS_PROJECTS', 'DQS_STAGING_DATA');
 
   )
 
