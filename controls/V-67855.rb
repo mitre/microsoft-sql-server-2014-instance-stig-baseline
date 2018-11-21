@@ -50,13 +50,10 @@ control 'V-67855' do
   GO"
 
   query_sa = %(
-    SELECT * FROM sys.sql_logins WHERE [name] = 'sa';
+    SELECT * FROM sys.sql_logins WHERE [name] = 'sa' OR [name] = 'SA';
   )
 
-  query_sa2 = %(
-   SELECT * FROM sys.sql_logins WHERE [name] = 'SA';
-  )
-
+ 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
                               host: attribute('host'),
@@ -68,8 +65,4 @@ control 'V-67855' do
     it { should be_empty }
   end
 
-  describe 'The sa account in sys.sql_logs' do
-    subject { sql_session.query(query_sa2).column('name') }
-    it { should be_empty }
-  end
 end
