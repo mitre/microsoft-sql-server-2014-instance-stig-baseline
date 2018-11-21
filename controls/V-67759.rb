@@ -1,3 +1,4 @@
+SQL_MANAGED_ACCOUNTS = attribute('sql_managed_accounts')
 control 'V-67759' do
   title "SQL Server authentication and identity management must be integrated
   with an organization-level authentication/access mechanism providing account
@@ -39,7 +40,7 @@ control 'V-67759' do
   available, its use must be kept to a minimum.  The reasons for its use, and the
   measures taken to restrict it to only the necessary cases, must be documented,
   with AO approval.
-
+ 
       It is assumed throughout this STIG that this integration has been
   implemented.
 

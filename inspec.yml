@@ -212,4 +212,14 @@ attributes:
     type: array
     default: []
 
+  - name: is_xp_cmdshell_required
+    description: 'Set to true xp cmdshell is required'
+    type: boolean
+    default: false
+
+  - name: sql_managed_accounts
+    description: 'List of accounts managed by the sql server'
+    type: array
+    default: []
+
 

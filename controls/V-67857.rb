@@ -26,7 +26,7 @@ control 'V-67857' do
   "
   impact 0.7
   tag "gtitle": 'SRG-APP-000141-DB-000093'
-  tag "gid": 'V-67857'
+  tag "gid": 'V-67857' 
   tag "rid": 'SV-82347r1_rule'
   tag "stig_id": 'SQL4-00-017200'
   tag "fix_id": 'F-73973r1_fix'
