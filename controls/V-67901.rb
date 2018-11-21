@@ -86,7 +86,6 @@ control 'V-67901' do
     end
   end
 
-  # get_server_permissions = sql.query("SELECT Grantee as 'result' FROM STIG.server_permissions WHERE Permission != 'CONNECT SQL';").column('result')
   get_database_permissions = sql.query("SELECT DISTINCT Grantee as 'result' FROM STIG.database_permissions WHERE Permission LIKE '%CREATE%' OR Permission LIKE '%ALTER%' OR Permission IN ('CONTROL', 'INSERT', 'UPDATE', 'DELETE', 'EXECUTE');").column('result')
   get_database_permissions.each do |database_perms|
     a = database_perms.strip

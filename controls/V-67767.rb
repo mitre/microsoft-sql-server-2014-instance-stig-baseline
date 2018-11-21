@@ -106,7 +106,6 @@ control 'V-67767' do
   Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
   to remove CONTROL SERVER, ALTER ANY DATABASE and CREATE ANY DATABASE
   permissions from logins that do not need them."
-  # permissions = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions P WHERE P.[Permission] IN ('ALTER ANY SERVER AUDIT', 'CONTROL SERVER', 'ALTER ANY DATABASE', 'CREATE ANY DATABASE');\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
 
   sql = mssql_session(user: attribute('user'),
                       password: attribute('password'),

@@ -60,8 +60,6 @@ control 'V-67815' do
   database user.
   ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a
   server role or login."
-  # permissions_server = command("Invoke-Sqlcmd -Query \"SELECT Grantee, Permission FROM STIG.server_permissions WHERE Permission LIKE '%CONTROL%' OR Permission LIKE '%alter%' OR Permission LIKE '%create%'\" -ServerInstance '#{SERVER_INSTANCE}' | Findstr /v 'Grantee ---'").stdout.strip.split("\n")
-
   sql = mssql_session(user: attribute('user'),
                       password: attribute('password'),
                       host: attribute('host'),
