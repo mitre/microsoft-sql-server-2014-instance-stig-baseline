@@ -39,20 +39,32 @@ control 'V-67881' do
   know are permitted to read/view these files."
 
   describe.one do
-    describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log' | Format-List | Findstr 'All'") do
-      its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+    describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log') do
+      it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+      it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') } 
+      it { should be_allowed('full-control', by_user: 'BUILTIN\\Administrators') }
+      it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
     end
-    describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log' | Format-List | Findstr 'All'") do
-      its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+    describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log') do
+      it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+      it { should be_allowed('full-control', by_user: 'BUILTIN\\Administrators') }
+      it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+      it { should be_allowed('read', by_user: 'NT SERVICE\\SQLSERVERAGENT') }
     end
   end
 
-  describe.one do
-    describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\DATA' | Format-List | Findstr 'All'") do
-      its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+   describe.one do
+    describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log') do
+      it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+      it { should be_allowed('full-control', by_user: 'BUILTIN\\Administrators') }
+      it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
     end
-    describe command("Get-Acl -Path 'C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\DATA' | Format-List | Findstr 'All'") do
-      its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+    describe file('C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Log') do
+      it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+      it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') } 
+      it { should be_allowed('full-control', by_user: 'BUILTIN\\Administrators') }
+      it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+      it { should be_allowed('read', by_user: 'NT SERVICE\\SQLSERVERAGENT') }
     end
   end
 end

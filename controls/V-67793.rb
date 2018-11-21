@@ -170,24 +170,45 @@ control 'V-67793' do
   get_path.each do |path|
     a = path.strip
 
-    describe.one do
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  Modify, Synchronize\r\n" }
+     describe.one do
+      describe file("#{a}") do
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') }
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+        it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') } 
+        it { should be_allowed('read', by_user: 'BUILTIN\\Users') }
       end
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+      describe file("#{a}") do 
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') }
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') }
+        it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') }
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
       end
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      describe file("#{a}") do
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') }
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') } 
+        it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') }
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+        it { should be_allowed('read', by_user: 'NT SERVICE\\SQLSERVERAGENT') }
+        it { should be_allowed('read', by_user: 'BUILTIN\\Users') }
       end
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      describe file("#{a}") do
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') } 
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') } 
+        it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') }
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+        it { should be_allowed('read', by_user: 'NT SERVICE\\SQLSERVERAGENT') }
       end
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n" }
+      describe file("#{a}") do
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') }
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') } 
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
       end
-      describe command("Get-Acl -Path '#{a}' | Format-List | Findstr 'All'") do
-        its('stdout')  { should eq "Access : CREATOR OWNER Allow  FullControl\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         NT SERVICE\\MSSQLSERVER Allow  FullControl\r\n         NT SERVICE\\SQLSERVERAGENT Allow  DeleteSubdirectoriesAndFiles, Write, ReadAndExecute, Synchronize\r\n" }
+      describe file("#{a}") do
+        it { should be_allowed('full-control', by_user: 'BUILTIN\Administrators') }
+        it { should be_allowed('full-control', by_user: 'CREATOR OWNER') } 
+        it { should be_allowed('full-control', by_user: 'NT SERVICE\\MSSQLSERVER') }
+        it { should be_allowed('read', by_user: 'NT SERVICE\\SQLSERVERAGENT') }
       end
     end
   end

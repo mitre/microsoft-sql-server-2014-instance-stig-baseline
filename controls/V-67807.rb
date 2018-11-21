@@ -115,7 +115,11 @@ control 'V-67807' do
   considered acceptable where those permissions are required. (All SQL Server
   files that require this access reside by default in the ..\\Microsoft SQL
   Server\\110\\ directory.)"
-  describe command("Get-Acl -Path 'C:\\Program Files (x86)\\Microsoft SQL Server\\110' | Format-List | Findstr All") do
-    its('stdout') { should eq "Access : NT SERVICE\\TrustedInstaller Allow  FullControl\r\n         NT SERVICE\\TrustedInstaller Allow  268435456\r\n         NT AUTHORITY\\SYSTEM Allow  FullControl\r\n         NT AUTHORITY\\SYSTEM Allow  268435456\r\n         BUILTIN\\Administrators Allow  FullControl\r\n         BUILTIN\\Administrators Allow  268435456\r\n         BUILTIN\\Users Allow  ReadAndExecute, Synchronize\r\n         BUILTIN\\Users Allow  -1610612736\r\n         CREATOR OWNER Allow  268435456\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize\r\n         APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES Allow  -1610612736\r\n" }
+  describe file('C:\\Program Files (x86)\\Microsoft SQL Server\\110') do
+    it { should be_allowed('full-control', by_user: 'NT SERVICE\\TrustedInstaller') }
+    it { should be_allowed('full-control', by_user: 'NT AUTHORITY\\SYSTEM') } 
+    it { should be_allowed('full-control', by_user: 'BUILTIN\\Administrators') }
+    it { should be_allowed('read', by_user: 'BUILTIN\\Users') }
+    it { should be_allowed('read', by_user: 'APPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES') }
   end
 end
