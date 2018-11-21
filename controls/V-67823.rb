@@ -59,15 +59,13 @@ control 'V-67823' do
 
   sql_server_data_tools_required = attribute('sql_server_data_tools_required')
 
-  is_sql_server_data_tools_installed = command("Get-WmiObject -Class Win32_Product | Findstr /c:'Microsoft SQL Server Data Tools' | Findstr /v 'Caption'").stdout.strip
   describe.one do
     describe 'SQL Server data tools is required' do
       subject { sql_server_data_tools_required  }
       it { should be true }
     end
-    describe 'IS SQL Server data tools installed' do
-      subject { is_sql_server_data_tools_installed }
-      it { should eq '' }
+    describe package('Microsoft SQL Server Data Tools') do
+      it { should_not be_installed }
     end
   end
 end
