@@ -120,39 +120,28 @@ attributes:
   - name: approved_audit_maintainers
     description: 'List of users with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION'
     type: array
-    default: ["SERVER_AUDIT_MAINTAINERS" ]
+    default: []
 
   - name: allowed_audit_permissions
     description: 'List of users with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE'
     type: array
-    default: ["##MS_PolicySigningCertificate##",
-            "SERVER_AUDIT_MAINTAINERS" ]
+    default: []
 
   - name: allowed_sql_alter_permissions
     description: 'List of user with permissions -  ALTER ANY SERVER AUDIT, ALTER ANYDATABASE AUDIT, ALTER TRACE; or EXECUTE'
     type: array
-    default: [
-            'SERVER_AUDIT_MAINTAINERS',
-            '##MS_AgentSigningCertificate##',
-            'NT AUTHORITY\SYSTEM',
-            '##MS_AgentSigningCertificate##',
-            '##MS_PolicyEventProcessingLogin##',
-            'public']
+    default: []
 
   - name: approved_users_sql_audits
     description: 'List of approved users with access to SQL Server Audits'
     type: array
-    default: ["##MS_PolicySigningCertificate##",
-            "SERVER_AUDIT_MAINTAINERS",
-            "SERVER_AUDIT_MAINTAINERS"]
+    default: []
 
 
   - name: approved_users_server
     description: 'List of sql server users with permissions - alter, create, control'
     type: array
-    default: ['##MS_PolicySigningCertificate##',
-            'NT AUTHORITY\SYSTEM',
-            'SERVER_AUDIT_MAINTAINERS']
+    default: []
 
 
   - name: approved_users_database
@@ -163,10 +152,7 @@ attributes:
   - name: sql_components
     description: 'List of sql components installed'
     type: array
-    default: ["MSSQLSERVER",
-            "SQLSERVERAGENT",
-            "SQLWriter",
-            "SQLBrowser" ]
+    default: []
 
   - name: authorized_protocols
     description: 'List of authorized network protocols for the SQL server'
@@ -188,29 +174,7 @@ attributes:
   - name: authorized_sql_users
     description: 'List of authorized users for the SQL server'
     type: array
-    default: ["public",
-            "sysadmin",
-            "securityadmin",
-            "serveradmin",
-            "setupadmin",
-            "processadmin",
-            "diskadmin",
-            "dbcreator",
-            "bulkadmin",
-            "##MS_SQLResourceSigningCertificate##",
-            "##MS_SQLReplicationSigningCertificate##",
-            "##MS_SQLAuthenticatorCertificate##",
-            "##MS_PolicySigningCertificate##",
-            "##MS_SmoExtendedSigningCertificate##",
-            "WIN-FC4ANINFUFP\\Administrator",
-            "NT SERVICE\\SQLWriter",
-            "NT SERVICE\\Winmgmt",
-            "NT Service\\MSSQLSERVER",
-            "NT AUTHORITY\\SYSTEM",
-            "NT SERVICE\\SQLSERVERAGENT",
-            "##MS_AgentSigningCertificate##",
-            "SERVER_AUDIT_MAINTAINERS",
-            "WIN-FC4ANINFUFP\\Admn"]   
+    default: []
 
   - name: allowed_users_priv_functions
     description: 'List of users allowed to execute privileged functions - create, alter, delete'
@@ -220,30 +184,12 @@ attributes:
   - name: allowed_server_permissions
     description: 'List of allowed server permissions'
     type: array
-    default: ["NT AUTHORITY\\SYSTEM",
-            "##MS_SQLAuthenticatorCertificate##",
-            "##MS_SQLReplicationSigningCertificate##",
-            "public",
-            "##MS_PolicySigningCertificate##",
-            "public",
-            "##MS_PolicySigningCertificate##",
-            "##MS_PolicyTsqlExecutionLogin##",
-            "##MS_SmoExtendedSigningCertificate##",
-            "##MS_SQLReplicationSigningCertificate##",
-            "##MS_SQLResourceSigningCertificate##",
-            "##MS_PolicyTsqlExecutionLogin##",
-            "##MS_SQLReplicationSigningCertificate##",
-            "NT AUTHORITY\\SYSTEM",
-            "SERVER_AUDIT_MAINTAINERS",
-            "SERVER_AUDIT_MAINTAINERS",
-            "SERVER_AUDIT_MAINTAINERS"]
+    default: []
 
   - name: allowed_database_permissions
     description: 'List of allowed database permissions'
     type: array
-    default: ["##MS_AgentSigningCertificate##",
-            "##MS_PolicyEventProcessingLogin##",
-            "public"]
+    default: []
 
 
   - name: encrypted_databases
@@ -264,6 +210,6 @@ attributes:
   - name: allowed_users
     description: 'List of user allowed to execute privileged functions'
     type: array
-    default: ['guest']
+    default: []
 
 
