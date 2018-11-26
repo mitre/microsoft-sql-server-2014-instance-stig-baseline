@@ -1,4 +1,4 @@
-| Check          | Sub-check                                                                         | Who | Completion Date | Issue #'s |
+| Check          | Sub-check                                                                         | Who | Completion Date *** | Issue #'s |
 |----------------|-----------------------------------------------------------------------------------|-----|-----------------|-----------|
 |Logical checks| Proper profile directory structure                         |Rony Xavier|11/21/2018|n/a|
 ||JSON output review (e.g., pass/fail on ,<br>hardened, not hardened, edge cases, etc.)|Rony Xavier|*|*|
@@ -17,3 +17,6 @@
 
 
 Pausing review until general unpdates suggested in issue #5 is applied to rest of the controls
+
+*** A completion date is entered in a row when all non-enhancement issues are resolved for that review row.
+
