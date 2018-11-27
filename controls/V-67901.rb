@@ -97,4 +97,11 @@ control 'V-67901' do
       it { should be_in ALLOWED_DATABASE_PERMISSIONS }
     end
   end
+
+  if get_server_permissions.empty? || get_database_permissions 
+    impact 0.0
+    describe "There are no server or database permissions of concern configured" do
+      skip "This control is not applicable"
+    end
+  end
 end
