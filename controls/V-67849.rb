@@ -49,7 +49,7 @@ control 'V-67849' do
        EXEC sys.sp_configure N'filestream access level';
 
   Review the number in the config_value column.  If it is 0, this is not a
-  finding.
+  finding. 
 
   If config_value is 1 or 2, and Filestream is not required, this is a finding.
 
@@ -78,6 +78,11 @@ control 'V-67849' do
   1 - Transact-SQL access enabled
   2 - Full access enabled"
 
+
+  filestream_required = attribute('is_filestream_required')
+
+  filestream_transact_access_only_required = attribute('filestream_transact_access_only_required')
+
   query = %(
     EXEC sys.sp_configure N'filestream access level';
   )
@@ -87,11 +92,20 @@ control 'V-67849' do
                               instance: attribute('instance'),
                               port: attribute('port'),
                               db_name: attribute('db_name'))
-  describe.one do
+  if !filestream_required
+    describe 'The filestream access level' do
+      subject { sql_session.query(query).column('config_value').uniq }
+      it { should eq 0 }
+    end
     describe 'The filestream access level' do
       subject { sql_session.query(query).column('config_value').uniq }
       it { should_not eq 1 }
     end
+    describe 'The filestream access level' do
+      subject { sql_session.query(query).column('config_value').uniq }
+      it { should_not eq 2 }
+    end
+  if filestream_transact_access_only_required
     describe 'The filestream access level' do
       subject { sql_session.query(query).column('config_value').uniq }
       it { should_not eq 2 }

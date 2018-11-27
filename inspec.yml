@@ -222,4 +222,14 @@ attributes:
     type: array
     default: []
 
+  - name: filestream_required
+    description: 'Set to true if filestream is required'
+    type: boolean
+    default: false
+
+  - name: filestream_transact_access_only_required
+    description: 'Set to true if filestream transact access is required'
+    type: boolean
+    default: false
+
 

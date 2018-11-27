@@ -24,7 +24,7 @@ control 'V-67829' do
   tag "cci": ['CCI-000381']
   tag "nist": ['CM-7 a', 'Rev_4']
   tag "false_negatives": nil
-  tag "false_positives": nil
+  tag "false_positives": nil 
   tag "documentable": false
   tag "mitigations": nil
   tag "severity_override_guidance": false
