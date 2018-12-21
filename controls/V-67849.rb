@@ -105,6 +105,7 @@ control 'V-67849' do
       subject { sql_session.query(query).column('config_value').uniq }
       it { should_not eq 2 }
     end
+  end
   if filestream_transact_access_only_required
     describe 'The filestream access level' do
       subject { sql_session.query(query).column('config_value').uniq }

@@ -1,5 +1,3 @@
-AUTHORIZED_PROTOCOLS = attribute('authorized_protocols')
-
 control 'V-67859' do
   title "SQL Server must be configured to prohibit or restrict the use of
   unauthorized network protocols."
@@ -78,7 +76,7 @@ control 'V-67859' do
     a = protocol.strip
     describe "sql enabled protocols: #{a}" do
       subject { a }
-      it { should be_in AUTHORIZED_PROTOCOLS }
+      it { should be_in attribute('authorized_protocols') }
     end
   end
 end
