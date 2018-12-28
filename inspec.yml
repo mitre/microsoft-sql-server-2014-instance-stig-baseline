@@ -1,4 +1,4 @@
-name: microsoft-sql-2014-server-stig-baseline
+name: microsoft-sql-server-2014-instance-stig-baseline
 title: MS SQL Server 2014 Instance Security Technical Implementation Guide
 maintainer: The MITRE Corporation
 copyright: (c) 2018 The MITRE Corporation
