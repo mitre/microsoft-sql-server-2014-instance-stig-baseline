@@ -35,7 +35,7 @@ The JSON InSpec results file may also be loaded into a __full heimdall server__,
 
 ## License 
 
-* This project is licensed under the terms of the Apache license 2.0 (apache-2.0)
+* This project is licensed under the terms of the [Apache 2.0 license](https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline/blob/master/LICENSE.md).
 
 ### NOTICE
 
