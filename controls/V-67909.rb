@@ -14,7 +14,7 @@ control 'V-67909' do
       When transmitting data, SQL Server, associated applications, and
   infrastructure must leverage transmission protection mechanisms.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000441-DB-000378'
   tag "gid": 'V-67909'
   tag "rid": 'SV-82399r1_rule'

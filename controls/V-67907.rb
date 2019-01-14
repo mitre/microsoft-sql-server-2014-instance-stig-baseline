@@ -19,7 +19,7 @@ control 'V-67907' do
   also influenced by the physical measures taken to secure the equipment and
   media on which the information resides.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000429-DB-000387'
   tag "gid": 'V-67907'
   tag "rid": 'SV-82397r1_rule'

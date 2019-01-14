@@ -18,7 +18,7 @@ control 'V-67941' do
   by SQL Server Audit, Trace, or other means; but excluding audit-trail
   information built into application data.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000515-DB-000318'
   tag "gid": 'V-67941'
   tag "rid": 'SV-82431r1_rule'

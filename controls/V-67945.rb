@@ -23,7 +23,7 @@ control 'V-67945' do
       To enforce this in SQL Server, configure each DBMS-managed login to inherit
   the rules from Windows.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000164-DB-000401'
   tag "gid": 'V-67945'
   tag "rid": 'SV-82435r2_rule'

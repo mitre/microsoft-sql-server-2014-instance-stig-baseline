@@ -18,7 +18,7 @@ control 'V-67891' do
       As noted elsewhere in this document, SQL Server's Audit and/or Trace
   features can be used for auditing purposes.  This requirement applies to both.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000357-DB-000316'
   tag "gid": 'V-67891'
   tag "rid": 'SV-82381r1_rule'

@@ -27,7 +27,7 @@ control 'V-67789' do
   settings, and audit reports) needed to successfully audit information system
   activity.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000118-DB-000059'
   tag "gid": 'V-67789'
   tag "rid": 'SV-82279r2_rule'

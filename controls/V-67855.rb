@@ -11,7 +11,7 @@ control 'V-67855' do
   and it should not be removed, one way to mitigate this risk is to change the
   [sa] account name.
   "
-  impact 0.7
+  impact 0.3
   tag "gtitle": 'SRG-APP-000141-DB-000092'
   tag "gid": 'V-67855'
   tag "rid": 'SV-82345r1_rule'

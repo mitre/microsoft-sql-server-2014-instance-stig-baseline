@@ -22,7 +22,7 @@ control 'V-67893' do
       The appropriate support staff include, at a minimum, the ISSO and the
   DBA/SA.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000359-DB-000319'
   tag "gid": 'V-67893'
   tag "rid": 'SV-82383r1_rule'

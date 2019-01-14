@@ -27,7 +27,7 @@ control 'V-67913' do
   availability of the update. The specific time period will be defined by an
   authoritative source (e.g. IAVM, CTOs, DTMs, and STIGs).
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000456-DB-000390'
   tag "gid": 'V-67913'
   tag "rid": 'SV-82403r1_rule'

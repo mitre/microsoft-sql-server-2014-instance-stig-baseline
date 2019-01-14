@@ -33,7 +33,7 @@ control 'V-67861' do
       Functions in this requirement refers to system and infrastructure
   functionality, not to functions in mathematics and programming languages.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000142-DB-000094'
   tag "gid": 'V-67861'
   tag "rid": 'SV-82351r1_rule'

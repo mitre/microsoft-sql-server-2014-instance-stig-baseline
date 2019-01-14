@@ -25,7 +25,7 @@ control 'V-67791' do
       Modification of database audit data could mask the theft or unauthorized
   modification of sensitive data stored in the database.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000119-DB-000060'
   tag "gid": 'V-67791'
   tag "rid": 'SV-82281r2_rule'

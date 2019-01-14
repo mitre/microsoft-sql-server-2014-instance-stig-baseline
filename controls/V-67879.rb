@@ -25,7 +25,7 @@ commingled with objects or code implementing application logic. When security
 and nonsecurity functionality is commingled, users who have access to
 nonsecurity functionality may be able to access security functionality.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000233-DB-000124'
   tag "gid": 'V-67879'
   tag "rid": 'SV-82369r1_rule'

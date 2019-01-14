@@ -39,7 +39,7 @@ control 'V-67757' do
   queries the view to obtain a count that is accurate enough for this purpose in
   most circumstances.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000001-DB-000031'
   tag "gid": 'V-67757'
   tag "rid": 'SV-82247r1_rule'

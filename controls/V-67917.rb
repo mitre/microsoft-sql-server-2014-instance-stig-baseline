@@ -29,7 +29,7 @@ control 'V-67917' do
   Note also that Trace does not support auditing of SELECT statements, whereas
   Audit does.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000492-DB-000332'
   tag "gid": 'V-67917'
   tag "rid": 'SV-82407r2_rule'

@@ -24,7 +24,7 @@ control 'V-67765' do
 
       This version of the requirement deals with Trace-based audit trails.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000090-DB-000065'
   tag "gid": 'V-67765'
   tag "rid": 'SV-82255r1_rule'

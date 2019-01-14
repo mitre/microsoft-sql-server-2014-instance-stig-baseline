@@ -20,7 +20,7 @@ control 'V-70623' do
   consider whether the benefits of its use outweigh the potential negative
   consequences.
   "
-  impact 0.7
+  impact 0.3
   tag "gtitle": 'SRG-APP-000516-DB-999900'
   tag "gid": 'V-70623'
   tag "rid": 'SV-85245r1_rule'

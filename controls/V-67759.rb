@@ -45,7 +45,7 @@ control 'V-67759' do
   implemented.
 
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000023-DB-000001'
   tag "gid": 'V-67759'
   tag "rid": 'SV-82249r1_rule'

@@ -19,7 +19,7 @@ control 'V-67813' do
   method that provides any level of separation of security context assists in the
   protection between applications.
   "
-  impact 0.7
+  impact 0.3
   tag "gtitle": 'SRG-APP-000133-DB-000199'
   tag "gid": 'V-67813'
   tag "rid": 'SV-82303r2_rule'

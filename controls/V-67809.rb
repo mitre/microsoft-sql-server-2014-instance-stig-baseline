@@ -19,7 +19,7 @@ control 'V-67809' do
       Unmanaged changes that occur to SQL Server software libraries or
   configuration can lead to unauthorized or compromised installations.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000179'
   tag "gid": 'V-67809'
   tag "rid": 'SV-82299r1_rule'

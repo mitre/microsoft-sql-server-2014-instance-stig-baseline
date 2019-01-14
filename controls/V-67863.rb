@@ -16,7 +16,7 @@ control 'V-67863' do
   specific user actions that can be performed on SQL Server without
   identification or authentication.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000148-DB-000103'
   tag "gid": 'V-67863'
   tag "rid": 'SV-82353r1_rule'

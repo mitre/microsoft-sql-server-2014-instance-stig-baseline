@@ -22,7 +22,7 @@ control 'V-67875' do
   presented on an interface available for users, information on DBMS settings may
   be inadvertently made available to the user.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000211-DB-000122'
   tag "gid": 'V-67875'
   tag "rid": 'SV-82365r1_rule'

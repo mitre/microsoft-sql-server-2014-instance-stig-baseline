@@ -31,7 +31,7 @@ control 'V-67761' do
   gaining or being denied access inappropriately and in conflict with applicable
   policy.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000033-DB-000084'
   tag "gid": 'V-67761'
   tag "rid": 'SV-82251r1_rule'

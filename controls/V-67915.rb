@@ -8,7 +8,7 @@ control 'V-67915' do
   situations, SQL Server updates must be applied to appropriately configured
   non-production systems, and the resulting version of SQL Server assessed for
   correct operation."
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000456-DB-000390'
   tag "gid": 'V-67915'
   tag "rid": 'SV-82405r1_rule'

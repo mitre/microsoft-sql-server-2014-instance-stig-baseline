@@ -15,7 +15,7 @@ control 'V-67829' do
       The SQL Server Analysis Service (SSAS) software component removed from SQL
   Server if it is unused.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67829'
   tag "rid": 'SV-82319r1_rule'

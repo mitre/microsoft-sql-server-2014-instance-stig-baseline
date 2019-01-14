@@ -15,7 +15,7 @@ control 'V-67837' do
       The Master Data Services software component must be removed from SQL Server
   if it is unused.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67837'
   tag "rid": 'SV-82327r1_rule'

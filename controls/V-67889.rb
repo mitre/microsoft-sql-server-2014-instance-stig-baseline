@@ -18,7 +18,7 @@ control 'V-67889' do
   destination.)  Whatever the method used, it must be compatible with off-loading
   the records to the centralized system.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000356-DB-000314'
   tag "gid": 'V-67889'
   tag "rid": 'SV-82379r1_rule'
