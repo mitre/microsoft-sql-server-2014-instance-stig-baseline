@@ -15,7 +15,7 @@ control 'V-67845' do
       The Client Tools Software Development Kit must be removed from SQL Server
   if it is unused.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67845'
   tag "rid": 'SV-82335r1_rule'

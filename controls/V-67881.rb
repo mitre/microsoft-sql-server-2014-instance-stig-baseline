@@ -6,7 +6,7 @@ control 'V-67881' do
   DBMS processes and authorized, administrative users to have access to the files
   where the database resides helps ensure that those files are not shared
   inappropriately and are not open to backdoor access and manipulation."
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000243-DB-000374'
   tag "gid": 'V-67881'
   tag "rid": 'SV-82371r1_rule'

@@ -19,7 +19,7 @@ control 'V-67769' do
     This requirement applies to SQL Server Audit-based audit trails; Trace does
   not have this capability.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000091-DB-000066'
   tag "gid": 'V-67769'
   tag "rid": 'SV-82259r2_rule'

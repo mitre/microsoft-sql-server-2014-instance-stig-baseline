@@ -15,7 +15,7 @@ control 'V-67807' do
       Of particular note in this context is that any software installed for
   auditing and/or audit file management must be protected and monitored.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000179'
   tag "gid": 'V-67807'
   tag "rid": 'SV-82297r1_rule'

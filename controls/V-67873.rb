@@ -25,7 +25,7 @@ control 'V-67873' do
   organizational operations, organizational assets, individuals, and other
   organizations.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000180-DB-000115'
   tag "gid": 'V-67873'
   tag "rid": 'SV-82363r1_rule'

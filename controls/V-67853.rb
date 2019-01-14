@@ -16,7 +16,7 @@ control 'V-67853' do
   enabled in order for the application to function properly. These applications
   that require the [sa] account to be enabled are usually legacy systems.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000092'
   tag "gid": 'V-67853'
   tag "rid": 'SV-82343r1_rule'

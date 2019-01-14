@@ -20,7 +20,7 @@ control 'V-67847' do
   on the server, then the Management Tools software component must be removed
   from the server.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67847'
   tag "rid": 'SV-82337r1_rule'

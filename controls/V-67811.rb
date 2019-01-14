@@ -28,7 +28,7 @@ control 'V-67811' do
   privileged accounts to only those persons who are qualified and authorized to
   use them.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000198'
   tag "gid": 'V-67811'
   tag "rid": 'SV-82301r1_rule'

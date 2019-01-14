@@ -25,7 +25,7 @@ control 'V-67767' do
       This version of the requirement deals with SQL Server Audit-based audit
     trails.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000090-DB-000065'
   tag "gid": 'V-67767'
   tag "rid": 'SV-82257r1_rule'

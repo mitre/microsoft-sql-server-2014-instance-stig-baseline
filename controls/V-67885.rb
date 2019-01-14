@@ -51,7 +51,7 @@ control 'V-67885' do
   of DBMS security features, database triggers, other mechanisms, or a
   combination of these.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000340-DB-000304'
   tag "gid": 'V-67885'
   tag "rid": 'SV-82375r1_rule'

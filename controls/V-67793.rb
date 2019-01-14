@@ -26,7 +26,7 @@ control 'V-67793' do
       Deletion of database audit data could mask the theft or unauthorized
   modification of sensitive data stored in the database.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000120-DB-000061'
   tag "gid": 'V-67793'
   tag "rid": 'SV-82283r2_rule'

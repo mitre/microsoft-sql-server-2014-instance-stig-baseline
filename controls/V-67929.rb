@@ -11,7 +11,7 @@ control 'V-67929' do
   an acceptable solution for the time being.  Note, however, that Microsoft
   intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000503-DB-000350'
   tag "gid": 'V-67929'
   tag "rid": 'SV-82419r2_rule'

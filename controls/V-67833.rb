@@ -15,7 +15,7 @@ control 'V-67833' do
       The SQL Server Distributed Replay Controller software component must be
   removed if it is unused.
     "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67833'
   tag "rid": 'SV-82323r1_rule'

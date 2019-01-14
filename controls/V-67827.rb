@@ -15,7 +15,7 @@ control 'V-67827' do
       The SQL Server Integration Services (SSIS) software component must be
   removed from SQL Server if it is unused.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67827'
   tag "rid": 'SV-82317r1_rule'

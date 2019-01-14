@@ -16,7 +16,7 @@ control 'V-67911' do
       When receiving data, SQL Server, associated applications, and
   infrastructure must leverage protection mechanisms.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000442-DB-000379'
   tag "gid": 'V-67911'
   tag "rid": 'SV-82401r1_rule'

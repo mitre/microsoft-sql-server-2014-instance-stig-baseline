@@ -3,7 +3,7 @@ control 'V-67905' do
   operation."
   desc "Having unnecessary protocols enabled exposes the system to avoidable
   threats.  In a typical installation, only TCP/IP will be required."
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000383-DB-000364'
   tag "gid": 'V-67905'
   tag "rid": 'SV-82395r1_rule'

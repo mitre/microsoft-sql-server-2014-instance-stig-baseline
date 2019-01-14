@@ -19,7 +19,7 @@ control 'V-67815' do
       Unmanaged changes that occur to the database software libraries or
   configuration can lead to unauthorized or compromised installations.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000362'
   tag "gid": 'V-67815'
   tag "rid": 'SV-82305r1_rule'

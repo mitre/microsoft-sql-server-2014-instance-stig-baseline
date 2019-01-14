@@ -13,7 +13,7 @@ control 'V-67849' do
 
       The Filestream feature must be disabled if it is unused.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000091'
   tag "gid": 'V-67849'
   tag "rid": 'SV-82339r1_rule'

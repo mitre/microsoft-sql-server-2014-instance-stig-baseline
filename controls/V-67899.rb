@@ -25,7 +25,7 @@ control 'V-67899' do
       In the case of a database management system, this requirement covers stored
   procedures, functions, triggers, views, etc.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000378-DB-000365'
   tag "gid": 'V-67899'
   tag "rid": 'SV-82389r1_rule'

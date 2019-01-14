@@ -3,7 +3,7 @@ control 'V-67387' do
   desc  "Backup and recovery of the Service Master Key may be critical to the
   complete recovery of the database. Not having this key can lead to loss of data
   during recovery."
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000231-DB-000154'
   tag "gid": 'V-67387'
   tag "rid": 'SV-81877r2_rule'

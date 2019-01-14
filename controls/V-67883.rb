@@ -21,7 +21,7 @@ control 'V-67883' do
       This capability is typically reserved for specific cases where the system
   owner, data owner, or organization requires additional assurance.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000295-DB-000305'
   tag "gid": 'V-67883'
   tag "rid": 'SV-82373r1_rule'

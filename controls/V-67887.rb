@@ -22,7 +22,7 @@ control 'V-67887' do
   to obtain assurances from the development organization that this issue has been
   addressed and must document what has been discovered.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000342-DB-000302'
   tag "gid": 'V-67887'
   tag "rid": 'SV-82377r2_rule'

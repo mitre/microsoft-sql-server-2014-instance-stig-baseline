@@ -20,7 +20,7 @@ control 'V-67897' do
   these timestamp-retrieval functions are automatically compliant with this
   requirement, as are SQL Server's audit and trace capabilities.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000374-DB-000322'
   tag "gid": 'V-67897'
   tag "rid": 'SV-82387r1_rule'

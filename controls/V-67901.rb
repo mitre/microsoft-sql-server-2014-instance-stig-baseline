@@ -18,7 +18,7 @@ control 'V-67901' do
   authorized individuals to obtain access to system components for the purposes
   of initiating changes, including upgrades and modifications.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000380-DB-000360'
   tag "gid": 'V-67901'
   tag "rid": 'SV-82391r1_rule'

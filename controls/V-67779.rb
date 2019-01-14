@@ -40,7 +40,7 @@ control 'V-67779' do
   failures (such as selecting from a table that does not exist) may not appear at
   all.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000099-DB-000043'
   tag "gid": 'V-67779'
   tag "rid": 'SV-82269r2_rule'

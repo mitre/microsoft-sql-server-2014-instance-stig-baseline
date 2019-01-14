@@ -19,7 +19,7 @@ control 'V-67803' do
   requirements govern SQL Server privileges to maintain trace or audit
   definitions.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000122-DB-000203'
   tag "gid": 'V-67803'
   tag "rid": 'SV-82293r1_rule'

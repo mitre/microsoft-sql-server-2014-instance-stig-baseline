@@ -23,7 +23,7 @@ control 'V-67851' do
   the number of potential vulnerabilities is reduced. Components of the system
   that are unused and cannot be uninstalled must be disabled.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000141-DB-000092'
   tag "gid": 'V-67851'
   tag "rid": 'SV-82341r2_rule'

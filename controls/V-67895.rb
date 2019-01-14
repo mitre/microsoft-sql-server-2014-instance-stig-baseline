@@ -17,7 +17,7 @@ control 'V-67895' do
   these messages immediately (i.e., the time from event detection to alert occurs
   in seconds or less).
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000360-DB-000320'
   tag "gid": 'V-67895'
   tag "rid": 'SV-82385r1_rule'

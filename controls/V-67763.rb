@@ -25,7 +25,7 @@ control 'V-67763' do
       (Shared accounts should not be confused with Windows groups, which are used
   in role-based access control.)
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000080-DB-000063'
   tag "gid": 'V-67763'
   tag "rid": 'SV-82253r1_rule'
