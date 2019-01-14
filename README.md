@@ -16,7 +16,7 @@ Runs this profile over winrm to the host at IP address <hostip> as a privileged 
     
 The following is an example of using this command. 
 
-    inspec exec https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline/archive/master.tar.gz -t winrm://$winhostip --user 'Administrator' --password=Pa55w0rd --reporter cli json:my-iis-server.json
+    inspec exec https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline/archive/master.tar.gz -t winrm://$winhostip --user 'Administrator' --password=Pa55w0rd --reporter cli json:mssql-instance-results.json
 
 ## Viewing the JSON Results
 
