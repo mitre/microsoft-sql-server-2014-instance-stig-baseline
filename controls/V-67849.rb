@@ -79,7 +79,7 @@ control 'V-67849' do
   2 - Full access enabled"
 
 
-  filestream_required = attribute('is_filestream_required')
+  filestream_required = attribute('filestream_required')
 
   filestream_transact_access_only_required = attribute('filestream_transact_access_only_required')
 
@@ -94,22 +94,14 @@ control 'V-67849' do
                               db_name: attribute('db_name'))
   if !filestream_required
     describe 'The filestream access level' do
-      subject { sql_session.query(query).column('config_value').uniq }
-      it { should eq 0 }
-    end
-    describe 'The filestream access level' do
-      subject { sql_session.query(query).column('config_value').uniq }
-      it { should_not eq 1 }
-    end
-    describe 'The filestream access level' do
-      subject { sql_session.query(query).column('config_value').uniq }
-      it { should_not eq 2 }
+      subject { sql_session.query(query).column('config_value') }
+      it { should cmp 0 }
     end
   end
   if filestream_transact_access_only_required
     describe 'The filestream access level' do
-      subject { sql_session.query(query).column('config_value').uniq }
-      it { should_not eq 2 }
+      subject { sql_session.query(query).column('config_value') }
+      it { should_not cmp 2 }
     end
   end
 end

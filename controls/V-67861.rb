@@ -88,4 +88,9 @@ control 'V-67861' do
       it { should be_in AUTHORIZED_PORTS }
     end
   end
+
+  describe "ports" do
+    subject { port_name }
+    it { should be_empty }
+  end if port_name.empty? and port.empty?
 end

@@ -1,4 +1,3 @@
-SQL_MANAGED_ACCOUNTS = attribute('sql_managed_accounts')
 control 'V-67759' do
   title "SQL Server authentication and identity management must be integrated
   with an organization-level authentication/access mechanism providing account
@@ -146,6 +145,8 @@ control 'V-67759' do
   USE <database name>;
   DROP USER <user name>;"
 
+  sql_managed_accounts = attribute('sql_managed_accounts')
+
   query = %(
   SELECT
       name
@@ -179,7 +180,7 @@ control 'V-67759' do
     account_list.each do |account|
       describe "sql managed account: #{account}" do
         subject { account }
-        it { should be_in SQL_MANAGED_ACCOUNTS }
+        it { should be_in sql_managed_accounts }
       end
     end
   end

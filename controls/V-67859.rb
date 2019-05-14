@@ -79,4 +79,9 @@ control 'V-67859' do
       it { should be_in attribute('authorized_protocols') }
     end
   end
+
+  describe "sql enabled protocols" do
+    subject { get_protocols }
+    it { should be_empty }
+  end if get_protocols.empty?
 end
