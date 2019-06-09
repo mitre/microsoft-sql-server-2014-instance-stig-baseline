@@ -23,16 +23,16 @@ attributes:
 
   - name: host
     description: 'hostname MSSQL DB Server'
-    default: 'WIN-FC4ANINFUFP'
+    default: null
 
   - name: instance
     description: 'instance name MSSQL DB Server'
-    default: 'MSSQL2014'
+    default: null
 
   - name: port
     description: 'port MSSQL DB Server'
     type: numeric
-    default: 1433
+    default: null
 
   - name: db_name
     description: 'name of the specific DB being evaluated within the MSSQL server'
