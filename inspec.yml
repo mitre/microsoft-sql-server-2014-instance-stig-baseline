@@ -32,7 +32,7 @@ attributes:
   - name: port
     description: 'port MSSQL DB Server'
     type: numeric
-    default: null
+    default: 1433
 
   - name: db_name
     description: 'name of the specific DB being evaluated within the MSSQL server'
