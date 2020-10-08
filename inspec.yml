@@ -11,6 +11,7 @@ summary: 'This Security Technical Implementation Guide is published as a
 	 documents. Comments or proposed revisions to this document should be
 	 sent via e-mail to the following address: disa.stig_spt@mail.mil.'
 version: 0.1.0
+inspec_version: ">= 4.0"
 
 attributes:
   - name: user
