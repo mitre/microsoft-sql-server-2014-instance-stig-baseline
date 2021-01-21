@@ -113,14 +113,13 @@ control 'V-67765' do
          'CREATE TRACE EVENT NOTIFICATION'
          );").column('result')
   
-  if input('server_trace_implemented') != true
-    impact 0.0
-    describe 'Server Trace is not implemented, this is not a finding' do
-      skip 'Server Trace is not implemented, this is not a finding'
+  if 
+    describe 'Not a finding if SQL Server Trace is not in use for audit purposes' do
+      subject { input('server_trace_implemented') }
+      it { should be false }
     end
   else 
     if  permissions_audit.empty?
-      impact 0.0
       describe 'There are no sql approved audit maintainers, control N/A' do
         skip 'There are no sql approved audit maintainers, control N/A'
       end
