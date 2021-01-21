@@ -113,7 +113,7 @@ control 'V-67765' do
          'CREATE TRACE EVENT NOTIFICATION'
          );").column('result')
   
-  if input('server_trace_implemented') != true
+  if input('server_trace_implemented').false?
     impact 0.0
     describe 'Server Trace is not implemented, this is not a finding' do
       skip 'Server Trace is not implemented, this is not a finding'
