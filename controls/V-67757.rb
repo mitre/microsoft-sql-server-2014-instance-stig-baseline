@@ -113,14 +113,9 @@ control 'V-67757' do
                               port: attribute('port'),
                               db_name: attribute('db_name'))
 
-#  describe 'Audited Result for Defined Audit Actions' do
-#    subject { sql_session.query(query).column('name').uniq }
-#    it { should_not be_empty }
-#  end
-
   trigger_list = sql_session.query(query).column('name').uniq
   
-  describe 'A manual review of the list of triggers: #{trigger_list} to determine whether any of them limit the number of concurrent sessions per user' do
+  describe "A manual review of the list of triggers: #{trigger_list} to determine whether any of them limit the number of concurrent sessions per user" do
     skip 'A manual review of the triggers should be performed to determine whether any of them limit the number of concurrent sessions per user'
   end
 end
