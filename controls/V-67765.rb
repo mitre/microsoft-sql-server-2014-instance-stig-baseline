@@ -118,16 +118,18 @@ control 'V-67765' do
     describe 'Server Trace is not implemented, this is not a finding' do
       skip 'Server Trace is not implemented, this is not a finding'
     end
-  else if  permissions_audit.empty?
-    impact 0.0
-    describe 'There are no sql approved audit maintainers, control N/A' do
-      skip 'There are no sql approved audit maintainers, control N/A'
-    end
-  else
-    permissions_audit.each do |grantee|
-      describe "sql audit maintainers: #{grantee}" do
-        subject { grantee }
-        it { should be_in input('approved_audit_maintainers') }
+  else 
+    if  permissions_audit.empty?
+      impact 0.0
+      describe 'There are no sql approved audit maintainers, control N/A' do
+        skip 'There are no sql approved audit maintainers, control N/A'
+      end
+    else
+      permissions_audit.each do |grantee|
+        describe "sql audit maintainers: #{grantee}" do
+          subject { grantee }
+          it { should be_in input('approved_audit_maintainers') }
+        end
       end
     end
   end
