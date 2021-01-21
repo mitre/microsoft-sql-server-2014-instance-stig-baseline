@@ -1,4 +1,3 @@
-APPROVED_AUDIT_MAINTAINERS = attribute('approved_audit_maintainers')
 
 control 'V-67765' do
   title "Where SQL Server Trace is in use for auditing purposes, SQL Server
@@ -101,6 +100,7 @@ control 'V-67765' do
   Then, for each authorized login, run the statement:
   ALTER SERVER ROLE SERVER_AUDIT_MAINTAINERS ADD MEMBER <login name>;
   GO"
+
   sql = mssql_session(user: attribute('user'),
                       password: attribute('password'),
                       host: attribute('host'),
@@ -112,7 +112,13 @@ control 'V-67765' do
          'ALTER TRACE',
          'CREATE TRACE EVENT NOTIFICATION'
          );").column('result')
-  if  permissions_audit.empty?
+  
+  if input('server_trace_implemented') != true
+    impact 0.0
+    describe 'Server Trace is not implemented, this is not a finding' do
+      skip 'Server Trace is not implemented, this is not a finding'
+    end
+  elseif  permissions_audit.empty?
     impact 0.0
     describe 'There are no sql approved audit maintainers, control N/A' do
       skip 'There are no sql approved audit maintainers, control N/A'
@@ -121,7 +127,7 @@ control 'V-67765' do
     permissions_audit.each do |grantee|
       describe "sql audit maintainers: #{grantee}" do
         subject { grantee }
-        it { should be_in APPROVED_AUDIT_MAINTAINERS }
+        it { should be_in input('approved_audit_maintainers') }
       end
     end
   end
