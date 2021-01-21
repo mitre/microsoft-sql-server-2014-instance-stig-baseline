@@ -118,7 +118,7 @@ control 'V-67765' do
     describe 'Server Trace is not implemented, this is not a finding' do
       skip 'Server Trace is not implemented, this is not a finding'
     end
-  elseif  permissions_audit.empty?
+  else if  permissions_audit.empty?
     impact 0.0
     describe 'There are no sql approved audit maintainers, control N/A' do
       skip 'There are no sql approved audit maintainers, control N/A'
