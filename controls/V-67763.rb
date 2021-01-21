@@ -80,8 +80,7 @@ control 'V-67763' do
   Design, develop, and implement a method to log use of any account to which more
   than one person has access. Restrict interactive access to shared accounts to
   the fewest persons possible."
-  describe "SQL Server must protect against an individual using a shared account
-  from falsely denying having performed a particular action." do
-    skip 'This is a manual check'
+  describe "A manual review is required to identify and restrict shared accounts." do
+    skip 'A manual review is required to identify and restrict shared accounts.'
   end
 end
