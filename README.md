@@ -1,224 +1,228 @@
-# microsoft-sql-server-2014-instance-stig-baseline
+# MS SQL Server 2014 Instance Security Technical Implementation Guide
+This InSpec Profile was created to facilitate testing and auditing of `MS SQL Server 2014 Instance`
+infrastructure and applications when validating compliancy with [Department of Defense (DoD) STIG](https://public.cyber.mil/stigs/)
+requirements
 
-InSpec profile to validate the secure configuration of Microsoft SQL Server 2014 *Instance, against [DISA](https://iase.disa.mil/stigs/)'s Microsoft SQL Server 2014 Instance Security Technical Implementation Guide (STIG) Version 1, Release 9.
+- Profile Version: **2.4.0**
+- STIG Date: **24 Jul 2024**
+- STIG Version: **Version 2 Release 4 (V2R4)**
 
-\* In the Microsoft SQL Server domain, an `instance` is one installed, operational copy of the DBMS software. Although multiple SQL Server instances can coexist on a Windows server, it is customary in a production environment for a single instance to be deployed on a dedicated server.
-  
+
+This profile was developed to reduce the time it takes to perform a security checks based upon the
+STIG Guidance from the Defense Information Systems Agency (DISA) in partnership between the DISA
+Services Directorate (SD) and the DISA Risk Management Executive (RME) office.
+
+The results of a profile run will provide information needed to support an Authority to Operate (ATO)
+decision for the applicable technology.
+
+The MS SQL Server 2014 Instance STIG Profile uses the [InSpec](https://github.com/inspec/inspec)
+open-source compliance validation language to support automation of the required compliance, security
+and policy testing for Assessment and Authorization (A&A) and Authority to Operate (ATO) decisions
+and Continuous Authority to Operate (cATO) processes.
+
+Table of Contents
+=================
+* [STIG Information](#stig-information)
+* [Getting Started](#getting-started)
+    * [Intended Usage](#intended-usage)
+    * [Tailoring to Your Environment](#tailoring-to-your-environment)
+    * [Testing the Profile Controls](#testing-the-profile-controls)
+* [Running the Profile](#running-the-profile)
+    * [Directly from Github](#directly-from-github) 
+    * [Using a local Archive copy](#using-a-local-archive-copy)
+    * [Different Run Options](#different-run-options)
+* [Using Heimdall for Viewing Test Results](#using-heimdall-for-viewing-test-results)
+
+## STIG Information
+The DISA RME and DISA SD Office, along with their vendor partners, create and maintain a set
+of Security Technical Implementation Guides for applications, computer systems and networks
+connected to the Department of Defense (DoD). These guidelines are the primary security standards
+used by the DoD agencies. In addition to defining security guidelines, the STIGs also stipulate
+how security training should proceed and when security checks should occur. Organizations must
+stay compliant with these guidelines or they risk having their access to the DoD terminated.
+
+Requirements associated with the MS SQL Server 2014 Instance STIG are derived from the
+[Security Requirements Guides](https://csrc.nist.gov/glossary/term/security_requirements_guide)
+and align to the [National Institute of Standards and Technology](https://www.nist.gov/) (NIST)
+[Special Publication (SP) 800-53](https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/800-53)
+Security Controls, [DoD Control Correlation Identifier](https://public.cyber.mil/stigs/cci/) and related standards.
+
+The MS SQL Server 2014 Instance STIG profile checks were developed to provide technical implementation
+validation to the defined DoD requirements, the guidance can provide insight for any organizations wishing
+to enhance their security posture and can be tailored easily for use in your organization.
+
+[top](#table-of-contents)
 ## Getting Started  
-It is intended and recommended that InSpec run this profile from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __winrm__.
+It is intended and recommended that InSpec run this profile from a __"runner"__ host
+(such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop)
+against the target remotely over __winrm__.
 
-__For the best security of the runner, always install on the runner the _latest version_ of InSpec and supporting Ruby language components.__ 
+__For the best security of the runner, always install the _latest version_ of InSpec on the runner
+    and supporting Ruby language components.__ 
 
-Latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
+The latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
-## Tailoring to Your Environment
-The following inputs must be configured in an inputs ".yml" file for the profile to run correctly for your specific environment. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
+[top](#table-of-contents)
+### Intended Usage
+1. The latest `released` version of the profile is intended for use in A&A testing, as well as
+    providing formal results to Authorizing Officials and Identity and Access Management (IAM)s.
+    Please use the `released` versions of the profile in these types of workflows. 
 
-```yaml
-# username MSSQL DB Server
-user: ''
+2. The `main` branch is a development branch that will become the next release of the profile.
+    The `main` branch is intended for use in _developing and testing_ merge requests for the next
+    release of the profile, and _is not intended_ be used for formal and ongoing testing on systems.
 
-# password MSSQL DB Server'
-password: ''
+[top](#table-of-contents)
+### Tailoring to Your Environment
+The `inspec.yml` file contains metadata that describes the profile.
 
-# hostname MSSQL DB Server'
-host: ''
+***[Update the `inspec.yml` file parameter `inputs` with a list of inputs appropriate
+ for the profile and specific environment. Also update the inspec_version to the required version]***
 
-# instance name MSSQL DB Server'
-instance: ''
+Chef InSpec Resources:
+- [InSpec Profile Documentation](https://docs.chef.io/inspec/profiles/).
+- [InSpec Inputs](https://docs.chef.io/inspec/profiles/inputs/).
+- [inspec.yml](https://docs.chef.io/inspec/profiles/inspec_yml/).
 
-# port MSSQL DB Server
-port: 1433
+>[!NOTE]
+> Inputs are variables that can be referenced by any control in the profile, and are defined
+  and given a default value in the `inspec.yml` file.
 
-# name of the specific DB being evaluated within the MSSQL server
-db_name: ''
+Below is an example how the `inputs` are defined in the `inspec.yml`:
+```
+inputs:
+  # Skip controls that take a long time to test 
+  - name: disable_slow_controls
+    description: Controls that are known to consistently have long run times can be disabled with this attribute
+    type: Boolean
+    value: false
 
-# Set to true If SQL Server Trace is in use for audit purposes
-server_trace_implemented: true
-
-# Set to true If SQL Server Audit is in use for audit purposes
-server_audit_implemented: true
-
-# Set to true if SQL Server Reporting Services is in use
-sql_server_reporting_services_used: false
-
-# Set to true if SQL Server data tools is required
-sql_server_data_tools_required: false
-
-# Set to true if SQL Server Integration Services is in use
-sql_server_integration_services_used: false
-
-# Set to true if SQL Server analysis Services is in use
-sql_server_analysis_services_used: false
-
-# Set to true if SQL Server Distributed Replay Client is in use
-sql_server_distributed_replay_client_used: false
-
-# Set to true if SQL Server Distributed Replay Controller is in use
-sql_server_distributed_replay_controller_used: false
-
-# Set to true if SQL Server full-text search is in use
-sql_server_full_text_search_used: false
-
-# Set to true if master data services is in use
-master_data_services_used: false
-
-# Set to true if data quality client is in use
-data_quality_client_used: false
-
-# Set to true if data quality services is in use
-data_quality_services_used: false
-
-# Set to true if data quality services is in use
-data_quality_services_used: false
-
-# Set to true if client tools sdk is in use
-client_tools_sdk_used: false
-
-# Set to true if sql server management tools is in use
-sql_mgmt_tools_used: false
-
-# instance name MSSQL DB Server
-server_instance: ''
-
-# List of users with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION
-approved_audit_maintainers: []
-
-# List of users with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE
-allowed_audit_permissions: []
-
-# List of user with permissions -  ALTER ANY SERVER AUDIT, ALTER ANYDATABASE AUDIT, ALTER TRACE; or EXECUTE
-allowed_sql_alter_permissions: []
-
-# List of approved users with access to SQL Server Audits
-approved_users_sql_audits: []
-
-# List of sql server users with permissions - alter, create, control
-approved_users_server: []
-
-# List of sql database users with permissions - alter, create, control
-approved_users_database: []
-
-# List of sql components installed
-sql_components: []
-
-# List of authorized network protocols for the SQL server
-authorized_protocols: []
-
-# List of authorized network ports for the SQL server
-authorized_ports: []
-
-# List of authorized network port names for the SQL server
-authorized_ports_name: []
-
-# List of authorized users for the SQL server
-authorized_sql_users: []
-
-# List of users allowed to execute privileged functions - create, alter, delete
-allowed_users_priv_functions: []
-
-# List of allowed server permissions
-allowed_server_permissions: []
-
-# List of allowed database permissions
-allowed_database_permissions: []
-
-# List of Databases that require encryption
-encrypted_databases: []
-
-# Set to true if data at rest encryption is required
-data_at_rest_encryption_required: false
-
-# Set to true if full disk encryption is in place
-full_disk_encryption_inplace: false
-
-# List of user allowed to execute privileged functions
-allowed_users: []
-
-# Set to true xp cmdshell is required
-is_xp_cmdshell_required: false
-
-# List of accounts managed by the sql server
-sql_managed_accounts: []
-
-# Set to true if filestream is required
-filestream_required: false
-
-# Set to true if filestream transact access is required
-filestream_transact_access_only_required: false
+  # List of configuration files for the specific system
+  - name: logging_conf_files
+    description: Configuration files for the logging service
+    type: Array
+    value:
+      - <dir-path-1>/*.conf
+      - <dir-path-2>/*.conf
 ```
 
-# Running This Baseline Directly from Github
+[top](#table-of-contents)
+### Testing the Profile Controls
+The Gemfile provided contains all necessary ruby dependencies for checking the profile controls.
+#### Requirements
+All action are conducted using `ruby` (gemstone/programming language). Currently `inspec` 
+commands have been tested with ruby version 3.1.2. A higher version of ruby is not guaranteed to
+provide the expected results. Any modern distribution of Ruby comes with Bundler preinstalled by default.
+
+Install ruby based on the OS being used, see [Installing Ruby](https://www.ruby-lang.org/en/documentation/installation/)
+
+After installing `ruby` install the necessary dependencies by invoking the bundler command
+(must be in the same directory where the Gemfile is located):
+```
+bundle install
+```
+
+#### Testing Commands
+Ensure the controls are chef-style formatted:
+```
+  bundle exec cookstyle -a ./controls
+```
+
+Linting and validating controls:
+```
+  bundle exec rake inspec:check          # validate the inspec profile
+  bundle exec rake lint                  # Run RuboCop
+  bundle exec rake lint:autocorrect      # Autocorrect RuboCop offenses (only when it's safe)
+  bundle exec rake lint:autocorrect_all  # Autocorrect RuboCop offenses (safe and unsafe)
+  bundle exec rake pre_commit_checks     # pre-commit checks
+```
+
+Ensure the controls are ready to be committed into the repo:
+```
+  bundle exec rake pre_commit_checks
+```
+
+
+[top](#table-of-contents)
+## Running the Profile
+### Directly from Github
+This options is best used when network connectivity is available and policies permit
+access to the hosting repository.
 
 ```
-# How to run
-inspec exec https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline/archive/master.tar.gz -t winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+# Using `ssh` transport
+bundle exec inspec exec https://github.com/mitre/MS SQL Server 2014 Instance Security Technical Implementation Guide/archive/main.tar.gz --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
+
+# Using `winrm` transport
+bundle exec inspec exec https://github.com/mitre/MS SQL Server 2014 Instance Security Technical Implementation Guide/archive/master.tar.gz --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
-### Different Run Options
+[top](#table-of-contents)
+### Using a local Archive copy
+If your runner is not always expected to have direct access to the profile's hosted location,
+use the following steps to create an archive bundle of this overlay and all of its dependent tests:
 
-  [Full exec options](https://docs.chef.io/inspec/cli/#options-3)
+(Git is required to clone the InSpec profile using the instructions below.
+Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
 
-## Running This Baseline from a local Archive copy 
-
-If your runner is not always expected to have direct access to GitHub, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
-
-(Git is required to clone the InSpec profile using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
-
-When the __"runner"__ host uses this profile baseline for the first time, follow these steps: 
+When the **"runner"** host uses this profile overlay for the first time, follow these steps:
 
 ```
 mkdir profiles
 cd profiles
-git clone https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline
-inspec archive microsoft-sql-server-2014-instance-stig-baseline
-inspec exec <name of generated archive> -t winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+git clone https://github.com/mitre/MS SQL Server 2014 Instance Security Technical Implementation Guide.git
+bundle exec inspec archive MS SQL Server 2014 Instance Security Technical Implementation Guide
+
+# Using `ssh` transport
+bundle exec inspec exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
+
+# Using `winrm` transport
+bundle exec inspec exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 ```
-For every successive run, follow these steps to always have the latest version of this baseline:
+
+For every successive run, follow these steps to always have the latest version of this profile baseline:
 
 ```
-cd microsoft-sql-server-2014-instance-stig-baseline
+cd MS SQL Server 2014 Instance Security Technical Implementation Guide
 git pull
 cd ..
-inspec archive microsoft-sql-server-2014-instance-stig-baseline --overwrite
-inspec exec <name of generated archive> -t winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+bundle exec inspec archive MS SQL Server 2014 Instance Security Technical Implementation Guide --overwrite
+
+# Using `ssh` transport
+bundle exec inspec exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
+
+# Using `winrm` transport
+bundle exec inspec exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 ```
 
-## Viewing the JSON Results
+[top](#table-of-contents)
+## Different Run Options
 
-The JSON results output file can be loaded into __[heimdall-lite](https://heimdall-lite.mitre.org/)__ for a user-interactive, graphical view of the InSpec results. 
+[Full exec options](https://docs.chef.io/inspec/cli/#options-3)
 
-The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
+[top](#table-of-contents)
+## Using Heimdall for Viewing Test Results
+The JSON results output file can be loaded into **[Heimdall-Lite](https://heimdall-lite.mitre.org/)**
+or **[Heimdall-Server](https://github.com/mitre/heimdall2)** for a user-interactive, graphical view of the profile scan results.
 
+Heimdall-Lite is a `browser only` viewer that allows you to easily view your results directly and locally rendered in your browser.
+Heimdall-Server is configured with a `data-services backend` allowing for data persistency to a database (PostgreSQL).
+For more detail on feature capabilities see [Heimdall Features](https://github.com/mitre/heimdall2?tab=readme-ov-file#features)
+
+Heimdall can **_export your results into a DISA Checklist (CKL) file_** for easily uploading into eMass using the `Heimdall Export` function.
+
+Depending on your environment restrictions, the [SAF CLI](https://saf-cli.mitre.org) can be used to run a local docker instance
+of Heimdall-Lite via the `saf view:heimdall` command.
+
+Additionally both Heimdall applications can be deployed via docker, kurbernetes, or the installation packages.
+
+[top](#table-of-contents)
 ## Authors
-* Aaron Lippold
-* Alicia Sturtevant - [asturtevant](https://github.com/asturtevant)
+Defense Information Systems Agency (DISA) https://www.disa.mil/
 
-## Special Thanks 
-* Mohamed El-Sharkawi - [HackerShark](https://github.com/HackerShark)
-* Shivani Karikar - [karikarshivani](https://github.com/karikarshivani)
+STIG support by DISA Risk Management Team and Cyber Exchange https://public.cyber.mil/
 
-## Contributing and Getting Help
-To report a bug or feature request, please open an [issue](https://github.com/mitre/microsoft-sql-server-2014-instance-stig-baseline/issues/new).
+MITRE Security Automation Framework Team https://saf.mitre.org
 
-### NOTICE
-
-© 2018-2020 The MITRE Corporation.
-
-Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
-
-### NOTICE
-
-MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
-
-### NOTICE  
-
-This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.  
-
-No other use other than that granted to the U. S. Government, or to those acting on behalf of the U. S. Government under that Clause is authorized without the express written permission of The MITRE Corporation. 
-
-For further information, please contact The MITRE Corporation, Contracts Management Office, 7515 Colshire Drive, McLean, VA  22102-7539, (703) 983-6000.  
-
-### NOTICE
-
+## NOTICE
 DISA STIGs are published by DISA IASE, see: https://iase.disa.mil/Pages/privacy_policy.aspx

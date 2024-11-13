@@ -1,238 +1,295 @@
-name: microsoft-sql-server-2014-instance-stig-baseline
-title: microsoft-sql-server-2014-instance-stig-baseline
-maintainer: The MITRE Corporation
-copyright: (c) 2018 The MITRE Corporation
+name: ms-sql-server-2014-instance-stig-baseline
+title: MS SQL Server 2014 Instance Security Technical Implementation Guide
+maintainer: MITRE SAF Team
+copyright: MITRE
 copyright_email: saf@groups.mitre.org
 license: Apache-2.0
-summary: "Inspec Validation Profile for Microsoft SQL Server 2014 Instance STIG"
-version: 1.9.0
-inspec_version: ">= 4.0"
+summary: InSpec profile aligned to DISA STIG for MS SQL Server 2014 Instance
+  Security Technical Implementation Guide
+description: null
+version: 2.4.0
+supports: []
+depends: []
+inspec_version: "~>6.0"
 
 inputs:
+  # SV-213807, SV-213809, SV-213810, SV-213811, SV-213812, SV-213813, SV-213814
+  # SV-213815, SV-213816, SV-213817, SV-213819, SV-213820, SV-213821, SV-213822
+  # SV-213823, SV-213830, SV-213831, SV-213832, SV-213843, SV-213846, SV-213848
+  # SV-213849, SV-213850, SV-213851, SV-213852, SV-213858, SV-213859, SV-213860
+  # SV-213861, SV-213865, SV-213872, SV-213873, SV-213874, SV-213875, SV-213876
+  # SV-213881, SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887
+  # SV-213888, SV-213889, SV-213890, SV-213891, SV-213892, SV-213894, SV-213895
+  # SV-213897
   - name: user
     description: 'username MSSQL DB Server'
-    value: null
-    sensitive: true
+    default: null
 
+  # SV-213807, SV-213809, SV-213810, SV-213811, SV-213812, SV-213813, SV-213814
+  # SV-213815, SV-213816, SV-213817, SV-213819, SV-213820, SV-213821, SV-213822
+  # SV-213823, SV-213830, SV-213831, SV-213832, SV-213843, SV-213846, SV-213848
+  # SV-213849, SV-213850, SV-213851, SV-213852, SV-213858, SV-213859, SV-213860
+  # SV-213861, SV-213865, SV-213872, SV-213873, SV-213874, SV-213875, SV-213876
+  # SV-213881, SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887
+  # SV-213888, SV-213889, SV-213890, SV-213891, SV-213892, SV-213894, SV-213895
+  # SV-213897
   - name: password
     description: 'password MSSQL DB Server'
-    value: null
-    sensitive: true
+    default: null
 
+  # SV-213807, SV-213809, SV-213810, SV-213811, SV-213812, SV-213813, SV-213814
+  # SV-213815, SV-213816, SV-213817, SV-213819, SV-213820, SV-213821, SV-213822
+  # SV-213823, SV-213830, SV-213831, SV-213832, SV-213843, SV-213846, SV-213848
+  # SV-213849, SV-213850, SV-213851, SV-213852, SV-213858, SV-213859, SV-213860
+  # SV-213861, SV-213865, SV-213872, SV-213873, SV-213874, SV-213875, SV-213876
+  # SV-213881, SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887
+  # SV-213888, SV-213889, SV-213890, SV-213891, SV-213892, SV-213894, SV-213895
+  # SV-213897
   - name: host
     description: 'hostname MSSQL DB Server'
-    value: null
-    sensitive: true
+    default: null
 
+  # SV-213807, SV-213809, SV-213810, SV-213811, SV-213812, SV-213813, SV-213814
+  # SV-213815, SV-213816, SV-213817, SV-213819, SV-213820, SV-213821, SV-213822
+  # SV-213823, SV-213830, SV-213831, SV-213832, SV-213843, SV-213846, SV-213848
+  # SV-213849, SV-213850, SV-213851, SV-213852, SV-213858, SV-213859, SV-213860
+  # SV-213861, SV-213865, SV-213872, SV-213873, SV-213874, SV-213875, SV-213876
+  # SV-213881, SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887
+  # SV-213888, SV-213889, SV-213890, SV-213891, SV-213892, SV-213894, SV-213895
+  # SV-213897
   - name: instance
     description: 'instance name MSSQL DB Server'
-    value: null
-    sensitive: true
+    default: null
 
+  # SV-213807, SV-213809, SV-213810, SV-213811, SV-213812, SV-213813, SV-213814
+  # SV-213815, SV-213816, SV-213817, SV-213819, SV-213820, SV-213821, SV-213822
+  # SV-213823, SV-213830, SV-213831, SV-213832, SV-213843, SV-213846, SV-213848
+  # SV-213849, SV-213850, SV-213851, SV-213852, SV-213858, SV-213859, SV-213860
+  # SV-213861, SV-213865, SV-213872, SV-213873, SV-213874, SV-213875, SV-213876
+  # SV-213881, SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887
+  # SV-213888, SV-213889, SV-213890, SV-213891, SV-213892, SV-213894, SV-213895
+  # SV-213897
   - name: port
     description: 'port MSSQL DB Server'
     type: numeric
-    value: 1433
-    sensitive: true
+    default: 1433
 
+  # SV-213807, SV-213843, SV-213846, SV-213860, SV-213874, SV-213876, SV-213881
+  # SV-213882, SV-213883, SV-213884, SV-213885, SV-213886, SV-213887, SV-213888
+  # SV-213889, SV-213890, SV-213891, SV-213892
   - name: db_name
     description: 'name of the specific DB being evaluated within the MSSQL server'
     type: string
-    value: 'master'
-    sensitive: true
+    default: 'master'
 
+  # SV-213812, SV-213813, SV-213814, SV-213815, SV-213816, SV-213817, SV-213819
+  # SV-213859, SV-213874, SV-213881, SV-213882, SV-213883, SV-213884, SV-213885
+  # SV-213886, SV-213887, SV-213888, SV-213889, SV-213890, SV-213891, SV-213892
   - name: server_trace_implemented
     description: 'Set to true If SQL Server Trace is in use for audit purposes'
     type: boolean
-    value: true
+    default: true
 
+  # SV-213812, SV-213819, SV-213859, SV-213860, SV-213874, SV-213881, SV-213882
+  # SV-213883, SV-213884, SV-213885, SV-213886, SV-213887, SV-213888, SV-213889
+  # SV-213890, SV-213891, SV-213892
   - name: server_audit_implemented
     description: 'Set to true If SQL Server Audit is in use for audit purposes'
     type: boolean
-    value: true
+    default: true
 
   - name: sql_server_reporting_services_used
     description: 'Set to true if SQL Server Reporting Services is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_server_data_tools_required 
     description: 'Set to true if SQL Server data tools is required'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_server_integration_services_used
     description: 'Set to true if SQL Server Integration Services is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_server_analysis_services_used
     description: 'Set to true if SQL Server analysis Services is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_server_distributed_replay_client_used
     description: 'Set to true if SQL Server Distributed Replay Client is in use'
     type: boolean
-    value: false
+    default: false
   
   - name: sql_server_distributed_replay_controller_used
     description: 'Set to true if SQL Server Distributed Replay Controller is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_server_full_text_search_used
     description: 'Set to true if SQL Server full-text search is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: master_data_services_used
     description: 'Set to true if master data services is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: data_quality_client_used
     description: 'Set to true if data quality client is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: data_quality_services_used
     description: 'Set to true if data quality services is in use'
     type: boolean
-    value: false
-
-  - name: data_quality_services_used
-    description: 'Set to true if data quality services is in use'
-    type: boolean
-    value: false
+    default: false
 
   - name: client_tools_sdk_used
     description: 'Set to true if client tools sdk is in use'
     type: boolean
-    value: false
+    default: false
 
   - name: sql_mgmt_tools_used
     description: 'Set to true if sql server management tools is in use'
     type: boolean
-    value: false
-
-  - name: sql_mgmt_tools_used
-    description: 'Set to true if xp_cmdhsell is required'
-    type: boolean
-    value: false
+    default: false
 
   - name: server_instance
     description: 'instance name MSSQL DB Server'
-    value: 'WIN-FC4ANINFUFP'
-
+    default: 'WIN-FC4ANINFUFP'
+  
+  # SV-213810
   - name: approved_audit_maintainers
     description: 'List of users with permissions - ALTER TRACE, CREATE TRACE EVENT NOTIFICATION'
     type: array
-    value: []
+    default: []
 
+  # SV-213811
   - name: allowed_audit_permissions
     description: 'List of users with audit permissions - ALTER ANY SERVER AUDIT, CONTROL SERVER, ALTER ANY DATABASE, CREATE ANY DATABASE'
     type: array
-    value: []
+    default: []
 
   - name: allowed_sql_alter_permissions
     description: 'List of user with permissions -  ALTER ANY SERVER AUDIT, ALTER ANYDATABASE AUDIT, ALTER TRACE; or EXECUTE'
     type: array
-    value: []
+    default: []
 
+  # SV-213823
   - name: approved_users_sql_audits
     description: 'List of approved users with access to SQL Server Audits'
     type: array
-    value: []
+    default: []
 
+  # SV-213861
   - name: approved_users_server
     description: 'List of sql server users with permissions - alter, create, control'
     type: array
-    value: []
+    default: []
 
+  # SV-213861
   - name: approved_users_database
     description: 'List of sql database users with permissions - alter, create, control'
     type: array
-    value: []
+    default: []
 
+  # SV-213847
   - name: sql_components
     description: 'List of sql components installed'
     type: array
-    value: []
+    default: []
 
+  # SV-213850, SV-213875
   - name: authorized_protocols
     description: 'List of authorized network protocols for the SQL server'
     type: array
-    value: ["Shared Memory",
+    default: ["Shared Memory",
             "TCP/IP"]
 
+  # SV-213851
   - name: authorized_ports
     description: 'LList of authorized network ports for the SQL server'
     type: array
-    value: ["1433"]      
+    default: ["1433"]      
 
   - name: authorized_ports_name
     description: 'List of authorized network port names for the SQL server'
     type: array
-    value: ["TcpPort",
+    default: ["TcpPort",
             "TcpDynamicPorts"]  
 
+  # SV-213852
   - name: authorized_sql_users
     description: 'List of authorized users for the SQL server'
     type: array
-    value: []
+    default: []
 
+  # SV-213872
   - name: allowed_users_priv_functions
     description: 'List of users allowed to execute privileged functions - create, alter, delete'
     type: array
-    value: []
+    default: []
 
+  # SV-213873
   - name: allowed_server_permissions
     description: 'List of allowed server permissions'
     type: array
-    value: []
+    default: []
 
+  # SV-213873
   - name: allowed_database_permissions
     description: 'List of allowed database permissions'
     type: array
-    value: []
+    default: []
 
+  # SV-213876
   - name: encrypted_databases
     description: 'List of Databases that require encryption'
     type: array
-    value: ['EmpData']
+    default: ['EmpData']
 
+  # SV-213876
   - name: data_at_rest_encryption_required
     description: 'Set to true if data at rest encryption is required'
     type: boolean
-    value: false
+    default: false
 
+  # SV-213876
   - name: full_disk_encryption_inplace
     description: 'Set to true if full disk encryption is in place'
     type: boolean
-    value: false
+    default: false
 
+  # SV-213865, SV-213872
   - name: allowed_users
     description: 'List of user allowed to execute privileged functions'
     type: array
-    value: []
+    default: []
 
+  # SV-213849
   - name: is_xp_cmdshell_required
     description: 'Set to true xp cmdshell is required'
     type: boolean
-    value: false
+    default: false
 
+  # SV-213858
   - name: sql_managed_accounts
     description: 'List of accounts managed by the sql server'
     type: array
-    value: []
+    default: []
 
+  # SV-213846
   - name: filestream_required
     description: 'Set to true if filestream is required'
     type: boolean
-    value: false
+    default: false
 
+  # SV-213846
   - name: filestream_transact_access_only_required
     description: 'Set to true if filestream transact access is required'
     type: boolean
-    value: false
+    default: false

@@ -1,3 +1,4 @@
+.DS_Store
 *.gem
 *.rbc
 /.config
@@ -9,9 +10,20 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+spec/results/**
+.kitchen
+.kitchen.local.yml
+Gemfile.lock
+inspec.lock
+.kitchen
+vendor/**
+saf-cli.log
 
 # Used by dotenv library to load environment variables.
 # .env
+
+# Ignore Byebug command history file.
+.byebug_history
 
 ## Specific to RubyMotion:
 .dat*
@@ -48,3 +60,16 @@ build-iPhoneSimulator/
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+# Used by RuboCop. Remote config files pulled in from inherit_from directive.
+# .rubocop-https?--*
+
+# VS CODE / VSCODIUM
+.vscode
+
+# delta files
+delta.json
+report.md
+*xccdf.xml
+check-results.txt
+kitchen.local.ec2.yml
