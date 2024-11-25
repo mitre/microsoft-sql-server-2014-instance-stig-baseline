@@ -1,5 +1,6 @@
 name: ms-sql-server-2014-instance-stig-baseline
-title: MS SQL Server 2014 Instance Security Technical Implementation Guide
+title: "MS SQL Server 2014 Instance Security Technical Implementation Guide ::
+  Version 2, Release 4 :: Benchmark Date:  24 Jul 2024"
 maintainer: MITRE SAF Team
 copyright: MITRE
 copyright_email: saf@groups.mitre.org
