@@ -6,12 +6,9 @@ requirement.
 - Profile Version: **2.4.0**
 - Benchmark Date: **24 Jul 2024**
 - Benchmark Version: **Version 2 Release 4 (V2R4)**
-- Benchmark Date: **24 Jul 2024**
-- Benchmark Version: **Version 2 Release 4 (V2R4)**
 
 
 This profile was developed to reduce the time it takes to perform a security checks based upon the
-STIG Guidance from the Defense Information Systems Agency (DISA) in partnership between the DISA Services Directorate (SD) and the DISA Risk Management Executive (RME) office.
 STIG Guidance from the Defense Information Systems Agency (DISA) in partnership between the DISA Services Directorate (SD) and the DISA Risk Management Executive (RME) office.
 
 The results of a profile run will provide information needed to support an Authority to Operate (ATO)
@@ -29,7 +26,6 @@ Table of Contents
   - [Benchmark Information](#benchmark-information)
   - [Getting Started](#getting-started)
     - [InSpec (CINC-auditor) setup](#inspec-cinc-auditor-setup)
-    - [InSpec (CINC-auditor) setup](#inspec-cinc-auditor-setup-1)
     - [Intended Usage](#intended-usage)
     - [Tailoring to Your Environment](#tailoring-to-your-environment)
       - [Example of tailoring Inputs *While Still Complying* with the security guidance document for the profile:](#example-of-tailoring-inputs-while-still-complying-with-the-security-guidance-document-for-the-profile)
@@ -47,9 +43,6 @@ Table of Contents
   - [NOTICE](#notice-1)
   - [NOTICE](#notice-2)
   - [NOTICE](#notice-3)
-  - [NOTICE](#notice-4)
-  - [NOTICE](#notice-5)
-  - [NOTICE](#notice-6)
 
 ## Benchmark Information
 The DISA RME and DISA SD Office, along with their vendor partners, create and maintain a set of Security Technical Implementation Guides for applications, computer systems and networks
@@ -76,35 +69,9 @@ compiled by the CINC (CINC Is Not Chef) project in coordination with Chef using 
 For more information see [CINC Home](https://cinc.sh/)
 
 It is intended and recommended that CINC-auditor and this profile executed from a __"runner"__ host
-### InSpec (CINC-auditor) setup
-For maximum flexibility/accessibility `cinc-auditor`, the open-source packaged binary version of Chef InSpec should be used,
-compiled by the CINC (CINC Is Not Chef) project in coordination with Chef using Chef's always-open-source InSpec source code.
-For more information see [CINC Home](https://cinc.sh/)
-
-It is intended and recommended that CINC-auditor and this profile executed from a __"runner"__ host
 (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop)
 against the target. This can be any Unix/Linux/MacOS or Windows runner host, with access to the Internet.
-against the target. This can be any Unix/Linux/MacOS or Windows runner host, with access to the Internet.
 
-> [!TIP]
-> **For the best security of the runner, always install on the runner the latest version of CINC-auditor and any other supporting language components.**
-
-To install CINC-auditor on a UNIX/Linux/MacOS platform use the following command:
-```bash
-curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-auditor
-```
-
-To install CINC-auditor on a Windows platform (Powershell) use the following command:
-```powershell
-. { iwr -useb https://omnitruck.cinc.sh/install.ps1 } | iex; install -project cinc-auditor
-```
-
-To confirm successful install of cinc-auditor:
-```
-cinc-auditor -v
-```
-
-Latest versions and other installation options are available at [CINC Auditor](https://cinc.sh/start/auditor/) site.
 > [!TIP]
 > **For the best security of the runner, always install on the runner the latest version of CINC-auditor and any other supporting language components.**
 
@@ -203,7 +170,6 @@ Chef InSpec Resources:
 [top](#table-of-contents)
 ### Testing the Profile Controls
 The Gemfile provided contains all the necessary ruby dependencies for checking the profile controls.
-The Gemfile provided contains all the necessary ruby dependencies for checking the profile controls.
 #### Requirements
 All action are conducted using `ruby` (gemstone/programming language). Currently `inspec` 
 commands have been tested with ruby version 3.1.2. A higher version of ruby is not guaranteed to
@@ -213,7 +179,6 @@ Install ruby based on the OS being used, see [Installing Ruby](https://www.ruby-
 
 After installing `ruby` install the necessary dependencies by invoking the bundler command
 (must be in the same directory where the Gemfile is located):
-```bash
 ```bash
 bundle install
 ```
@@ -231,7 +196,6 @@ Linting and validating controls:
 
 Ensure the controls are ready to be committed into the repo:
 ```bash
-```bash
   bundle exec rake pre_commit_checks
 ```
 
@@ -243,13 +207,10 @@ This option is best used when network connectivity is available and policies per
 access to the hosting repository.
 
 ```bash
-```bash
 # Using `ssh` transport
-bundle exec [inspec or cinc-auditor] exec https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline/archive/main.tar.gz --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
 bundle exec [inspec or cinc-auditor] exec https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline/archive/main.tar.gz --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
 
 # Using `winrm` transport
-bundle exec [inspec or cinc-auditor] exec https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline/archive/master.tar.gz --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 bundle exec [inspec or cinc-auditor] exec https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline/archive/master.tar.gz --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
@@ -260,26 +221,19 @@ use the following steps to create an archive bundle of this overlay and all of i
 
 Git is required to clone the InSpec profile using the instructions below.
 Git can be downloaded from the [Git Web Site](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-Git is required to clone the InSpec profile using the instructions below.
-Git can be downloaded from the [Git Web Site](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 When the **"runner"** host uses this profile overlay for the first time, follow these steps:
 
-```bash
 ```bash
 mkdir profiles
 cd profiles
 git clone https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline.git
 bundle exec [inspec or cinc-auditor] archive ms-sql-server-2014-instance-stig-baseline
-git clone https://github.com/mitre/ms-sql-server-2014-instance-stig-baseline.git
-bundle exec [inspec or cinc-auditor] archive ms-sql-server-2014-instance-stig-baseline
 
 # Using `ssh` transport
 bundle exec [inspec or cinc-auditor] exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
-bundle exec [inspec or cinc-auditor] exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
 
 # Using `winrm` transport
-bundle exec [inspec or cinc-auditor] exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 bundle exec [inspec or cinc-auditor] exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 ```
 
@@ -287,19 +241,14 @@ For every successive run, follow these steps to always have the latest version o
 
 ```bash
 cd ms-sql-server-2014-instance-stig-baseline
-```bash
-cd ms-sql-server-2014-instance-stig-baseline
 git pull
 cd ..
-bundle exec [inspec or cinc-auditor] archive ms-sql-server-2014-instance-stig-baseline --overwrite
 bundle exec [inspec or cinc-auditor] archive ms-sql-server-2014-instance-stig-baseline --overwrite
 
 # Using `ssh` transport
 bundle exec [inspec or cinc-auditor] exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
-bundle exec [inspec or cinc-auditor] exec <name of generated archive> --input-file=<your_inputs_file.yml> -t ssh://<hostname>:<port> --sudo --reporter=cli json:<your_results_file.json>
 
 # Using `winrm` transport
-bundle exec [inspec or cinc-auditor] exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 bundle exec [inspec or cinc-auditor] exec <name of generated archive> --target winrm://<hostip> --user '<admin-account>' --password=<password> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>    
 ```
 
@@ -322,7 +271,6 @@ Heimdall can **_export your results into a DISA Checklist (CKL) file_** for easi
 Depending on your environment restrictions, the [SAF CLI](https://saf-cli.mitre.org) can be used to run a local docker instance
 of Heimdall-Lite via the `saf view:heimdall` command.
 
-Additionally both Heimdall applications can be deployed via docker, kubernetes, or the installation packages.
 Additionally both Heimdall applications can be deployed via docker, kubernetes, or the installation packages.
 
 [top](#table-of-contents)
@@ -350,30 +298,6 @@ This software was produced for the U. S. Government under Contract Number HHSM-5
 No other use other than that granted to the U. S. Government, or to those acting on behalf of the U. S. Government under that Clause is authorized without the express written permission of The MITRE Corporation.
 
 For further information, please contact The MITRE Corporation, Contracts Management Office, 7515 Colshire Drive, McLean, VA  22102-7539, (703) 983-6000.
-[Defense Information Systems Agency (DISA)](https://www.disa.mil/)
-
-[STIG support by DISA Risk Management Team and Cyber Exchange](https://public.cyber.mil/)
-
-[MITRE Security Automation Framework Team](https://saf.mitre.org)
 
 ## NOTICE
-
-© 2018-2025 The MITRE Corporation.
-
-Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
-
-## NOTICE 
-
-MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
-
-## NOTICE  
-
-This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.  
-
-No other use other than that granted to the U. S. Government, or to those acting on behalf of the U. S. Government under that Clause is authorized without the express written permission of The MITRE Corporation.
-
-For further information, please contact The MITRE Corporation, Contracts Management Office, 7515 Colshire Drive, McLean, VA  22102-7539, (703) 983-6000.
-
-## NOTICE
-[DISA STIGs are published by DISA IASE](https://public.cyber.mil/stigs/)
 [DISA STIGs are published by DISA IASE](https://public.cyber.mil/stigs/)
