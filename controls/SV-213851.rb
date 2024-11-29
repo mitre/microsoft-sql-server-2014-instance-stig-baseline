@@ -47,7 +47,7 @@ If these are in conflict with PPSM guidance, and not explained and approved in t
   port_name.each do |name1|
     describe "port name: #{name1}" do
       subject { name1 }
-      it { should be_in AUTHORIZED_PORT_NAME }
+      it { should be_in input('authorized_ports_name') }
     end
   end
 
@@ -55,7 +55,7 @@ If these are in conflict with PPSM guidance, and not explained and approved in t
   port.each do |ports|
     describe "port: #{ports}" do
       subject { ports }
-      it { should be_in AUTHORIZED_PORTS }
+      it { should be_in input('authorized_ports') }
     end
   end
 

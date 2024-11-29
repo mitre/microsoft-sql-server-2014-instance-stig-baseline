@@ -49,7 +49,7 @@ ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a se
       a = grantee.strip
       describe "sql audit server permissions: #{a}" do
         subject { a }
-        it { should be_in APPROVED_USERS_SERVER }
+        it { should be_in input('approved_users_server') }
       end
     end
   end
@@ -68,7 +68,7 @@ ALTER SERVER ROLE GreatPower DROP MEMBER Irresponsibility; -- the member is a se
       a = grantee.strip
       describe "sql audit permissions alter any server audit: #{a}" do
         subject { a }
-        it { should be_in APPROVED_USERS_DATABASE }
+        it { should be_in input('approved_users_database') }
       end
     end
   end

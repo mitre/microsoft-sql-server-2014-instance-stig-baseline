@@ -69,7 +69,7 @@ The database permission functions and views provided in the supplemental file Pe
       a = perms.strip
       describe "sql privileged users: #{a}" do
         subject { a }
-        it { should be_in ALLOWED_USERS }
+        it { should be_in input('allowed_users') }
       end
     end
 

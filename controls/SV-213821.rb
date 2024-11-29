@@ -44,21 +44,21 @@ Since this is not configurable, this is not a finding.
 Note 1: It is highly advisable to use a separate account for each service. When installing SQL Server in single-server mode, you can opt to have these provisioned for you. These automatically-generated accounts are referred to as virtual accounts. Each virtual account has an equivalent Service SID, with the same name. The installer also creates an equivalent SQL Server login, also with the same name. Applying folder and file permissions to Service SIDs, rather than to domain accounts or local computer accounts, provides tighter control, because these permissions are available only to the specific service when it is running, and not in any other context. (However, when using failover clustering, a domain account must be specified at installation, rather than a virtual account.) For more on this topic, see http://msdn.microsoft.com/en-us/library/ms143504(v=sql.120).aspx.
 
 Note 2: Tips for adding a service SID/virtual account to a folder's permission list.
-1) In Windows Explorer, right-click on the folder and select "Properties."
-2) Select the "Security" tab
-3) Click "Edit"
-4) Click "Add"
-5) Click "Locations"
-6) Select the computer name
-7) Search for the name
-7.a) SQL Server Service
-7.a.i) Type "NT SERVICE\MSSQL" and click "Check Names". (What you have just typed in is the first 16 characters of the name. At least one character must follow "NT SERVICE\"; you will be presented with a list of all matches. If you have typed in the full, correct name, step 7.a.ii is bypassed.)
-7.a.ii) Select the "MSSQL$<instance name>" user and click OK
-7.b) SQL Agent Service
-7.b.i) Type "NT SERVICE\SQL" and click "Check Names"
-7.b.ii) Select the "SQLAgent$<instance name>" user and click OK
-8) Click OK
-9) Permission like a normal user from here)
+1- In Windows Explorer, right-click on the folder and select "Properties."
+2- Select the "Security" tab
+3- Click "Edit"
+4- Click "Add"
+5- Click "Locations"
+6- Select the computer name
+7- Search for the name
+7.a- SQL Server Service
+7.a.i- Type "NT SERVICE\MSSQL" and click "Check Names". (What you have just typed in is the first 16 characters of the name. At least one character must follow "NT SERVICE\"; you will be presented with a list of all matches. If you have typed in the full, correct name, step 7.a.ii is bypassed.)
+7.a.ii- Select the "MSSQL$<instance name>" user and click OK
+7.b- SQL Agent Service
+7.b.i- Type "NT SERVICE\SQL" and click "Check Names"
+7.b.ii- Select the "SQLAgent$<instance name>" user and click OK
+8- Click OK
+9- Permission like a normal user from here)
   desc 'fix', %q(Edit the system security plan to include justification and authorization for any less restrictive permissions that are present and needed.  (An example might be where Auditors need "Read & Execute" rather than "Read" alone.)
 
 Modify audit file permissions to meet the requirement to protect against unauthorized modification.
@@ -76,21 +76,21 @@ SQL Server SQL Agent Service SID OR Service Account, if SQL Server Agent is in u
 Note 1: It is highly advisable to use a separate account for each service. When installing SQL Server in single-server mode, you can opt to have these provisioned for you. These automatically-generated accounts are referred to as virtual accounts. Each virtual account has an equivalent Service SID, with the same name. The installer also creates an equivalent SQL Server login, also with the same name. Applying folder and file permissions to Service SIDs, rather than to domain accounts or local computer accounts, provides tighter control, because these permissions are available only to the specific service when it is running, and not in any other context. (However, when using failover clustering, a domain account must be specified at installation, rather than a virtual account.) For more on this topic, see http://msdn.microsoft.com/en-us/library/ms143504(v=sql.120).aspx.
 
 Note 2: Tips for adding a service SID/virtual account to a folder's permission list.
-1) In Windows Explorer, right-click on the folder and select "Properties."
-2) Select the "Security" tab
-3) Click "Edit"
-4) Click "Add"
-5) Click "Locations"
-6) Select the computer name
-7) Search for the name
-7.a) SQL Server Service
-7.a.i) Type "NT SERVICE\MSSQL" and click "Check Names". (What you have just typed in is the first 16 characters of the name. At least one character must follow "NT SERVICE\"; you will be presented with a list of all matches. If you have typed in the full, correct name, step 7.a.ii is bypassed.)
-7.a.ii) Select the "MSSQL$<instance name>" user and click OK
-7.b) SQL Agent Service
-7.b.i) Type "NT SERVICE\SQL" and click "Check Names"
-7.b.ii) Select the "SQLAgent$<instance name>" user and click OK
-8) Click OK
-9) Permission like a normal user from here)
+1- In Windows Explorer, right-click on the folder and select "Properties."
+2- Select the "Security" tab
+3- Click "Edit"
+4- Click "Add"
+5- Click "Locations"
+6- Select the computer name
+7- Search for the name
+7.a- SQL Server Service
+7.a.i- Type "NT SERVICE\MSSQL" and click "Check Names". (What you have just typed in is the first 16 characters of the name. At least one character must follow "NT SERVICE\"; you will be presented with a list of all matches. If you have typed in the full, correct name, step 7.a.ii is bypassed.)
+7.a.ii- Select the "MSSQL$<instance name>" user and click OK
+7.b- SQL Agent Service
+7.b.i- Type "NT SERVICE\SQL" and click "Check Names"
+7.b.ii- Select the "SQLAgent$<instance name>" user and click OK
+8- Click OK
+9- Permission like a normal user from here)
   impact 0.5
   ref 'DPMS Target MS SQL Server 2014 Instance'
   tag check_id: 'C-15040r312814_chk'

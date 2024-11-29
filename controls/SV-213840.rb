@@ -16,7 +16,7 @@ In Windows Explorer, navigate to <drive where SQL Server is installed>:\\Program
 If this exists and contains any files, this is a finding.'
   desc 'fix', %q(Either using the Start menu or via the command "control.exe", open the Windows Control Panel.  Open Programs and Features.  Double-click on Microsoft SQL Server 2014.  In the dialog box that appears, select Remove.  Wait for the Remove wizard to appear.
 
-Select '<< Remove shared features only >>'; click Next.  Note: all SQL Server 2014 instances will be affected by this action.)
+Select '<< Remove shared features only >>'; click Next.  Note: all SQL Server 2014 instances will be affected by this action.
 
 Select Master Data Services; click Next.
 

@@ -47,7 +47,7 @@ Implement the approved permissions. Revoke (or Deny) any unapproved permissions,
       a = perms.strip
       describe "sql privileged database users: #{a}" do
         subject { a }
-        it { should be_in ALLOWED_USERS_PRIV_FUNCTIONS }
+        it { should be_in input('allowed_users_priv_functions') }
       end
     end
 

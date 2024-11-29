@@ -88,7 +88,7 @@ Then, for each authorized login, run the statement:
     permissions_audit.each do |grantee|
       describe "sql audit maintainers: #{grantee}" do
         subject { grantee }
-        it { should be_in input(APPROVED_AUDIT_MAINTAINERS) }
+        it { should be_in input('approved_audit_maintainers') }
       end
     end
   end

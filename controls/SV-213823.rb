@@ -57,7 +57,7 @@ If unauthorized accounts have these privileges, this is a finding.)
       a = grantee.strip
       describe "sql audit permissions alter any server audit: #{a}" do
         subject { a }
-        it { should be_in APPROVED_USERS_SQL_AUDITS }
+        it { should be_in input('approved_users_sql_audits') }
       end
     end
   end

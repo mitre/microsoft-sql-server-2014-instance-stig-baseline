@@ -31,6 +31,6 @@ If any unused components or features of SQL Server are installed and cannot be u
 
   describe 'The list of installed sql components' do
     subject { get_installed_components }
-    it { should match_array SQL_COMPONENTS }
+    it { should match_array input('sql_components') }
   end
 end

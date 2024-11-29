@@ -98,7 +98,7 @@ Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements t
       a = perms.strip
       describe "sql audit permissions: #{a}" do
         subject { a }
-        it { should be_in ALLOWED_AUDIT_PERMISSIONS }
+        it { should be_in input('allowed_audit_permissions') }
       end
     end
   end

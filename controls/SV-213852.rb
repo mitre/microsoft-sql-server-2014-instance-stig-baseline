@@ -45,7 +45,7 @@ Ensure each user's identity is received and used in audit data in all relevant c
   sql_users.each do |user|
     describe "authorized sql users: #{user}" do
       subject { user }
-      it { should be_in AUTHORIZED_SQL_USERS }
+      it { should be_in input('authorized_sql_users') }
     end
   end
 end
